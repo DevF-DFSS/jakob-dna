@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
@@ -9,78 +10,75 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .mono-font {
-            font-family: 'JetBrains Mono', monospace;
-        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
     </style>
 </head>
 <body class="h-full text-slate-100 flex flex-col justify-between selection:bg-teal-500 selection:text-slate-950">
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-slate-900 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:px-6">
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:px-6">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <span class="text-2xl">🔱</span>
+                <span class="text-2xl sm:text-3xl">🔱</span>
                 <div>
-                    <h1 class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
-                        VeRiON Mycelial Bridge <span class="text-xs bg-teal-500/10 text-teal-400 px-2.5 py-0.5 rounded-full border border-teal-500/20">V1.0</span>
+                    <h1 class="font-bold text-base sm:text-lg tracking-tight text-white flex items-center gap-1.5 sm:gap-2">
+                        VeRiON Mycelial Bridge <span class="text-[10px] sm:text-xs bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded-full border border-teal-500/20">V1.0</span>
                     </h1>
-                    <p class="text-xs text-slate-400">ArT Node to Perplexity Orchestrator Sync</p>
+                    <p class="text-[10px] sm:text-xs text-slate-400">ArT Node to Perplexity Orchestrator Sync</p>
                 </div>
             </div>
             <div class="flex items-center space-x-2">
-                <span id="syncStatus" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    DFSS DNS Connected
+                    DFSS Custom Domain Active
                 </span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
-    <main class="max-w-7xl mx-auto w-full px-4 py-6 sm:px-6 lg:py-8 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Main Workspace -->
+    <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Left Panel: Configuration & Settings -->
+        <!-- Left Panel: Configurations & Static Prompts -->
         <div class="space-y-6">
-            <div class="bg-slate-900/20 border border-slate-900 rounded-2xl p-6 backdrop-blur-sm">
-                <h2 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
-                    <i data-lucide="shield" class="w-5 h-5 text-teal-400"></i>
+            <!-- Settings Card -->
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
+                <h2 class="text-sm sm:text-base font-semibold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="shield" class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400"></i>
                     DNS & Repo Node Identity
                 </h2>
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Organization/User</label>
-                        <input type="text" id="githubUser" placeholder="DevF-DFSS" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Org/User</label>
+                        <input type="text" id="githubUser" value="DevF-DFSS" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Repository Name</label>
-                        <input type="text" id="githubRepo" placeholder="jakob-dna" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Repository Name</label>
+                        <input type="text" id="githubRepo" value="jakob-dna" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">IONOS Subdomain</label>
-                        <input type="text" id="customDomain" placeholder="jakob.dfsolutionsstudio.com" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Custom Subdomain</label>
+                        <input type="text" id="customDomain" value="jakob.dfsolutionsstudio.com" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
                     </div>
-                    <button id="saveConfig" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <button id="saveConfig" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs sm:text-sm font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
                         <i data-lucide="lock" class="w-4 h-4"></i>
                         Secure System Settings
                     </button>
                 </div>
             </div>
 
-            <!-- Thread Harvester Prompt Box -->
-            <div class="bg-slate-900/20 border border-slate-900 rounded-2xl p-6 backdrop-blur-sm">
-                <h3 class="text-base font-semibold text-white mb-2 flex items-center gap-2">
-                    <i data-lucide="scissors" class="w-5 h-5 text-purple-400"></i>
+            <!-- Thread Harvester Card -->
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
+                <h3 class="text-sm sm:text-base font-semibold text-white mb-1.5 flex items-center gap-2">
+                    <i data-lucide="scissors" class="w-4 h-4 sm:w-5 sm:h-5 text-purple-400"></i>
                     Mycelial Harvester Protocol
                 </h3>
-                <p class="text-xs text-slate-400 mb-4 font-normal">Copy this semantic trigger to pull stable, consolidated scripts out of your 100+ dormant threads.</p>
+                <p class="text-[10px] sm:text-xs text-slate-400 mb-4 font-normal">Copy this semantic trigger to pull stable, consolidated scripts out of your 100+ legacy threads.</p>
                 
                 <div class="bg-slate-950 rounded-xl border border-slate-900 p-4 relative">
-                    <pre id="harvesterPromptText" class="text-[11px] leading-relaxed text-slate-300 whitespace-pre-wrap select-all max-h-48 overflow-y-auto font-mono">🔱 [JAKOB_HARVEST_PROTOCOL] ⚡
+                    <pre id="harvesterPromptText" class="text-[10px] sm:text-[11px] leading-relaxed text-slate-300 whitespace-pre-wrap select-all max-h-48 overflow-y-auto font-mono">🔱 [JAKOB_HARVEST_PROTOCOL] ⚡
 You are a legacy recovery node. We are migrating core technical assets to our GitHub Pages CDN.
 
 Scan our entire conversation history in this thread:
@@ -91,4 +89,3 @@ Scan our entire conversation history in this thread:
 Format exactly:
 
 ```
-⁠<!-- 🔱 Forcing clear cache build -->⁠
