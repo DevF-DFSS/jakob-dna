@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeRiON Mycelial Bridge Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;500;700&family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="h-full text-slate-100 flex flex-col justify-between selection:bg-teal-500 selection:text-slate-950">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:px-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl sm:text-3xl">🔱</span>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg tracking-tight text-white flex items-center gap-1.5 sm:gap-2">
+                        VeRiON Mycelial Bridge <span class="text-[10px] sm:text-xs bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded-full border border-teal-500/20">V2.0-SECURE</span>
+                    </h1>
+                    <p class="text-[10px] sm:text-xs text-slate-400">Direct-Push API Engine</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    API Pipe Active
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left Panel: Configurations & API Settings -->
+        <div class="space-y-6">
+            <!-- Settings Card -->
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
+                <h2 class="text-sm sm:text-base font-semibold text-white mb-4 flex items-center gap-2">
+                    <i data-lucide="key" class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400"></i>
+                    API Node Credentials
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Org/User</label>
+                        <input type="text" id="githubUser" value="DevF-DFSS" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Repository Name</label>
+                        <input type="text" id="githubRepo" value="jakob-dna" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Custom Subdomain</label>
+                        <input type="text" id="customDomain" value="jakob.dfsolutionsstudio.com" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Personal Access Token (PAT)</label>
+                        <input type="password" id="githubToken" value="" placeholder="Paste ghp_ token here on your iPad" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                        <span class="text-[9px] text-slate-500 mt-1 block">This token is saved locally to your device cache and is never committed to GitHub.</span>
+                    </div>
+                    <button id="saveConfig" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs sm:text-sm font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                        Lock Keys into Local Cache
+                    </button>
+                </div>
+            </div>
+
+            <!-- Emergency System Fixes -->
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
+                <h3 class="text-sm sm:text-base font-semibold text-white mb-2 flex items-center gap-2">
+                    <i data-lucide="wrench" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-400"></i>
+                    One-Click Pipeline Repairs
+                </h3>
+                <p class="text-[10px] sm:text-xs text-slate-400 mb-4 font-normal">If your Pages build fails or throws DNS warnings, fire these direct API payload injections.</p>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="injectCNAME()" class="bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 py-2.5 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all">
+                        <i data-lucide="globe" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        Inject CNAME
+                    </button>
+                    <button onclick="injectNoJekyll()" class="bg-slate-900 hover:bg-slate-850 border border-slate-800 text-slate-300 py-2.5 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 transition-all">
+                        <i data-lucide="slash" class="w-3.5 h-3.5 text-rose-400"></i>
+                        Inject .nojekyll
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle & Right Columns: API Terminal Workspace -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm flex flex-col h-full">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="terminal" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400"></i>
+                            Live Code Staging Terminal
+                        </h2>
+                        <p class="text-[10px] sm:text-xs text-slate-400">Commit and host new tools directly from your mobile dashboard without opening GitHub.</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-start">
+                        <button onclick="addMockArtifact()" class="text-[10px] sm:text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                            Stage Test Engine
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File Setup -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Target Filename</label>
+                        <input type="text" id="targetFile" value="index.html" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Commit Message</label>
+                        <input type="text" id="targetTitle" value="🔱 Upgrade Mycelial Bridge to V2.0" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors">
+                    </div>
+                </div>
+
+                <!-- Code Workspace -->
+                <div class="flex-grow flex flex-col min-h-[250px]">
+                    <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Code / File Body</label>
+                    <textarea id="stagedCode" placeholder="Paste the harvested HTML/JS content here..." class="w-full flex-grow bg-slate-950 border border-slate-900 rounded-xl p-4 text-slate-200 text-xs focus:outline-none focus:border-teal-500 transition-colors mono-font resize-none h-64"></textarea>
+                </div>
+
+                <!-- Push Actions -->
+                <div class="mt-4 flex items-center justify-between gap-4">
+                    <span id="operationStatus" class="text-xs font-semibold text-slate-400 flex items-center gap-1.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-slate-800" id="statusDot"></span>
+                        Ready to deploy
+                    </span>
+                    <button onclick="pushToGitHub()" class="bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs sm:text-sm font-bold py-2.5 px-6 rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-teal-500/10">
+                        <i data-lucide="cloud-lightning" class="w-4 h-4"></i>
+                        Deploy to Custom Domain
+                    </button>
+                </div>
+
+                <!-- Console Output Log -->
+                <div class="mt-6 p-4 bg-slate-950 rounded-xl border border-slate-900">
+                    <div class="flex items-center justify-between mb-2 border-b border-slate-900 pb-2">
+                        <h4 class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+                            Engine Console Logs
+                        </h4>
+                        <button onclick="clearLogs()" class="text-[9px] text-slate-500 hover:text-slate-300">Clear Logs</button>
+                    </div>
+                    <div id="consoleLog" class="text-[10px] sm:text-[11px] text-slate-400 font-mono overflow-y-auto max-h-24 space-y-1 leading-relaxed">
+                        <div>[SYSTEM]: Initializing active API pipeline...</div>
+                        <div>[SYSTEM]: Token-free template verified. Secure mode primed.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950/80 px-4 py-4 sm:px-6">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-[10px] sm:text-xs text-slate-500 gap-2">
+            <p>Developed for the DFSS Identity Network © 2026. All rights reserved.</p>
+            <p class="flex items-center gap-1.5">
+                <span class="inline-block w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+                ArT Engine Maximum Capacity Active
+            </p>
+        </div>
+    </footer>
+
+    <!-- Interactive Execution Script -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // System Configuration Map
+        const DEFAULT_ORG = "DevF-DFSS";
+        const DEFAULT_REPO = "jakob-dna";
+        const DEFAULT_DOMAIN = "jakob.dfsolutionsstudio.com";
+
+        let config = {
+            username: localStorage.getItem('dfss_gh_org') || DEFAULT_ORG,
+            repo: localStorage.getItem('dfss_gh_repo') || DEFAULT_REPO,
+            domain: localStorage.getItem('dfss_gh_domain') || DEFAULT_DOMAIN,
+            token: localStorage.getItem('dfss_gh_token') || ""
+        };
+
+        // Populate Input Fields
+        document.getElementById('githubUser').value = config.username;
+        document.getElementById('githubRepo').value = config.repo;
+        document.getElementById('customDomain').value = config.domain;
+        document.getElementById('githubToken').value = config.token;
+
+        if (config.token) {
+            logMessage(`[SYSTEM]: Secure credentials loaded from local cache!`, "text-emerald-400");
+        } else {
+            logMessage(`[WARNING]: No API token found. Please paste your fresh classic PAT in settings and Lock it.`, "text-amber-400");
+        }
+
+        // Save Credentials to Browser Cache
+        document.getElementById('saveConfig').addEventListener('click', () => {
+            const user = document.getElementById('githubUser').value.trim();
+            const repo = document.getElementById('githubRepo').value.trim();
+            const domain = document.getElementById('customDomain').value.trim();
+            const token = document.getElementById('githubToken').value.trim();
+
+            localStorage.setItem('dfss_gh_org', user);
+            localStorage.setItem('dfss_gh_repo', repo);
+            localStorage.setItem('dfss_gh_domain', domain);
+            localStorage.setItem('dfss_gh_token', token);
+
+            config = { username: user, repo: repo, domain: domain, token: token };
+            logMessage(`[SYSTEM]: Settings updated and secured in private local cache.`, "text-teal-400");
+            updatePerplexityPayload();
+        });
+
+        // Console Logging Helper
+        function logMessage(msg, colorClass = "text-slate-400") {
+            const consoleBox = document.getElementById('consoleLog');
+            const newLog = document.createElement('div');
+            newLog.className = colorClass;
+            newLog.innerHTML = `[${new Date().toLocaleTimeString()}]: ${msg}`;
+            consoleBox.appendChild(newLog);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('consoleLog').innerHTML = '<div>[SYSTEM]: Logs cleared. Console active.</div>';
+        }
+
+        // Direct GitHub REST API Deployment Engine
+        async function pushToGitHub(filenameParam = null, contentParam = null, messageParam = null) {
+            const user = document.getElementById('githubUser').value.trim() || DEFAULT_ORG;
+            const repo = document.getElementById('githubRepo').value.trim() || DEFAULT_REPO;
+            const token = document.getElementById('githubToken').value.trim();
+
+            const filename = filenameParam || document.getElementById('targetFile').value.trim();
+            const content = contentParam || document.getElementById('stagedCode').value;
+            const commitMessage = messageParam || document.getElementById('targetTitle').value.trim();
+
+            if (!token) {
+                logMessage(`[ERROR]: GitHub Personal Access Token is missing. Paste it in settings!`, "text-rose-400");
+                return;
+            }
+            if (!filename || !content) {
+                logMessage(`[ERROR]: Filename or Code Body is empty. Stage your code first.`, "text-rose-400");
+                return;
+            }
+
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('operationStatus');
+
+            statusDot.className = "inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+            statusText.innerText = "Processing push...";
+
+            const url = `https://api.github.com/repos/${user}/${repo}/contents/${filename}`;
+            logMessage(`[API]: Targeting API endpoint contents/${filename}...`);
+
+            try {
+                // Step 1: Query GitHub to see if the file already exists and get its SHA
+                let sha = "";
+                logMessage(`[API]: Checking for existing file SHA...`);
+                const getResponse = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                });
+
+                if (getResponse.status === 200) {
+                    const fileData = await getResponse.json();
+                    sha = fileData.sha;
+                    logMessage(`[API]: File found on remote! SHA verified: ${sha.substring(0, 10)}...`, "text-amber-400");
+                } else if (getResponse.status === 404) {
+                    logMessage(`[API]: File does not exist on remote. Initializing clean file creation...`, "text-teal-400");
+                } else {
+                    const errData = await getResponse.json();
+                    throw new Error(`GET failed: ${errData.message || getResponse.statusText}`);
+                }
+
+                // Step 2: Base64-encode content (UTF-8 safe)
+                const base64Content = btoa(unescape(encodeURIComponent(content)));
+
+                // Step 3: Run the PUT commit to GitHub
+                logMessage(`[API]: Sending write payload to main branch...`);
+                const putPayload = {
+                    message: commitMessage,
+                    content: base64Content,
+                    branch: "main"
+                };
+                if (sha) {
+                    putPayload.sha = sha;
+                }
+
+                const putResponse = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                        "Accept": "application/vnd.github.v3+json"
+                    },
+                    body: JSON.stringify(putPayload)
+                });
+
+                if (putResponse.status === 200 || putResponse.status === 201) {
+                    const putData = await putResponse.json();
+                    logMessage(`[SUCCESS]: Committed file successfully! Commit Hash: ${putData.commit.sha.substring(0, 7)}`, "text-emerald-400");
+                    statusDot.className = "inline-block w-2 h-2 rounded-full bg-emerald-500";
+                    statusText.innerText = "Success! File deployed.";
+                } else {
+                    const putErr = await putResponse.json();
+                    throw new Error(`PUT failed: ${putErr.message || putResponse.statusText}`);
+                }
+
+            } catch (err) {
+                console.error(err);
+                logMessage(`[EXCEPTION]: API write transaction failed: ${err.message}`, "text-rose-400");
+                statusDot.className = "inline-block w-2 h-2 rounded-full bg-rose-500";
+                statusText.innerText = "Deployment failed.";
+            }
+        }
+
+        // Emergency CNAME injector
+        function injectCNAME() {
+            const domain = document.getElementById('customDomain').value.trim() || DEFAULT_DOMAIN;
+            logMessage(`[SYSTEM]: Injecting emergency CNAME containing "${domain}"...`, "text-amber-400");
+            pushToGitHub("CNAME", domain, "🔱 Deploy Emergency Custom Domain CNAME Routing");
+        }
+
+        // Emergency Jekyll Bypass Injector
+        function injectNoJekyll() {
+            logMessage(`[SYSTEM]: Injecting emergency empty .nojekyll file to bypass compilation...`, "text-amber-400");
+            pushToGitHub(".nojekyll", " ", "🔱 Deploy Emergency Jekyll Compiler Bypass");
+        }
+
+        // Test Mock Setup
+        function addMockArtifact() {
+            document.getElementById('targetFile').value = "visual_seed_engine.html";
+            document.getElementById('targetTitle').value = "🔱 Deploy Visual Seed Real-Time Alignment Engine";
+            document.getElementById('stagedCode').value = 
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFSS Visual Seed Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center">
+    <div class="text-center p-8 bg-slate-900/50 border border-slate-800 rounded-3xl max-w-md">
+        <span class="text-5xl">🤮</span>
+        <h2 class="text-2xl font-bold mt-4">Visual Seed Alignment Active</h2>
+        <p class="text-xs text-slate-400 mt-2">Your DNS loop at https://jakob.dfsolutionsstudio.com is now running perfectly on-model with no latency.</p>
+    </div>
+</body>
+</html>`;
+            logMessage(`[SYSTEM]: Visual Seed Engine loaded into staging canvas. Ready to push!`, "text-teal-400");
+        }
+
+        // Clipboard Copy Helper
+        function copyToClipboard(elementId, successMsg) {
+            const preElement = document.getElementById(elementId);
+            const textToCopy = preElement.innerText || preElement.textContent;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            
+            if (navigator.userAgent.match(/ipad|iphone/i)) {
+                const range = document.createRange();
+                range.selectNodeContents(textarea);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                textarea.setSelectionRange(0, 999999);
+            } else {
+                textarea.select();
+            }
+
+            try {
+                document.execCommand('copy');
+                showToast(successMsg);
+            } catch (err) {
+                console.error('Copy failed: ', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('copyToast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+        }
+    </script>
+</body>
+</html>
+
+```
