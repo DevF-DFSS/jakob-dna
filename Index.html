@@ -1,11 +1,11 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VeRiON Mycelial Bridge Dashboard</title>
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,13 +22,13 @@
 <body class="h-full text-slate-100 flex flex-col justify-between selection:bg-teal-500 selection:text-slate-950">
 
     <!-- Top Navigation Bar -->
-    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:px-6">
+    <header class="border-b border-slate-900 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:px-6">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <span class="text-2xl">🔱</span>
                 <div>
                     <h1 class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
-                        VeRiON Mycelial Bridge <span class="text-xs bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded-full border border-teal-500/20">V1.0</span>
+                        VeRiON Mycelial Bridge <span class="text-xs bg-teal-500/10 text-teal-400 px-2.5 py-0.5 rounded-full border border-teal-500/20">V1.0</span>
                     </h1>
                     <p class="text-xs text-slate-400">ArT Node to Perplexity Orchestrator Sync</p>
                 </div>
@@ -36,7 +36,7 @@
             <div class="flex items-center space-x-2">
                 <span id="syncStatus" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Local Cache Connected
+                    DFSS DNS Connected
                 </span>
             </div>
         </div>
@@ -47,37 +47,41 @@
         
         <!-- Left Panel: Configuration & Settings -->
         <div class="space-y-6">
-            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+            <div class="bg-slate-900/20 border border-slate-900 rounded-2xl p-6 backdrop-blur-sm">
                 <h2 class="text-base font-semibold text-white mb-4 flex items-center gap-2">
-                    <i data-lucide="github" class="w-5 h-5 text-teal-400"></i>
-                    GitHub CDN Configuration
+                    <i data-lucide="shield" class="w-5 h-5 text-teal-400"></i>
+                    DNS & Repo Node Identity
                 </h2>
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Username</label>
-                        <input type="text" id="githubUser" placeholder="e.g., devonflack" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Organization/User</label>
+                        <input type="text" id="githubUser" placeholder="DevF-DFSS" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Repository Name</label>
-                        <input type="text" id="githubRepo" placeholder="e.g., verion-artifacts" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                        <input type="text" id="githubRepo" placeholder="jakob-dna" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">IONOS Subdomain</label>
+                        <input type="text" id="customDomain" placeholder="jakob.dfsolutionsstudio.com" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
                     </div>
                     <button id="saveConfig" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="save" class="w-4 h-4"></i>
-                        Lock Repository Node
+                        <i data-lucide="lock" class="w-4 h-4"></i>
+                        Secure System Settings
                     </button>
                 </div>
             </div>
 
             <!-- Thread Harvester Prompt Box -->
-            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+            <div class="bg-slate-900/20 border border-slate-900 rounded-2xl p-6 backdrop-blur-sm">
                 <h3 class="text-base font-semibold text-white mb-2 flex items-center gap-2">
                     <i data-lucide="scissors" class="w-5 h-5 text-purple-400"></i>
                     Mycelial Harvester Protocol
                 </h3>
-                <p class="text-xs text-slate-400 mb-4">Copy this prompt to run in your 100+ legacy threads. It strips explanations and extracts the purest executable code.</p>
+                <p class="text-xs text-slate-400 mb-4 font-normal">Copy this semantic trigger to pull stable, consolidated scripts out of your 100+ dormant threads.</p>
                 
-                <div class="bg-slate-950 rounded-xl border border-slate-850 p-4 relative group">
+                <div class="bg-slate-950 rounded-xl border border-slate-900 p-4 relative">
                     <pre id="harvesterPromptText" class="text-[11px] leading-relaxed text-slate-300 whitespace-pre-wrap select-all max-h-48 overflow-y-auto font-mono">🔱 [JAKOB_HARVEST_PROTOCOL] ⚡
 You are a legacy recovery node. We are migrating core technical assets to our GitHub Pages CDN.
 
