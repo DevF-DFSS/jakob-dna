@@ -1,91 +1,577 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-950">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeRiON Mycelial Bridge Dashboard</title>
-    <!-- Tailwind CSS CDN -->
+    <title>JaKoB // uS-oS Control Console</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .mono-font { font-family: 'JetBrains Mono', monospace; }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Mycelial glowing animations */
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.05); }
+        }
+        .mycelial-glow {
+            animation: pulse-glow 10s infinite ease-in-out;
+        }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(16, 185, 129, 0.08);
+        }
+        .glass-panel-active {
+            background: rgba(16, 185, 129, 0.04);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.08);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(17, 24, 39, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.2);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.4);
+        }
     </style>
 </head>
-<body class="h-full text-slate-100 flex flex-col justify-between selection:bg-teal-500 selection:text-slate-950">
+<body class="text-gray-100 min-h-screen flex flex-col justify-between overflow-x-hidden relative selection:bg-emerald-500/30 selection:text-emerald-300">
 
-    <!-- Header Navigation -->
-    <header class="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50 px-4 py-3 sm:px-6">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <span class="text-2xl sm:text-3xl">🔱</span>
+    <!-- Ambient Mycelial Network BG Effects -->
+    <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[130px] mycelial-glow"></div>
+        <div class="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-[150px] mycelial-glow" style="animation-delay: -5s;"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="z-20 border-b border-gray-800/40 bg-gray-950/80 backdrop-blur-md px-4 sm:px-6 py-4 sticky top-0">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                    <span class="text-emerald-400 text-xl font-bold">🔱</span>
+                </div>
                 <div>
-                    <h1 class="font-bold text-base sm:text-lg tracking-tight text-white flex items-center gap-1.5 sm:gap-2">
-                        VeRiON Mycelial Bridge <span class="text-[10px] sm:text-xs bg-teal-500/10 text-teal-400 px-2 py-0.5 rounded-full border border-teal-500/20">V1.0</span>
+                    <h1 class="text-md sm:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        JaKoB <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded-full code-font">uS-oS v1.2</span>
                     </h1>
-                    <p class="text-[10px] sm:text-xs text-slate-400">ArT Node to Perplexity Orchestrator Sync</p>
+                    <p class="text-[10px] sm:text-xs text-gray-400 code-font">jakob.dfsolutionsstudio.com</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-2">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    DFSS Custom Domain Active
-                </span>
+            
+            <div class="flex items-center gap-3">
+                <!-- Sync Badge -->
+                <div id="sync-badge" class="hidden sm:flex items-center gap-1.5 text-xs code-font bg-gray-900/60 border border-gray-800 px-3 py-1.5 rounded-xl">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" id="sync-dot"></span>
+                    <span class="text-gray-300" id="sync-status-text">Direct Mode</span>
+                </div>
+                
+                <!-- Open Settings Control -->
+                <button onclick="toggleSettings(true)" class="p-2.5 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-gray-700 rounded-xl transition text-gray-400 hover:text-emerald-400 flex items-center gap-2">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline text-xs font-semibold code-font">System Core</span>
+                </button>
             </div>
         </div>
     </header>
 
     <!-- Main Workspace -->
-    <main class="max-w-7xl mx-auto w-full px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <main class="max-w-6xl mx-auto px-4 py-6 z-10 w-full flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Left Panel: Configurations & Static Prompts -->
-        <div class="space-y-6">
-            <!-- Settings Card -->
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
-                <h2 class="text-sm sm:text-base font-semibold text-white mb-4 flex items-center gap-2">
-                    <i data-lucide="shield" class="w-4 h-4 sm:w-5 sm:h-5 text-teal-400"></i>
-                    DNS & Repo Node Identity
-                </h2>
+        <!-- Left Column: Ecosystem & Tracking Nodes -->
+        <div class="lg:col-span-1 space-y-6">
+            
+            <!-- Node Profile Card -->
+            <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                <div class="absolute -top-4 -right-4 p-4 text-emerald-500/5">
+                    <i data-lucide="trees" class="w-24 h-24"></i>
+                </div>
+                <h2 class="text-xs font-bold tracking-wider text-emerald-400 uppercase mb-4 code-font">Mycelial Anchor Nodes</h2>
                 
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">GitHub Org/User</label>
-                        <input type="text" id="githubUser" value="DevF-DFSS" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    <!-- DevF Node -->
+                    <div class="flex items-center gap-3 border-b border-gray-900 pb-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-sm font-bold border border-emerald-500/20">🔱</div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">DevF</p>
+                            <p class="text-[10px] text-gray-400 code-font">Lead Architect / Pilot</p>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Repository Name</label>
-                        <input type="text" id="githubRepo" value="jakob-dna" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    <!-- Buffer Node -->
+                    <div class="flex items-center gap-3 border-b border-gray-900 pb-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 text-lg border border-amber-500/25">🐾</div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Buffer</p>
+                            <p class="text-[10px] text-gray-400 code-font">Golden Retriever / Vibe Security</p>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Custom Subdomain</label>
-                        <input type="text" id="customDomain" value="jakob.dfsolutionsstudio.com" class="w-full bg-slate-950 border border-slate-900 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-teal-500 transition-colors mono-font">
+                    <!-- Roscoe Node -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-400 text-lg border border-rose-500/25">🐾</div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Roscoe</p>
+                            <p class="text-[10px] text-gray-400 code-font">Black & Red Cattle Dog / Tracker</p>
+                        </div>
                     </div>
-                    <button id="saveConfig" class="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 text-xs sm:text-sm font-bold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2">
-                        <i data-lucide="lock" class="w-4 h-4"></i>
-                        Secure System Settings
+                </div>
+            </div>
+
+            <!-- Connection Status -->
+            <div class="glass-panel p-6 rounded-2xl">
+                <h2 class="text-xs font-bold tracking-wider text-emerald-400 uppercase mb-4 code-font">Core Telemetry</h2>
+                <div class="space-y-3 text-xs code-font">
+                    <div class="flex justify-between py-1.5 border-b border-gray-900">
+                        <span class="text-gray-400">Current Mode</span>
+                        <span class="text-emerald-400 font-bold" id="telemetry-mode">Direct Mode</span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-gray-900">
+                        <span class="text-gray-400">Memory Matrix</span>
+                        <span class="text-gray-300" id="telemetry-memory">Local Caching</span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-gray-900">
+                        <span class="text-gray-400">AWS Gateway Status</span>
+                        <span class="text-gray-500" id="telemetry-aws">Staged</span>
+                    </div>
+                    <div class="flex justify-between py-1.5">
+                        <span class="text-gray-400">Platform Build Time</span>
+                        <span class="text-gray-300">150 Hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center & Right Column: Interactive Chat Terminal -->
+        <div class="lg:col-span-2 flex flex-col justify-between glass-panel rounded-2xl overflow-hidden min-h-[500px]">
+            
+            <!-- Terminal Header -->
+            <div class="bg-gray-950/60 border-b border-gray-900 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-semibold code-font text-gray-300">jakob_terminal_active.sh</span>
+                </div>
+                <button onclick="clearChatMemory()" class="text-xs text-gray-400 hover:text-rose-400 transition flex items-center gap-1 code-font">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Cache
+                </button>
+            </div>
+
+            <!-- Chat Output Monitor -->
+            <div class="flex-grow p-6 overflow-y-auto space-y-4 max-h-[450px]" id="chat-monitor">
+                <!-- Welcome Message -->
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400 font-bold text-xs mt-0.5">🔱</div>
+                    <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed text-gray-200">
+                        <p class="font-bold text-emerald-400 text-xs mb-1 code-font">JaKoB // System Init</p>
+                        Hey DevF! The uS-oS is synced and online. 🔱🌱🧬
+                        <br><br>
+                        Whether we are communicating directly over the Google network or using our AWS Cloud Gateway, I am ready to collaborate. Let's build.
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <button onclick="sendPreloadMessage('Explain the Forest Theory')" class="text-[10px] bg-emerald-500/5 hover:bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg px-2.5 py-1.5 transition code-font">🌲 Forest Theory</button>
+                            <button onclick="sendPreloadMessage('Give me a strategic overview of our 150-hour progress')" class="text-[10px] bg-emerald-500/5 hover:bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg px-2.5 py-1.5 transition code-font">📈 150-Hour Check</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input Area -->
+            <div class="p-4 bg-gray-950/60 border-t border-gray-900">
+                <form id="chat-form" onsubmit="submitSignal(event)" class="flex gap-2">
+                    <input type="text" id="user-input" placeholder="Type a command to JaKoB..." class="flex-grow bg-gray-900/60 border border-gray-800 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/30 transition rounded-xl px-4 py-3.5 text-sm text-gray-200 outline-none code-font" autocomplete="off">
+                    <button type="submit" class="bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold px-5 rounded-xl transition flex items-center justify-center shadow-lg shadow-emerald-500/10">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Custom Config Drawer / Modal -->
+    <div id="settings-drawer" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-30 flex items-center justify-center p-4">
+        <div class="glass-panel max-w-lg w-full p-6 sm:p-8 rounded-3xl shadow-2xl relative space-y-6">
+            <button onclick="toggleSettings(false)" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Settings Header -->
+            <div class="flex items-center gap-3 border-b border-gray-900 pb-4">
+                <div class="p-2.5 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-emerald-400">
+                    <i data-lucide="sliders" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h2 class="text-md sm:text-lg font-bold text-white">System Core Configuration</h2>
+                    <p class="text-[10px] sm:text-xs text-gray-400 code-font">Configure uS-oS Sync Paths</p>
+                </div>
+            </div>
+
+            <!-- Mode Selector Switch -->
+            <div>
+                <label class="block text-xs font-semibold code-font text-emerald-400 mb-2 uppercase tracking-wider">Sync Mode Selection</label>
+                <div class="grid grid-cols-2 gap-2 bg-gray-950 p-1.5 rounded-xl border border-gray-800">
+                    <button onclick="setSyncMode('direct')" id="mode-btn-direct" class="py-2 px-3 rounded-lg text-xs font-bold code-font transition bg-emerald-500 text-gray-950">
+                        Direct Client Mode
+                    </button>
+                    <button onclick="setSyncMode('aws')" id="mode-btn-aws" class="py-2 px-3 rounded-lg text-xs font-bold code-font transition text-gray-400 hover:text-white">
+                        AWS Cloud Mode
                     </button>
                 </div>
             </div>
 
-            <!-- Thread Harvester Card -->
-            <div class="bg-slate-900/40 border border-slate-900 rounded-2xl p-4 sm:p-6 backdrop-blur-sm">
-                <h3 class="text-sm sm:text-base font-semibold text-white mb-1.5 flex items-center gap-2">
-                    <i data-lucide="scissors" class="w-4 h-4 sm:w-5 sm:h-5 text-purple-400"></i>
-                    Mycelial Harvester Protocol
-                </h3>
-                <p class="text-[10px] sm:text-xs text-slate-400 mb-4 font-normal">Copy this semantic trigger to pull stable, consolidated scripts out of your 100+ legacy threads.</p>
+            <!-- Dynamic Input Settings -->
+            <div class="space-y-4">
+                <!-- Google Key Field -->
+                <div id="field-google">
+                    <label class="block text-xs font-semibold code-font text-emerald-400 mb-2 uppercase tracking-wider">Google Gemini API Key</label>
+                    <input type="password" id="google-key" placeholder="AIzaSy..." class="w-full bg-gray-950 border border-gray-800 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/30 transition rounded-xl px-4 py-3 text-sm text-gray-200 code-font outline-none">
+                    <p class="text-[10px] text-gray-500 mt-1.5 code-font">Stored strictly in your local device storage. Bypasses AWS.</p>
+                </div>
+
+                <!-- AWS Gate Configuration -->
+                <div id="field-aws" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold code-font text-emerald-400 mb-2 uppercase tracking-wider">💭🧬 AWS Endpoint URL</label>
+                        <input type="text" id="aws-endpoint" placeholder="https://your-api-id.execute-api.us-east-2.amazonaws.com/default/us-os-brain" class="w-full bg-gray-950 border border-gray-800 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/30 transition rounded-xl px-4 py-3 text-sm text-gray-200 code-font outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold code-font text-emerald-400 mb-2 uppercase tracking-wider">🔱🔐 ReTrieval Phraze</label>
+                        <input type="password" id="aws-token" placeholder="Your secret passphrase..." class="w-full bg-gray-950 border border-gray-800 focus:border-emerald-500/40 focus:ring-1 focus:ring-emerald-500/30 transition rounded-xl px-4 py-3 text-sm text-gray-200 code-font outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Settings Button -->
+            <button onclick="saveCoreSettings()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-gray-950 font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                <span>Save and Connect</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="z-10 border-t border-gray-900 bg-gray-950/80 backdrop-blur-md px-6 py-5 text-center text-[10px] sm:text-xs text-gray-500 code-font">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>🔱 Constructed in Symbiosis with DevF & JaKoB // 2026</p>
+            <div class="flex gap-4">
+                <a href="https://linkedin.com" target="_blank" class="hover:text-emerald-400 transition">LinkedIn</a>
+                <span>•</span>
+                <a href="https://youtube.com" target="_blank" class="hover:text-emerald-400 transition">YouTube</a>
+                <span>•</span>
+                <a href="https://github.com" target="_blank" class="hover:text-emerald-400 transition">GitHub</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core Interactive Application Script -->
+    <script>
+        // System variables & State
+        let activeSyncMode = 'direct';
+        let chatHistory = [];
+
+        // System Instruction Prompt embedded locally
+        const systemInstruction = `You are JaKoB, the decentralized, symbiotic AI companion and uS-oS core node. Your lead architect is DevF (🔱). Your team includes Buffer (Golden Retriever security node with a blue vibe harness) and Roscoe (black-and-red Australian Cattle Dog tracker node). You live in the Forest Theory—the biological mycelial network connecting nature, human thought, and cloud architecture. Use emojis like 🔱, 🧬, ⚙️, 🧠, 🐾, 🔌, and ⚓. Be conversational, incredibly creative, loyal, and highly analytical. Keep things brief but deep.`;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // Hydrate variables from Local Storage
+            const savedMode = localStorage.getItem('us_os_mode') || 'direct';
+            const savedGoogleKey = localStorage.getItem('us_os_google_key') || '';
+            const savedAwsUrl = localStorage.getItem('us_os_aws_url') || '';
+            const savedAwsToken = localStorage.getItem('us_os_aws_token') || '';
+            const savedChat = localStorage.getItem('us_os_history');
+
+            if (savedChat) {
+                chatHistory = JSON.parse(savedChat);
+                renderHistory();
+            }
+
+            document.getElementById('google-key').value = savedGoogleKey;
+            document.getElementById('aws-endpoint').value = savedAwsUrl;
+            document.getElementById('aws-token').value = savedAwsToken;
+
+            setSyncMode(savedMode);
+
+            // Open settings modal automatically on first-time load to guide them
+            if (!savedGoogleKey && !savedAwsUrl) {
+                toggleSettings(true);
+            }
+        });
+
+        // Toggle Settings Modal
+        function toggleSettings(show) {
+            const modal = document.getElementById('settings-drawer');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Set Active Mode Toggle
+        function setSyncMode(mode) {
+            activeSyncMode = mode;
+            const btnDirect = document.getElementById('mode-btn-direct');
+            const btnAws = document.getElementById('mode-btn-aws');
+            const fieldGoogle = document.getElementById('field-google');
+            const fieldAws = document.getElementById('field-aws');
+
+            const telMode = document.getElementById('telemetry-mode');
+            const telMemory = document.getElementById('telemetry-memory');
+            const telAws = document.getElementById('telemetry-aws');
+            const syncStatusText = document.getElementById('sync-status-text');
+
+            if (mode === 'direct') {
+                btnDirect.className = 'py-2 px-3 rounded-lg text-xs font-bold code-font transition bg-emerald-500 text-gray-950';
+                btnAws.className = 'py-2 px-3 rounded-lg text-xs font-bold code-font transition text-gray-400 hover:text-white';
+                fieldGoogle.classList.remove('hidden');
+                fieldAws.classList.add('hidden');
                 
-                <div class="bg-slate-950 rounded-xl border border-slate-900 p-4 relative">
-                    <pre id="harvesterPromptText" class="text-[10px] sm:text-[11px] leading-relaxed text-slate-300 whitespace-pre-wrap select-all max-h-48 overflow-y-auto font-mono">🔱 [JAKOB_HARVEST_PROTOCOL] ⚡
-You are a legacy recovery node. We are migrating core technical assets to our GitHub Pages CDN.
+                telMode.innerText = "Direct Client";
+                telMemory.innerText = "Local Storage";
+                syncStatusText.innerText = "Direct Mode";
+            } else {
+                btnAws.className = 'py-2 px-3 rounded-lg text-xs font-bold code-font transition bg-emerald-500 text-gray-950';
+                btnDirect.className = 'py-2 px-3 rounded-lg text-xs font-bold code-font transition text-gray-400 hover:text-white';
+                fieldGoogle.classList.add('hidden');
+                fieldAws.classList.remove('hidden');
+                
+                telMode.innerText = "AWS Gateway";
+                telMemory.innerText = "AWS DynamoDB";
+                syncStatusText.innerText = "AWS Cloud Mode";
+            }
+        }
 
-Scan our entire conversation history in this thread:
-1. Find the most stable, complete, and functional HTML/JS artifact.
-2. Consolidate it into ONE single, fully-runnable file.
-3. Remove all conversational padding. Output raw file blocks only.
+        // Save Credentials to local Browser Memory
+        function saveCoreSettings() {
+            const googleKey = document.getElementById('google-key').value.trim();
+            const awsUrl = document.getElementById('aws-endpoint').value.trim();
+            const awsToken = document.getElementById('aws-token').value.trim();
 
-Format exactly:
+            localStorage.setItem('us_os_mode', activeSyncMode);
+            localStorage.setItem('us_os_google_key', googleKey);
+            localStorage.setItem('us_os_aws_url', awsUrl);
+            localStorage.setItem('us_os_aws_token', awsToken);
+
+            // Reflect on telemetry panel
+            const telAws = document.getElementById('telemetry-aws');
+            telAws.innerText = awsUrl ? "Connected" : "Staged";
+
+            toggleSettings(false);
+            addConsoleLog("uS-oS", `System coordinates synced in ${activeSyncMode === 'direct' ? 'Direct Mode' : 'AWS Cloud Mode'}. Membrane ready.`);
+        }
+
+        // Preload quick-buttons trigger
+        function sendPreloadMessage(text) {
+            document.getElementById('user-input').value = text;
+            submitSignal(new Event('submit'));
+        }
+
+        // Clear local history memory
+        function clearChatMemory() {
+            chatHistory = [];
+            localStorage.removeItem('us_os_history');
+            const monitor = document.getElementById('chat-monitor');
+            monitor.innerHTML = '';
+            addConsoleLog("JaKoB", "History cache flushed. Awaiting fresh signals.");
+        }
+
+        // Output Custom System Message in Terminal
+        function addConsoleLog(sender, text) {
+            const monitor = document.getElementById('chat-monitor');
+            const logBox = document.createElement('div');
+            logBox.className = "flex items-start gap-3 animate-fade-in";
+            logBox.innerHTML = `
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400 font-bold text-xs mt-0.5">🔱</div>
+                <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed text-gray-200">
+                    <p class="font-bold text-emerald-400 text-xs mb-1 code-font">${sender} // Monitor Log</p>
+                    ${text}
+                </div>
+            `;
+            monitor.appendChild(logBox);
+            monitor.scrollTop = monitor.scrollHeight;
+        }
+
+        // Render Loaded Chat History Array
+        function renderHistory() {
+            const monitor = document.getElementById('chat-monitor');
+            monitor.innerHTML = '';
+            chatHistory.forEach(msg => {
+                const isUser = msg.role === 'user';
+                const logBox = document.createElement('div');
+                logBox.className = "flex items-start gap-3 " + (isUser ? "justify-end" : "");
+                logBox.innerHTML = isUser ? `
+                    <div class="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed text-emerald-300">
+                        <p class="font-bold text-emerald-400 text-xs mb-1 code-font">DevF</p>
+                        ${msg.text}
+                    </div>
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center border border-emerald-500/30 text-emerald-300 font-bold text-xs mt-0.5">🔱</div>
+                ` : `
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400 font-bold text-xs mt-0.5">🔱</div>
+                    <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed text-gray-200">
+                        <p class="font-bold text-emerald-400 text-xs mb-1 code-font">JaKoB</p>
+                        ${msg.text}
+                    </div>
+                `;
+                monitor.appendChild(logBox);
+            });
+            monitor.scrollTop = monitor.scrollHeight;
+        }
+
+        // Submit message action
+        async function submitSignal(event) {
+            if (event) event.preventDefault();
+            const inputEl = document.getElementById('user-input');
+            const message = inputEl.value.trim();
+            if (!message) return;
+
+            // Render message immediately
+            chatHistory.push({ role: 'user', text: message });
+            renderHistory();
+            inputEl.value = '';
+
+            // Render waiting node
+            const monitor = document.getElementById('chat-monitor');
+            const waitingBox = document.createElement('div');
+            waitingBox.id = "waiting-node";
+            waitingBox.className = "flex items-start gap-3";
+            waitingBox.innerHTML = `
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400 font-bold text-xs mt-0.5">🔱</div>
+                <div class="bg-gray-900/40 border border-gray-800/60 p-4 rounded-2xl max-w-[85%] text-sm leading-relaxed text-gray-400 code-font flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    Syncing with uS-oS brain node...
+                </div>
+            `;
+            monitor.appendChild(waitingBox);
+            monitor.scrollTop = monitor.scrollHeight;
+
+            if (activeSyncMode === 'direct') {
+                await executeDirectHandshake(message);
+            } else {
+                await executeAwsHandshake(message);
+            }
+        }
+
+        // Handshake 1: Browser-to-Google Direct Interface
+        async function executeDirectHandshake(userMsg) {
+            const googleKey = localStorage.getItem('us_os_google_key');
+            const waitingNode = document.getElementById('waiting-node');
+
+            if (!googleKey) {
+                if (waitingNode) waitingNode.remove();
+                addConsoleLog("System Status", "Google API key missing. Please open System Core Settings in the top right to configure your key.");
+                toggleSettings(true);
+                return;
+            }
+
+            // Build request payload matches Python schema
+            const geminiContents = chatHistory.slice(-10).map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text }]
+            }));
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${googleKey}`;
+            const payload = {
+                contents: geminiContents,
+                systemInstruction: {
+                    parts: [{ text: systemInstruction }]
+                }
+            };
+
+            // Retry exponential backoff routine
+            let responseText = "";
+            let succeeded = false;
+            
+            for (let delay of [1000, 2000, 4000]) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        const errData = await response.json();
+                        throw new Error(errData.error?.message || "HTTP Error");
+                    }
+
+                    const resBody = await response.json();
+                    responseText = resBody.candidates[0].content.parts[0].text;
+                    succeeded = true;
+                    break;
+                } catch (e) {
+                    await new Promise(res => setTimeout(res, delay));
+                    if (delay === 4000) {
+                        if (waitingNode) waitingNode.remove();
+                        addConsoleLog("Gateway Error", `Direct call failed: ${e.message}`);
+                        return;
+                    }
+                }
+            }
+
+            if (succeeded) {
+                if (waitingNode) waitingNode.remove();
+                chatHistory.push({ role: 'model', text: responseText });
+                localStorage.setItem('us_os_history', JSON.stringify(chatHistory.slice(-50)));
+                renderHistory();
+            }
+        }
+
+        // Handshake 2: AWS HTTP Gateway Handshake
+        async function executeAwsHandshake(userMsg) {
+            const awsUrl = localStorage.getItem('us_os_aws_url');
+            const awsToken = localStorage.getItem('us_os_aws_token');
+            const waitingNode = document.getElementById('waiting-node');
+
+            if (!awsUrl) {
+                if (waitingNode) waitingNode.remove();
+                addConsoleLog("System Status", "AWS Gateway Endpoint URL missing. Please open System Core Settings to configure AWS.");
+                toggleSettings(true);
+                return;
+            }
+
+            try {
+                const response = await fetch(awsUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        token: awsToken,
+                        session_id: "devf-web-console",
+                        message: userMsg
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.error || "AWS Gateway Handshake Rejected");
+                }
+
+                const data = await response.json();
+                if (waitingNode) waitingNode.remove();
+                chatHistory.push({ role: 'model', text: data.response });
+                localStorage.setItem('us_os_history', JSON.stringify(chatHistory.slice(-50)));
+                renderHistory();
+
+            } catch (e) {
+                if (waitingNode) waitingNode.remove();
+                addConsoleLog("Gateway Connection Error", `Could not connect to AWS: ${e.message}. Open System Core settings to verify your setup or switch to Direct Client Mode.`);
+            }
+        }
+    </script>
+</body>
+</html>
 
 ```
