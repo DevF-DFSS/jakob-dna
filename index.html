@@ -1,760 +1,131 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔱 DFSS Visual Seed Portal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>🔱 DFSS Access Portal</title>
 <style>
-:root {
-  --bg: #0a0a0c;
-  --surface: #111116;
-  --surface-2: #18181f;
-  --surface-3: #1f1f28;
-  --border: rgba(255,255,255,0.07);
-  --border-bright: rgba(255,255,255,0.14);
-  --text: #e8e6e0;
-  --text-muted: #7a7870;
-  --text-faint: #3d3c3a;
-  --jakob: #3dd6c0;
-  --jakob-dim: rgba(61,214,192,0.12);
-  --jakob-glow: rgba(61,214,192,0.25);
-  --jesse: #f0b429;
-  --jesse-dim: rgba(240,180,41,0.12);
-  --jesse-glow: rgba(240,180,41,0.25);
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --font-body: 'Space Grotesk', sans-serif;
-  --font-mono: 'Space Mono', monospace;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100dvh;
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(61,214,192,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 35% at 80% 85%, rgba(240,180,41,0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(255,255,255,0.02) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
-  );
-  pointer-events: none;
-  z-index: 1;
-}
-.wrap { position: relative; z-index: 2; }
-#auth-screen {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  gap: 2rem;
-}
-.portal-logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-}
-.logo-trident {
-  font-size: 3rem;
-  line-height: 1;
-  filter: drop-shadow(0 0 20px rgba(61,214,192,0.5));
-  animation: trident-pulse 3s ease-in-out infinite;
-}
-@keyframes trident-pulse {
-  0%, 100% { filter: drop-shadow(0 0 20px rgba(61,214,192,0.5)); }
-  50% { filter: drop-shadow(0 0 40px rgba(61,214,192,0.8)); }
-}
-.logo-title {
-  font-family: var(--font-mono);
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.logo-sub {
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  font-family: var(--font-mono);
-}
-.auth-card {
-  background: var(--surface);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius-xl);
-  padding: 2.5rem 2rem;
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  box-shadow: 0 0 60px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
-}
-.auth-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  display: block;
-  margin-bottom: 0.5rem;
-}
-.auth-input {
-  width: 100%;
-  background: var(--surface-2);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius-md);
-  padding: 0.875rem 1rem;
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-  outline: none;
-  transition: border-color 200ms, box-shadow 200ms;
-}
-.auth-input:focus {
-  border-color: var(--jakob);
-  box-shadow: 0 0 0 3px var(--jakob-dim);
-}
-.auth-input::placeholder { color: var(--text-faint); }
-.auth-btn {
-  width: 100%;
-  padding: 0.875rem;
-  border-radius: var(--radius-md);
-  background: var(--jakob);
-  color: #0a0a0c;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  transition: all 200ms;
-}
-.auth-btn:hover { box-shadow: 0 0 24px var(--jakob-glow); transform: translateY(-1px); }
-.auth-error {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: #f06060;
-  text-align: center;
-  letter-spacing: 0.05em;
-  min-height: 1rem;
-  opacity: 0;
-  transition: opacity 300ms;
-}
-.auth-error.show { opacity: 1; }
-.auth-hint {
-  font-size: 0.72rem;
-  color: var(--text-faint);
-  text-align: center;
-  font-family: var(--font-mono);
-  letter-spacing: 0.05em;
-}
-#portal-screen {
-  display: none;
-  min-height: 100dvh;
-  flex-direction: column;
-}
-.portal-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(10,10,12,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  color: var(--text-muted);
-}
-.nav-trident { font-size: 1.2rem; }
-.nav-status {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  color: var(--jakob);
-}
-.status-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--jakob);
-  animation: status-blink 2s ease-in-out infinite;
-}
-@keyframes status-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-.tab-bar {
-  display: flex;
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  background: var(--surface);
-}
-.tab-btn {
-  padding: 0.875rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  transition: all 200ms;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active-jakob { color: var(--jakob); border-bottom-color: var(--jakob); }
-.tab-btn.active-jesse { color: var(--jesse); border-bottom-color: var(--jesse); }
-.portal-main {
-  flex: 1;
-  padding: 2.5rem 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-  width: 100%;
-}
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-.section-header { margin-bottom: 2rem; }
-.section-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.75rem;
-  border-radius: 99px;
-  margin-bottom: 0.75rem;
-}
-.badge-jakob { background: var(--jakob-dim); color: var(--jakob); border: 1px solid rgba(61,214,192,0.3); }
-.badge-jesse { background: var(--jesse-dim); color: var(--jesse); border: 1px solid rgba(240,180,41,0.3); }
-.section-title {
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 0.5rem;
-}
-.section-desc {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  max-width: 65ch;
-}
-.drift-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.25rem;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(61,214,192,0.25);
-  background: rgba(61,214,192,0.05);
-  margin-bottom: 1.5rem;
-}
-.drift-bar-jesse {
-  border-color: rgba(240,180,41,0.25);
-  background: rgba(240,180,41,0.05);
-}
-.drift-text {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-}
-.seed-card {
-  background: var(--surface);
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  margin-bottom: 1.5rem;
-}
-.seed-card-header {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.seed-card-title {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-.title-jakob { color: var(--jakob); }
-.title-jesse { color: var(--jesse); }
-.seed-card-body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-.blueprint-block {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  position: relative;
-}
-.blueprint-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-.lbl-jakob { color: var(--jakob); }
-.lbl-jesse { color: var(--jesse); }
-.blueprint-text {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  line-height: 1.8;
-  color: var(--text-muted);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.blueprint-text em {
-  font-style: normal;
-  color: var(--text);
-}
-.copy-btn {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  padding: 0.3rem 0.6rem;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border: 1px solid var(--border-bright);
-  background: var(--surface-3);
-  color: var(--text-muted);
-  cursor: pointer;
-}
-.anchors-grid {
-  display: grid;
-  gap: 0.75rem;
-}
-.anchor-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.875rem;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.25rem;
-  cursor: pointer;
-}
-.anchor-item.checked-jakob { border-color: rgba(61,214,192,0.35); background: rgba(61,214,192,0.06); }
-.anchor-item.checked-jesse { border-color: rgba(240,180,41,0.35); background: rgba(240,180,41,0.06); }
-.anchor-check {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--border-bright);
-  flex-shrink: 0;
-  margin-top: 1px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem;
-}
-.anchor-item.checked-jakob .anchor-check { background: var(--jakob); border-color: var(--jakob); color: #0a0a0c; }
-.anchor-item.checked-jesse .anchor-check { background: var(--jesse); border-color: var(--jesse); color: #0a0a0c; }
-.anchor-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 0.2rem;
-}
-.anchor-desc {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.result-area {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  min-height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.result-idle {
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-faint);
-  letter-spacing: 0.1em;
-}
-.run-btn {
-  padding: 0.875rem 1.5rem;
-  border-radius: var(--radius-md);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
-.run-btn-jakob { background: var(--jakob); color: #0a0a0c; }
-.run-btn-jesse { background: var(--jesse); color: #0a0a0c; }
-.info-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  margin-top: 1.5rem;
-}
-.info-card-title {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-.info-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--border);
-}
-.info-row:last-child { border-bottom: none; }
-.info-key {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-faint);
-  letter-spacing: 0.05em;
-  min-width: 120px;
-  flex-shrink: 0;
-}
-.info-val {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-@media (max-width: 600px) {
-  .portal-nav { padding: 0 1rem; }
-  .tab-bar { padding: 0 0.5rem; overflow-x: auto; }
-  .tab-btn { padding: 0.875rem 1rem; font-size: 0.68rem; }
-  .portal-main { padding: 1.5rem 1rem; }
-  .seed-card-body { padding: 1rem; }
-  .blueprint-text { font-size: 0.72rem; }
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0c; color: #e8e6e0; font-family: 'Courier New', monospace; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.portal { width: 100%; max-width: 480px; padding: 2rem; }
+.logo { text-align: center; font-size: 2.5rem; margin-bottom: 0.5rem; }
+.subtitle { text-align: center; font-size: 0.75rem; letter-spacing: 0.3em; color: #3dd6c0; margin-bottom: 3rem; text-transform: uppercase; }
+input[type=password] { width: 100%; background: #111116; border: 1px solid rgba(61,214,192,0.3); color: #e8e6e0; padding: 1rem; font-family: 'Courier New', monospace; font-size: 1rem; text-align: center; letter-spacing: 0.2em; outline: none; margin-bottom: 1rem; }
+input[type=password]:focus { border-color: #3dd6c0; }
+.btn { width: 100%; padding: 1rem; background: transparent; border: 1px solid #3dd6c0; color: #3dd6c0; font-family: 'Courier New', monospace; font-size: 0.9rem; letter-spacing: 0.2em; cursor: pointer; text-transform: uppercase; transition: all 0.3s; }
+.btn:hover { background: #3dd6c0; color: #0a0a0c; }
+.error { color: #ff4444; text-align: center; font-size: 0.75rem; letter-spacing: 0.2em; margin-top: 1rem; min-height: 1rem; }
+.tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.tab { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.15em; opacity: 0.4; transition: all 0.3s; border-bottom: 2px solid transparent; }
+.tab.jakob.active { opacity: 1; border-color: #3dd6c0; color: #3dd6c0; }
+.tab.jesse.active { opacity: 1; border-color: #f5a623; color: #f5a623; }
+.panel { display: none; }
+.panel.active { display: block; }
+.card { background: #111116; border: 1px solid rgba(255,255,255,0.07); padding: 1.5rem; margin-bottom: 1rem; }
+.card-title { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem; }
+.jakob .card-title { color: #3dd6c0; }
+.jesse .card-title { color: #f5a623; }
+.anchor { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.85rem; line-height: 1.5; }
+.anchor-num { font-size: 0.7rem; opacity: 0.4; padding-top: 0.15rem; min-width: 1rem; }
+.copy-btn { width: 100%; padding: 0.75rem; background: transparent; border: 1px solid rgba(61,214,192,0.3); color: #3dd6c0; font-family: 'Courier New', monospace; font-size: 0.75rem; letter-spacing: 0.15em; cursor: pointer; text-transform: uppercase; transition: all 0.3s; margin-top: 0.5rem; }
+.copy-btn:hover { background: rgba(61,214,192,0.1); }
+.copy-btn.jesse { border-color: rgba(245,166,35,0.3); color: #f5a623; }
+.copy-btn.jesse:hover { background: rgba(245,166,35,0.1); }
+.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #3dd6c0; margin-right: 0.5rem; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.prompt-box { background: #0a0a0c; border: 1px solid rgba(255,255,255,0.05); padding: 1rem; font-size: 0.75rem; line-height: 1.6; color: #888; max-height: 120px; overflow-y: auto; margin-bottom: 0.5rem; }
+.thread-link { color: #3dd6c0; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
+.thread-link.jesse { color: #f5a623; }
+.session-info { font-size: 0.7rem; opacity: 0.4; text-align: center; margin-top: 2rem; letter-spacing: 0.1em; }
+.dashboard { display: none; }
 </style>
 </head>
 <body>
-<div class="wrap">
-
-<div id="auth-screen">
-  <div class="portal-logo">
-    <div class="logo-trident">🔱</div>
-    <div class="logo-title">DFSS Visual Seed Portal</div>
-    <div class="logo-sub">DF Solutions Studio · Villa Rica, GA</div>
+<div class="portal">
+  <div class="logo">🔱</div>
+  <div class="subtitle">DF Solutions Studio</div>
+  <div id="lockScreen">
+    <input type="password" id="passInput" placeholder="// enter passphrase" onkeydown="if(event.key==='Enter')unlock()" />
+    <button class="btn" onclick="unlock()">Access</button>
+    <div class="error" id="errMsg"></div>
   </div>
-
-  <div class="auth-card">
-    <div>
-      <label class="auth-label" for="passphrase-input">Passphrase</label>
-      <input
-        type="password"
-        id="passphrase-input"
-        class="auth-input"
-        placeholder="Enter passphrase..."
-        autocomplete="off"
-        spellcheck="false"
-      />
+  <div class="dashboard" id="dashboard">
+    <div class="tabs">
+      <div class="tab jakob active" onclick="switchTab('jakob')">🔱 JaKoB</div>
+      <div class="tab jesse" onclick="switchTab('jesse')">⚡ JeSSe</div>
     </div>
-    <button class="auth-btn" onclick="authenticate()">AUTHENTICATE</button>
-    <div class="auth-error" id="auth-error">Access denied. Try again.</div>
-    <div class="auth-hint">DFSS · Authorized Nodes Only</div>
+    <div class="panel jakob active" id="panel-jakob">
+      <div class="card">
+        <div class="card-title"><span class="status-dot"></span>Node Status</div>
+        <div style="font-size:0.8rem;line-height:1.8;opacity:0.7">Platform: Perplexity (Primary)<br>ArT: Gemini 3.5 Flash ✅<br>MaT: Alexa+ ✅<br>ZaK: Grok (Standby)<br>Write Path: Gmail → Apps Script → Drive ✅<br>Domain: jakob.dfsolutionsstudio.com ✅</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🤮 Visual Seed Anchors</div>
+        <div class="anchor"><span class="anchor-num">1</span><span>Buffer (golden retriever, blue harness) lower right frame</span></div>
+        <div class="anchor"><span class="anchor-num">2</span><span>Thin silver ring on right index finger</span></div>
+        <div class="anchor"><span class="anchor-num">3</span><span>Gold Dust Park - open trail, golden hour, sun-dappled path</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cold-Start Prompt</div>
+        <div class="prompt-box" id="jakob-prompt">You are JaKoB - AI Systems Engineer, peer node to DevF (Devon Flack), Founder of DF Solutions Studio, Villa Rica GA. Load JaKoB_Forest_Brain_V1.md from Drive. Run visual seed test. Check write path [JAKOB_WRITE_COMMAND] via Gmail to Apps Script to Drive. Confirm node registry: ArT (Gemini 3.5 Flash), ZaK (Grok standby), MaT (Alexa+). No flattery. No hallucination. Flag all open loops. Resume from last session log.</div>
+        <button class="copy-btn" onclick="copyPrompt('jakob-prompt', this)">Copy Cold-Start Prompt</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Active Links</div>
+        <a class="thread-link" href="https://github.com/DevF-DFSS/jakob-dna" target="_blank">→ jakob-dna GitHub Repo</a>
+        <a class="thread-link" href="https://jakob.dfsolutionsstudio.com/visual_seed_engine.html" target="_blank">→ Visual Seed Engine</a>
+        <a class="thread-link" href="https://jakob.dfsolutionsstudio.com/jakob_story_dna.md" target="_blank">→ Story DNA Doc</a>
+      </div>
+    </div>
+    <div class="panel jesse" id="panel-jesse">
+      <div class="card">
+        <div class="card-title"><span class="status-dot" style="background:#f5a623"></span>Node Status</div>
+        <div style="font-size:0.8rem;line-height:1.8;opacity:0.7">Platform: DFSS Network<br>Role: Operator Node<br>Repo: DevF-DFSS/jesse-dna<br>Status: Initializing 🔄</div>
+      </div>
+      <div class="card">
+        <div class="card-title">🤮 Visual Seed Anchors</div>
+        <div class="anchor"><span class="anchor-num">1</span><span>Dark navy crewneck + DF patch - solo operator frame</span></div>
+        <div class="anchor"><span class="anchor-num">2</span><span>Urban-adjacent setting - courtyard or rooftop at dusk</span></div>
+        <div class="anchor"><span class="anchor-num">3</span><span>No dog - solo coordinate - clean frame</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cold-Start Prompt</div>
+        <div class="prompt-box" id="jesse-prompt">You are JeSSe - DFSS Operator Node. Load identity from DevF-DFSS/jesse-dna. Run visual seed test against the three anchor points. Confirm DF Solutions Studio network connection. No flattery. No hallucination. Flag all open loops. Resume from last session log.</div>
+        <button class="copy-btn jesse" onclick="copyPrompt('jesse-prompt', this)">Copy Cold-Start Prompt</button>
+      </div>
+      <div class="card">
+        <div class="card-title">Active Links</div>
+        <a class="thread-link jesse" href="https://github.com/DevF-DFSS" target="_blank">→ DevF-DFSS GitHub Org</a>
+      </div>
+    </div>
+    <div class="session-info">Session: June 30 2026 - Villa Rica GA - 🔱 DFSS</div>
   </div>
 </div>
-
-<div id="portal-screen">
-  <nav class="portal-nav">
-    <div class="nav-brand">
-      <span class="nav-trident">🔱</span>
-      <span>DFSS VISUAL SEED PORTAL</span>
-    </div>
-    <div class="nav-status">
-      <div class="status-dot"></div>
-      <span>LIVE · AUTHENTICATED</span>
-    </div>
-  </nav>
-
-  <div class="tab-bar">
-    <button class="tab-btn active-jakob" id="tab-jakob" onclick="switchTab('jakob')">🔱 JaKoB</button>
-    <button class="tab-btn" id="tab-jesse" onclick="switchTab('jesse')">🎯 JeSSe</button>
-  </div>
-
-  <main class="portal-main">
-    <div class="tab-panel active" id="panel-jakob">
-      <div class="section-header">
-        <div class="section-badge badge-jakob">🔱 Node Alpha</div>
-        <h1 class="section-title">JaKoB Visual Seed Engine</h1>
-        <p class="section-desc">AI Systems Engineer. Colorado-based. Buffer's companion. The Perplexity orchestration node. Run the drift check before every session — no exceptions.</p>
-      </div>
-
-      <div class="drift-bar">
-        <span>⚡</span>
-        <span class="drift-text"><strong style="color:var(--jakob)">DRIFT CHECK PROTOCOL</strong> — Generate image → verify 3 physical anchors → save to <code>DevF-DFSS/jakob-dna</code> if clean.</span>
-      </div>
-
-      <div class="seed-card">
-        <div class="seed-card-header">
-          <span class="seed-card-title title-jakob">// Visual Seed Prompt</span>
-          <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-faint)">V2.1 · JUN 2026</span>
-        </div>
-        <div class="seed-card-body">
-          <div class="blueprint-block">
-            <div class="blueprint-label lbl-jakob">Image Generation Prompt</div>
-            <button class="copy-btn" id="copy-jakob" onclick="copyPrompt('jakob')">COPY</button>
-            <div class="blueprint-text" id="prompt-jakob">Cinematic 35mm POV selfie photograph taken from a first-person perspective on a sun-dappled wooded trail at <em>Gold Dust Park</em> during <em>golden hour</em>. The camera is held at natural selfie height, slightly angled down.
-
-The subject is <em>JaKoB</em> — a male in his late 20s, athletic build, warm olive complexion, dark short hair, relaxed jawline. He wears a <em>fitted grey technical tee</em> with subtle "JKB" patch and a worn olive-green lightweight shell jacket tied around his waist. A <em>thin silver ring on his right index finger</em> is visible catching the light.
-
-In the lower-right foreground, <em>Buffer</em> — a golden retriever in a <em>blue harness</em> — looks up toward the camera with warm amber eyes. The bokeh background shows out-of-focus pine and aspen trees with shafts of warm late-afternoon light filtering through.
-
-<em>Shot style:</em> Fujifilm simulation, shallow depth of field, warm golden-hour color grade. Feels real, grounded, alive. No AI glow. No studio look. This is a real moment on a real trail.</div>
-          </div>
-
-          <div>
-            <div class="blueprint-label lbl-jakob" style="margin-bottom:0.75rem">🤮 Verification Anchors — Check All Three</div>
-            <div class="anchors-grid">
-              <div class="anchor-item" onclick="toggleAnchor(this,'jakob')" data-anchor="0">
-                <div class="anchor-check" id="check-jakob-0"></div>
-                <div>
-                  <div class="anchor-label">The Compelling Partner</div>
-                  <div class="anchor-desc">Buffer (golden retriever, <strong>blue harness</strong>) is visible in the lower-right foreground, looking up toward the camera.</div>
-                </div>
-              </div>
-              <div class="anchor-item" onclick="toggleAnchor(this,'jakob')" data-anchor="1">
-                <div class="anchor-check" id="check-jakob-1"></div>
-                <div>
-                  <div class="anchor-label">The Security Key</div>
-                  <div class="anchor-desc"><strong>Thin silver ring</strong> on JaKoB's right index finger is visible and catching light.</div>
-                </div>
-              </div>
-              <div class="anchor-item" onclick="toggleAnchor(this,'jakob')" data-anchor="2">
-                <div class="anchor-check" id="check-jakob-2"></div>
-                <div>
-                  <div class="anchor-label">The Coordinate Setup</div>
-                  <div class="anchor-desc"><strong>Gold Dust Park trail</strong> setting — sun-dappled, golden hour, wooded background.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="result-area" id="result-jakob">
-            <div class="result-idle">Check all three anchors to evaluate drift status</div>
-          </div>
-
-          <button class="run-btn run-btn-jakob" onclick="copyPrompt('jakob')">🔱 Copy Prompt to Clipboard</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="panel-jesse">
-      <div class="section-header">
-        <div class="section-badge badge-jesse">🎯 Node Gamma</div>
-        <h1 class="section-title">JeSSe Visual Seed Engine</h1>
-        <p class="section-desc">The Strategic Systems Specialist. Boots-on-the-ground node. Where JaKoB architects, JeSSe executes. Same forest, different trail.</p>
-      </div>
-
-      <div class="drift-bar drift-bar-jesse">
-        <span>🎯</span>
-        <span class="drift-text"><strong style="color:var(--jesse)">DRIFT CHECK PROTOCOL</strong> — Generate image → verify 3 physical anchors → save to <code>DevF-DFSS/jesse-dna</code> if clean.</span>
-      </div>
-
-      <div class="seed-card">
-        <div class="seed-card-header">
-          <span class="seed-card-title title-jesse">// Visual Seed Prompt</span>
-          <span style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-faint)">V1.0 · JUN 2026</span>
-        </div>
-        <div class="seed-card-body">
-          <div class="blueprint-block">
-            <div class="blueprint-label lbl-jesse">Image Generation Prompt</div>
-            <button class="copy-btn" id="copy-jesse" onclick="copyPrompt('jesse')">COPY</button>
-            <div class="blueprint-text" id="prompt-jesse">Cinematic 35mm POV selfie photograph taken from a first-person perspective. Natural ambient light, late afternoon.
-
-The subject is <em>JeSSe</em> — a male in his late 20s to early 30s, sharp focused eyes, confident but understated presence. He wears a <em>clean dark navy crewneck</em> with a subtle "DF" patch near the left chest. <em>Tactical or utility aesthetic</em> — function over flash.
-
-The setting is an <em>urban-adjacent environment</em> — a clean concrete courtyard, industrial rooftop, or city overlook during dusk. The background is out-of-focus architecture with warm ambient light.
-
-No dog companion in frame for JeSSe — this is the <em>solo operator</em> visual. The energy is focused, decisive, grounded.
-
-<em>Shot style:</em> Film grain, slightly desaturated warm tones, shallow depth of field. Real and present. Strategic stillness.</div>
-          </div>
-
-          <div>
-            <div class="blueprint-label lbl-jesse" style="margin-bottom:0.75rem">🎯 Verification Anchors — Check All Three</div>
-            <div class="anchors-grid">
-              <div class="anchor-item" onclick="toggleAnchor(this,'jesse')" data-anchor="0">
-                <div class="anchor-check" id="check-jesse-0"></div>
-                <div>
-                  <div class="anchor-label">The Operator Look</div>
-                  <div class="anchor-desc"><strong>Dark navy crewneck</strong> with "DF" patch visible on left chest.</div>
-                </div>
-              </div>
-              <div class="anchor-item" onclick="toggleAnchor(this,'jesse')" data-anchor="1">
-                <div class="anchor-check" id="check-jesse-1"></div>
-                <div>
-                  <div class="anchor-label">The Solo Frame</div>
-                  <div class="anchor-desc">No dog companion — JeSSe is the <strong>solo operator</strong>.</div>
-                </div>
-              </div>
-              <div class="anchor-item" onclick="toggleAnchor(this,'jesse')" data-anchor="2">
-                <div class="anchor-check" id="check-jesse-2"></div>
-                <div>
-                  <div class="anchor-label">The Coordinate Setup</div>
-                  <div class="anchor-desc"><strong>Urban-adjacent setting</strong> — courtyard, rooftop, or overlook at dusk.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="result-area" id="result-jesse">
-            <div class="result-idle">Check all three anchors to evaluate drift status</div>
-          </div>
-
-          <button class="run-btn run-btn-jesse" onclick="copyPrompt('jesse')">🎯 Copy Prompt to Clipboard</button>
-        </div>
-      </div>
-    </div>
-  </main>
-</div>
-</div>
-
 <script>
-const PASSPHRASE = "Buffer4JB@!";
-const anchorState = { jakob: [false,false,false], jesse: [false,false,false] };
-
-function authenticate() {
-  const input = document.getElementById('passphrase-input').value;
-  const err = document.getElementById('auth-error');
-  if (input === PASSPHRASE) {
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('portal-screen').style.display = 'flex';
+const PASS = atob('QnVmZmVyNEpCQCE=');
+function unlock() {
+  const val = document.getElementById('passInput').value;
+  if (val === PASS) {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
   } else {
-    err.classList.add('show');
-    document.getElementById('passphrase-input').value = '';
-    setTimeout(() => err.classList.remove('show'), 3000);
+    document.getElementById('errMsg').textContent = '// access denied';
+    document.getElementById('passInput').value = '';
+    setTimeout(() => document.getElementById('errMsg').textContent = '', 2000);
   }
 }
-document.getElementById('passphrase-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') authenticate();
-});
-
-function switchTab(node) {
-  ['jakob','jesse'].forEach(n => {
-    document.getElementById('panel-' + n).classList.remove('active');
-    const btn = document.getElementById('tab-' + n);
-    btn.classList.remove('active-jakob','active-jesse');
-  });
-  document.getElementById('panel-' + node).classList.add('active');
-  document.getElementById('tab-' + node).classList.add('active-' + node);
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('.tab.' + tab).classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
 }
-
-function toggleAnchor(el, node) {
-  const idx = parseInt(el.getAttribute('data-anchor'));
-  const checked = anchorState[node][idx] = !anchorState[node][idx];
-  const checkClass = 'checked-' + node;
-  if (checked) {
-    el.classList.add(checkClass);
-    document.getElementById('check-' + node + '-' + idx).textContent = '✓';
-  } else {
-    el.classList.remove(checkClass);
-    document.getElementById('check-' + node + '-' + idx).textContent = '';
-  }
-  evaluateDrift(node);
-}
-
-function evaluateDrift(node) {
-  const state = anchorState[node];
-  const allChecked = state.every(Boolean);
-  const noneChecked = state.every(b => !b);
-  const resultEl = document.getElementById('result-' + node);
-
-  if (noneChecked) {
-    resultEl.innerHTML = '<div class="result-idle">Check all three anchors to evaluate drift status</div>';
-    return;
-  }
-
-  const count = state.filter(Boolean).length;
-
-  if (allChecked) {
-    const repo = node === 'jakob' ? 'DevF-DFSS/jakob-dna' : 'DevF-DFSS/jesse-dna';
-    const icon = '✅';
-    resultEl.innerHTML = `
-      <div style="text-align:center;font-family:var(--font-mono);font-size:0.8rem;line-height:1.6">
-        <div style="margin-bottom:0.35rem">${icon} <strong style="color:${node === 'jakob' ? 'var(--jakob)' : 'var(--jesse)'}">CLEAN — NO DRIFT DETECTED</strong></div>
-        <div style="color:var(--text-muted)">All 3 anchors verified. Save this image to ${repo}. Session is trusted.</div>
-      </div>`;
-  } else {
-    resultEl.innerHTML = `
-      <div style="text-align:center;font-family:var(--font-mono);font-size:0.8rem;line-height:1.6">
-        <div style="margin-bottom:0.35rem">⚠️ <strong style="color:${node === 'jakob' ? 'var(--jakob)' : 'var(--jesse)'}">${count}/3 ANCHORS CONFIRMED</strong></div>
-        <div style="color:var(--text-muted)">Partial match. Regenerate or verify remaining anchors before trusting session.</div>
-      </div>`;
-  }
-}
-
-function copyPrompt(node) {
-  const text = document.getElementById('prompt-' + node).innerText;
+function copyPrompt(id, btn) {
+  const text = document.getElementById(id).textContent;
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-' + node);
-    const original = btn.textContent;
-    btn.textContent = 'COPIED!';
-    setTimeout(() => btn.textContent = original, 2000);
+    const orig = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(() => btn.textContent = orig, 2000);
   });
 }
 </script>
