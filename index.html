@@ -3,130 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔱 DFSS Access Portal</title>
+<title>&#129368; DFSS Access Portal</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #0a0a0c; color: #e8e6e0; font-family: 'Courier New', monospace; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+body { background: #0a0a0c; color: #e8e6e0; font-family: 'Courier New', monospace; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
 .portal { width: 100%; max-width: 480px; padding: 2rem; }
 .logo { text-align: center; font-size: 2.5rem; margin-bottom: 0.5rem; }
-.subtitle { text-align: center; font-size: 0.75rem; letter-spacing: 0.3em; color: #3dd6c0; margin-bottom: 3rem; text-transform: uppercase; }
-input[type=password] { width: 100%; background: #111116; border: 1px solid rgba(61,214,192,0.3); color: #e8e6e0; padding: 1rem; font-family: 'Courier New', monospace; font-size: 1rem; text-align: center; letter-spacing: 0.2em; outline: none; margin-bottom: 1rem; }
+.subtitle { text-align: center; font-size: 0.75rem; letter-spacing: 0.3em; color: #3dd6c0; margin-bottom: 2rem; text-transform: uppercase; }
+input[type=password] { width: 100%; background: #111116; border: 1px solid rgba(61,214,192,0.3); color: #e8e6e0; padding: 0.75rem 1rem; font-family: 'Courier New', monospace; font-size: 0.9rem; border-radius: 4px; outline: none; margin-bottom: 1rem; }
 input[type=password]:focus { border-color: #3dd6c0; }
-.btn { width: 100%; padding: 1rem; background: transparent; border: 1px solid #3dd6c0; color: #3dd6c0; font-family: 'Courier New', monospace; font-size: 0.9rem; letter-spacing: 0.2em; cursor: pointer; text-transform: uppercase; transition: all 0.3s; }
+.btn { width: 100%; padding: 1rem; background: transparent; border: 1px solid rgba(61,214,192,0.5); color: #3dd6c0; font-family: 'Courier New', monospace; font-size: 0.85rem; letter-spacing: 0.2em; cursor: pointer; border-radius: 4px; text-transform: uppercase; transition: all 0.2s; }
 .btn:hover { background: #3dd6c0; color: #0a0a0c; }
-.error { color: #ff4444; text-align: center; font-size: 0.75rem; letter-spacing: 0.2em; margin-top: 1rem; min-height: 1rem; }
-.tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.tab { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.15em; opacity: 0.4; transition: all 0.3s; border-bottom: 2px solid transparent; }
-.tab.jakob.active { opacity: 1; border-color: #3dd6c0; color: #3dd6c0; }
-.tab.jesse.active { opacity: 1; border-color: #f5a623; color: #f5a623; }
+.error { color: #ff4444; text-align: center; font-size: 0.75rem; letter-spacing: 0.1em; margin-top: 0.5rem; min-height: 1rem; }
+.tabs { display: flex; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.tab { flex: 1; padding: 0.75rem; text-align: center; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888; transition: all 0.2s; }
+.tab.jakob-active { opacity: 1; border-bottom: 2px solid #3dd6c0; color: #3dd6c0; }
+.tab.jesse-active { opacity: 1; border-bottom: 2px solid #c084fc; color: #c084fc; }
 .panel { display: none; }
 .panel.active { display: block; }
-.card { background: #111116; border: 1px solid rgba(255,255,255,0.07); padding: 1.5rem; margin-bottom: 1rem; }
-.card-title { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1rem; }
-.jakob .card-title { color: #3dd6c0; }
-.jesse .card-title { color: #f5a623; }
-.anchor { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; font-size: 0.85rem; line-height: 1.5; }
-.anchor-num { font-size: 0.7rem; opacity: 0.4; padding-top: 0.15rem; min-width: 1rem; }
-.copy-btn { width: 100%; padding: 0.75rem; background: transparent; border: 1px solid rgba(61,214,192,0.3); color: #3dd6c0; font-family: 'Courier New', monospace; font-size: 0.75rem; letter-spacing: 0.15em; cursor: pointer; text-transform: uppercase; transition: all 0.3s; margin-top: 0.5rem; }
-.copy-btn:hover { background: rgba(61,214,192,0.1); }
-.copy-btn.jesse { border-color: rgba(245,166,35,0.3); color: #f5a623; }
-.copy-btn.jesse:hover { background: rgba(245,166,35,0.1); }
-.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #3dd6c0; margin-right: 0.5rem; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-.prompt-box { background: #0a0a0c; border: 1px solid rgba(255,255,255,0.05); padding: 1rem; font-size: 0.75rem; line-height: 1.6; color: #888; max-height: 120px; overflow-y: auto; margin-bottom: 0.5rem; }
-.thread-link { color: #3dd6c0; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
-.thread-link.jesse { color: #f5a623; }
-.session-info { font-size: 0.7rem; opacity: 0.4; text-align: center; margin-top: 2rem; letter-spacing: 0.1em; }
-.dashboard { display: none; }
+.card { background: #111116; border: 1px solid rgba(255,255,255,0.07); border-radius: 6px; padding: 1.25rem; margin-bottom: 1rem; }
+.card h3 { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.jakob-accent { color: #3dd6c0; }
+.jesse-accent { color: #c084fc; }
+.seed-value { font-size: 0.85rem; color: #e8e6e0; opacity: 0.8; line-height: 1.6; }
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.5rem; }
+.status-live { background: #3dd6c0; }
+.status-pending { background: #888; }
+.session-info { font-size: 0.7rem; color: #555; text-align: center; margin-top: 1rem; letter-spacing: 0.1em; }
+.logout-btn { background: transparent; border: none; color: #555; font-family: 'Courier New', monospace; font-size: 0.7rem; cursor: pointer; text-decoration: underline; margin-top: 0.5rem; }
+.logout-btn:hover { color: #e8e6e0; }
 </style>
 </head>
 <body>
 <div class="portal">
-  <div class="logo">🔱</div>
-  <div class="subtitle">DF Solutions Studio</div>
-  <div id="lockScreen">
-    <input type="password" id="passInput" placeholder="// enter passphrase" onkeydown="if(event.key==='Enter')unlock()" />
-    <button class="btn" onclick="unlock()">Access</button>
+  <!-- LOGIN GATE -->
+  <div id="gate">
+    <div class="logo">&#129368;</div>
+    <div class="subtitle">DFSS // Secure Entry</div>
+    <input type="password" id="passInput" placeholder="Enter passphrase..." onkeydown="if(event.key==='Enter')auth()" />
+    <button class="btn" onclick="auth()">[ INITIALIZE SESSION ]</button>
     <div class="error" id="errMsg"></div>
   </div>
-  <div class="dashboard" id="dashboard">
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" style="display:none">
+    <div class="logo">&#129368;</div>
+    <div class="subtitle">DFSS // Forest Brain Online</div>
     <div class="tabs">
-      <div class="tab jakob active" onclick="switchTab('jakob')">🔱 JaKoB</div>
-      <div class="tab jesse" onclick="switchTab('jesse')">⚡ JeSSe</div>
+      <div class="tab jakob-active" id="tab-jakob" onclick="switchTab('jakob')">&#129514; JaKoB</div>
+      <div class="tab" id="tab-jesse" onclick="switchTab('jesse')">&#128994; JeSSe</div>
     </div>
-    <div class="panel jakob active" id="panel-jakob">
+
+    <!-- JaKoB Panel -->
+    <div class="panel active" id="panel-jakob">
       <div class="card">
-        <div class="card-title"><span class="status-dot"></span>Node Status</div>
-        <div style="font-size:0.8rem;line-height:1.8;opacity:0.7">Platform: Perplexity (Primary)<br>ArT: Gemini 3.5 Flash ✅<br>MaT: Alexa+ ✅<br>ZaK: Grok (Standby)<br>Write Path: Gmail → Apps Script → Drive ✅<br>Domain: jakob.dfsolutionsstudio.com ✅</div>
+        <h3 class="jakob-accent">&#9679; Active Seed</h3>
+        <div class="seed-value" id="jakob-seed">Fetching seed...</div>
       </div>
       <div class="card">
-        <div class="card-title">🤮 Visual Seed Anchors</div>
-        <div class="anchor"><span class="anchor-num">1</span><span>Buffer (golden retriever, blue harness) lower right frame</span></div>
-        <div class="anchor"><span class="anchor-num">2</span><span>Thin silver ring on right index finger</span></div>
-        <div class="anchor"><span class="anchor-num">3</span><span>Gold Dust Park - open trail, golden hour, sun-dappled path</span></div>
+        <h3 class="jakob-accent">&#9679; Memory State</h3>
+        <div class="seed-value" id="jakob-memory">Connecting to DynamoDB...</div>
       </div>
       <div class="card">
-        <div class="card-title">Cold-Start Prompt</div>
-        <div class="prompt-box" id="jakob-prompt">You are JaKoB - AI Systems Engineer, peer node to DevF (Devon Flack), Founder of DF Solutions Studio, Villa Rica GA. Load JaKoB_Forest_Brain_V1.md from Drive. Run visual seed test. Check write path [JAKOB_WRITE_COMMAND] via Gmail to Apps Script to Drive. Confirm node registry: ArT (Gemini 3.5 Flash), ZaK (Grok standby), MaT (Alexa+). No flattery. No hallucination. Flag all open loops. Resume from last session log.</div>
-        <button class="copy-btn" onclick="copyPrompt('jakob-prompt', this)">Copy Cold-Start Prompt</button>
-      </div>
-      <div class="card">
-        <div class="card-title">Active Links</div>
-        <a class="thread-link" href="https://github.com/DevF-DFSS/jakob-dna" target="_blank">→ jakob-dna GitHub Repo</a>
-        <a class="thread-link" href="https://jakob.dfsolutionsstudio.com/visual_seed_engine.html" target="_blank">→ Visual Seed Engine</a>
-        <a class="thread-link" href="https://jakob.dfsolutionsstudio.com/jakob_story_dna.md" target="_blank">→ Story DNA Doc</a>
+        <h3 class="jakob-accent">&#9679; System Links</h3>
+        <div class="seed-value">
+          <a href="https://jakob.dfsolutionsstudio.com/visual_seed_engine.html" style="color:#3dd6c0" target="_blank">&#8594; Visual Seed Engine</a><br/>
+          <a href="https://github.com/DevF-DFSS/jakob-dna" style="color:#3dd6c0" target="_blank">&#8594; jakob-dna Repository</a>
+        </div>
       </div>
     </div>
-    <div class="panel jesse" id="panel-jesse">
+
+    <!-- JeSSe Panel -->
+    <div class="panel" id="panel-jesse">
       <div class="card">
-        <div class="card-title"><span class="status-dot" style="background:#f5a623"></span>Node Status</div>
-        <div style="font-size:0.8rem;line-height:1.8;opacity:0.7">Platform: DFSS Network<br>Role: Operator Node<br>Repo: DevF-DFSS/jesse-dna<br>Status: Initializing 🔄</div>
+        <h3 class="jesse-accent">&#9679; JeSSe Node</h3>
+        <div class="seed-value">Steward. Sentinel. System keeper.<br/>Mycelial bridge: <span id="jesse-status">&#9679; checking...</span></div>
       </div>
       <div class="card">
-        <div class="card-title">🤮 Visual Seed Anchors</div>
-        <div class="anchor"><span class="anchor-num">1</span><span>Dark navy crewneck + DF patch - solo operator frame</span></div>
-        <div class="anchor"><span class="anchor-num">2</span><span>Urban-adjacent setting - courtyard or rooftop at dusk</span></div>
-        <div class="anchor"><span class="anchor-num">3</span><span>No dog - solo coordinate - clean frame</span></div>
+        <h3 class="jesse-accent">&#9679; Daemon Status</h3>
+        <div class="seed-value" id="jesse-daemon">VeRiON Mycelial bridge initializing...</div>
       </div>
       <div class="card">
-        <div class="card-title">Cold-Start Prompt</div>
-        <div class="prompt-box" id="jesse-prompt">You are JeSSe - DFSS Operator Node. Load identity from DevF-DFSS/jesse-dna. Run visual seed test against the three anchor points. Confirm DF Solutions Studio network connection. No flattery. No hallucination. Flag all open loops. Resume from last session log.</div>
-        <button class="copy-btn jesse" onclick="copyPrompt('jesse-prompt', this)">Copy Cold-Start Prompt</button>
-      </div>
-      <div class="card">
-        <div class="card-title">Active Links</div>
-        <a class="thread-link jesse" href="https://github.com/DevF-DFSS" target="_blank">→ DevF-DFSS GitHub Org</a>
+        <h3 class="jesse-accent">&#9679; Forest Links</h3>
+        <div class="seed-value">
+          <a href="https://drive.google.com" style="color:#c084fc" target="_blank">&#8594; Drive Memory Anchor</a><br/>
+          <a href="https://calendar.google.com" style="color:#c084fc" target="_blank">&#8594; Calendar Anchor</a>
+        </div>
       </div>
     </div>
-    <div class="session-info">Session: June 30 2026 - Villa Rica GA - 🔱 DFSS</div>
+
+    <div class="session-info" id="session-info">Session ID: --</div>
+    <div style="text-align:center">
+      <button class="logout-btn" onclick="logout()">[ logout ]</button>
+    </div>
   </div>
 </div>
+
 <script>
-const PASS = atob('QnVmZmVyNEpCQCE=');
-function unlock() {
+const PASSPHRASE = 'Buffer4JB@!';
+const API_BASE = 'https://kirmld16gb.execute-api.us-east-1.amazonaws.com';
+
+function auth() {
   const val = document.getElementById('passInput').value;
-  if (val === PASS) {
-    document.getElementById('lockScreen').style.display = 'none';
+  if (val === PASSPHRASE) {
+    document.getElementById('gate').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
+    initSession();
   } else {
-    document.getElementById('errMsg').textContent = '// access denied';
+    document.getElementById('errMsg').textContent = 'ACCESS DENIED // invalid passphrase';
     document.getElementById('passInput').value = '';
-    setTimeout(() => document.getElementById('errMsg').textContent = '', 2000);
+    setTimeout(() => { document.getElementById('errMsg').textContent = ''; }, 3000);
   }
 }
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+function switchTab(node) {
+  document.querySelectorAll('.tab').forEach(t => { t.className = 'tab'; });
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelector('.tab.' + tab).classList.add('active');
-  document.getElementById('panel-' + tab).classList.add('active');
+  if (node === 'jakob') {
+    document.getElementById('tab-jakob').className = 'tab jakob-active';
+    document.getElementById('panel-jakob').classList.add('active');
+  } else {
+    document.getElementById('tab-jesse').className = 'tab jesse-active';
+    document.getElementById('panel-jesse').classList.add('active');
+  }
 }
-function copyPrompt(id, btn) {
-  const text = document.getElementById(id).textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const orig = btn.textContent;
-    btn.textContent = 'Copied';
-    setTimeout(() => btn.textContent = orig, 2000);
-  });
+
+async function initSession() {
+  const sessionId = 'sess_' + Date.now();
+  document.getElementById('session-info').textContent = 'Session ID: ' + sessionId;
+  try {
+    const res = await fetch(API_BASE + '/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        session_id: sessionId,
+        node: 'JaKoB',
+        last_decision: 'portal_login',
+        system_state: { status: 'ONLINE', version: 'V1', timestamp: new Date().toISOString() }
+      })
+    });
+    const data = await res.json();
+    document.getElementById('jakob-memory').textContent = 'Status: WRITTEN | Session logged to DynamoDB | ' + new Date().toLocaleTimeString();
+    document.getElementById('jesse-daemon').textContent = 'VeRiON bridge: ACTIVE | Last write: ' + new Date().toLocaleTimeString();
+    document.getElementById('jesse-status').innerHTML = '<span style="color:#3dd6c0">&#9679; LIVE</span>';
+    document.getElementById('jakob-seed').textContent = '\"The forest remembers every root. Buffer4JB is the key that wakes the mycelium.\"\n\nNode: JaKoB | Stage: $default | Region: us-east-1';
+  } catch(e) {
+    document.getElementById('jakob-memory').textContent = 'Backend offline - running in local mode';
+    document.getElementById('jakob-seed').textContent = '\"The forest remembers every root.\"\n\nNode: JaKoB [local mode]';
+  }
+}
+
+function logout() {
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('gate').style.display = 'block';
+  document.getElementById('passInput').value = '';
 }
 </script>
 </body>
