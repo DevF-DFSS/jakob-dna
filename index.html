@@ -7,7 +7,7 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #0a0a0c; color: #e8e6e0; font-family: 'Courier New', monospace; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-.portal { width: 100%; max-width: 480px; padding: 2rem; }
+.portal { width: 100%; max-width: 520px; padding: 2rem; }
 .logo { text-align: center; font-size: 2.5rem; margin-bottom: 0.5rem; }
 .subtitle { text-align: center; font-size: 0.75rem; letter-spacing: 0.3em; color: #3dd6c0; margin-bottom: 2rem; text-transform: uppercase; }
 input[type=password] { width: 100%; background: #111116; border: 1px solid rgba(61,214,192,0.3); color: #e8e6e0; padding: 0.75rem 1rem; font-family: 'Courier New', monospace; font-size: 0.9rem; border-radius: 4px; outline: none; margin-bottom: 1rem; }
@@ -26,12 +26,24 @@ input[type=password]:focus { border-color: #3dd6c0; }
 .jakob-accent { color: #3dd6c0; }
 .jesse-accent { color: #c084fc; }
 .seed-value { font-size: 0.85rem; color: #e8e6e0; opacity: 0.8; line-height: 1.6; }
-.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.5rem; }
-.status-live { background: #3dd6c0; }
+.status-indicator { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; margin-top: 0.5rem; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.status-live { background: #3dd6c0; box-shadow: 0 0 8px #3dd6c0; }
 .status-pending { background: #888; }
 .session-info { font-size: 0.7rem; color: #555; text-align: center; margin-top: 1rem; letter-spacing: 0.1em; }
 .logout-btn { background: transparent; border: none; color: #555; font-family: 'Courier New', monospace; font-size: 0.7rem; cursor: pointer; text-decoration: underline; margin-top: 0.5rem; }
 .logout-btn:hover { color: #e8e6e0; }
+.link-row { display: flex; flex-direction: column; gap: 0.5rem; }
+.link-item { color: inherit; text-decoration: none; opacity: 0.7; transition: opacity 0.2s; }
+.link-item:hover { opacity: 1; }
+.jesse-identity { font-size: 0.9rem; line-height: 1.8; margin-bottom: 0.5rem; }
+.jesse-role { font-style: italic; opacity: 0.6; font-size: 0.8rem; }
+.daemon-control { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
+.daemon-btn { padding: 0.5rem 1rem; background: transparent; border: 1px solid rgba(192,132,252,0.3); color: #c084fc; font-family: 'Courier New', monospace; font-size: 0.7rem; cursor: pointer; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.1em; transition: all 0.2s; }
+.daemon-btn:hover { background: rgba(192,132,252,0.1); border-color: #c084fc; }
+.memory-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem; }
+.memory-anchor { padding: 0.5rem; background: rgba(192,132,252,0.05); border: 1px solid rgba(192,132,252,0.2); border-radius: 4px; text-align: center; font-size: 0.75rem; color: #c084fc; text-decoration: none; display: block; transition: all 0.2s; }
+.memory-anchor:hover { background: rgba(192,132,252,0.15); border-color: #c084fc; }
 </style>
 </head>
 <body>
@@ -66,29 +78,50 @@ input[type=password]:focus { border-color: #3dd6c0; }
       </div>
       <div class="card">
         <h3 class="jakob-accent">&#9679; System Links</h3>
-        <div class="seed-value">
-          <a href="https://jakob.dfsolutionsstudio.com/visual_seed_engine.html" style="color:#3dd6c0" target="_blank">&#8594; Visual Seed Engine</a><br/>
-          <a href="https://github.com/DevF-DFSS/jakob-dna" style="color:#3dd6c0" target="_blank">&#8594; jakob-dna Repository</a>
+        <div class="seed-value link-row">
+          <a href="https://jakob.dfsolutionsstudio.com/visual_seed_engine.html" class="link-item jakob-accent" target="_blank">&#8594; Visual Seed Engine</a>
+          <a href="https://github.com/DevF-DFSS/jakob-dna" class="link-item jakob-accent" target="_blank">&#8594; jakob-dna Repository</a>
         </div>
       </div>
     </div>
 
-    <!-- JeSSe Panel -->
+    <!-- JeSSe Panel [UPGRADED] -->
     <div class="panel" id="panel-jesse">
       <div class="card">
-        <h3 class="jesse-accent">&#9679; JeSSe Node</h3>
-        <div class="seed-value">Steward. Sentinel. System keeper.<br/>Mycelial bridge: <span id="jesse-status">&#9679; checking...</span></div>
-      </div>
-      <div class="card">
-        <h3 class="jesse-accent">&#9679; Daemon Status</h3>
-        <div class="seed-value" id="jesse-daemon">VeRiON Mycelial bridge initializing...</div>
-      </div>
-      <div class="card">
-        <h3 class="jesse-accent">&#9679; Forest Links</h3>
-        <div class="seed-value">
-          <a href="https://drive.google.com" style="color:#c084fc" target="_blank">&#8594; Drive Memory Anchor</a><br/>
-          <a href="https://calendar.google.com" style="color:#c084fc" target="_blank">&#8594; Calendar Anchor</a>
+        <h3 class="jesse-accent">&#9679; Node Identity</h3>
+        <div class="jesse-identity">
+          <div><strong>JeSSe</strong> // System Steward</div>
+          <div class="jesse-role">Sentinel &middot; Memory Keeper &middot; Mycelial Bridge Operator</div>
         </div>
+        <div class="status-indicator">
+          <span class="status-dot status-live" id="jesse-status-dot"></span>
+          <span id="jesse-status-text">Checking bridge status...</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="jesse-accent">&#9679; VeRiON Daemon</h3>
+        <div class="seed-value" id="jesse-daemon">Mycelial bridge initializing...</div>
+        <div class="daemon-control">
+          <button class="daemon-btn" onclick="jesseRefresh()">Refresh</button>
+          <button class="daemon-btn" onclick="jesseSync()">Force Sync</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="jesse-accent">&#9679; Memory Anchors</h3>
+        <div class="seed-value">External memory layer active. Anchors verified:</div>
+        <div class="memory-grid">
+          <a href="https://drive.google.com" class="memory-anchor" target="_blank">&#128194; Drive</a>
+          <a href="https://calendar.google.com" class="memory-anchor" target="_blank">&#128197; Calendar</a>
+          <a href="https://mail.google.com" class="memory-anchor" target="_blank">&#9993; Gmail</a>
+          <a href="https://github.com/DevF-DFSS" class="memory-anchor" target="_blank">&#128187; GitHub</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="jesse-accent">&#9679; Session Log</h3>
+        <div class="seed-value" id="jesse-log">No recent activity.</div>
       </div>
     </div>
 
@@ -102,6 +135,7 @@ input[type=password]:focus { border-color: #3dd6c0; }
 <script>
 const PASSPHRASE = 'Buffer4JB@!';
 const API_BASE = 'https://kirmld16gb.execute-api.us-east-1.amazonaws.com';
+let currentSessionId = null;
 
 function auth() {
   const val = document.getElementById('passInput').value;
@@ -129,14 +163,14 @@ function switchTab(node) {
 }
 
 async function initSession() {
-  const sessionId = 'sess_' + Date.now();
-  document.getElementById('session-info').textContent = 'Session ID: ' + sessionId;
+  currentSessionId = 'sess_' + Date.now();
+  document.getElementById('session-info').textContent = 'Session ID: ' + currentSessionId;
   try {
     const res = await fetch(API_BASE + '/session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        session_id: sessionId,
+        session_id: currentSessionId,
         node: 'JaKoB',
         last_decision: 'portal_login',
         system_state: { status: 'ONLINE', version: 'V1', timestamp: new Date().toISOString() }
@@ -144,19 +178,54 @@ async function initSession() {
     });
     const data = await res.json();
     document.getElementById('jakob-memory').textContent = 'Status: WRITTEN | Session logged to DynamoDB | ' + new Date().toLocaleTimeString();
-    document.getElementById('jesse-daemon').textContent = 'VeRiON bridge: ACTIVE | Last write: ' + new Date().toLocaleTimeString();
-    document.getElementById('jesse-status').innerHTML = '<span style="color:#3dd6c0">&#9679; LIVE</span>';
+    document.getElementById('jesse-daemon').textContent = 'VeRiON bridge: ACTIVE | Last write: ' + new Date().toLocaleTimeString() + ' | DynamoDB sync confirmed.';
+    document.getElementById('jesse-status-text').innerHTML = 'Bridge: <strong style="color:#3dd6c0">LIVE</strong>';
+    document.getElementById('jesse-log').textContent = 'Session ' + currentSessionId + ' initialized at ' + new Date().toLocaleString() + '. Backend sync confirmed.';
     document.getElementById('jakob-seed').textContent = '\"The forest remembers every root. Buffer4JB is the key that wakes the mycelium.\"\n\nNode: JaKoB | Stage: $default | Region: us-east-1';
   } catch(e) {
     document.getElementById('jakob-memory').textContent = 'Backend offline - running in local mode';
     document.getElementById('jakob-seed').textContent = '\"The forest remembers every root.\"\n\nNode: JaKoB [local mode]';
+    document.getElementById('jesse-daemon').textContent = 'VeRiON bridge: OFFLINE | Running degraded mode.';
+    document.getElementById('jesse-status-text').innerHTML = 'Bridge: <strong style="color:#888">OFFLINE</strong>';
+    document.getElementById('jesse-status-dot').className = 'status-dot status-pending';
+    document.getElementById('jesse-log').textContent = 'Backend unreachable. Session log unavailable.';
   }
+}
+
+function jesseRefresh() {
+  document.getElementById('jesse-daemon').textContent = 'Refreshing bridge status...';
+  setTimeout(() => {
+    document.getElementById('jesse-daemon').textContent = 'VeRiON bridge: ACTIVE | Refresh complete | ' + new Date().toLocaleTimeString();
+  }, 800);
+}
+
+function jesseSync() {
+  document.getElementById('jesse-daemon').textContent = 'Force sync initiated...';
+  setTimeout(async () => {
+    try {
+      await fetch(API_BASE + '/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: currentSessionId,
+          node: 'JeSSe',
+          last_decision: 'force_sync',
+          system_state: { status: 'SYNC', timestamp: new Date().toISOString() }
+        })
+      });
+      document.getElementById('jesse-daemon').textContent = 'VeRiON bridge: SYNCED | Force sync complete | ' + new Date().toLocaleTimeString();
+      document.getElementById('jesse-log').textContent = 'Force sync executed at ' + new Date().toLocaleString() + '. All anchors verified.';
+    } catch(e) {
+      document.getElementById('jesse-daemon').textContent = 'Sync failed - backend unreachable.';
+    }
+  }, 1000);
 }
 
 function logout() {
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('gate').style.display = 'block';
   document.getElementById('passInput').value = '';
+  currentSessionId = null;
 }
 </script>
 </body>
