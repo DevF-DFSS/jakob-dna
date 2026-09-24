@@ -1,77 +1,175 @@
-"""JaKoB Apex Lambda scaffold for Python 3.11.
+"""Validate JEL-JKB/6.0 envelopes before persistence.
 
-Configure TABLE_NAME and BUFFER_SHARED_SECRET in Lambda environment/Secrets Manager.
-Do not put production secrets in this source file.
+SHA-256 provides envelope integrity, not sender authentication. Deploy only behind
+an independently authenticated/authorized ingress. TABLE_NAME must be explicit.
 """
-
 from __future__ import annotations
 
-import asyncio
+import base64
+import binascii
 import hashlib
 import hmac
 import json
 import logging
 import os
+import re
 from datetime import datetime, timezone
 from typing import Any
 
-import boto3
-
-LOGGER = logging.getLogger()
-LOGGER.setLevel(os.getenv("LOG_LEVEL", "INFO"))
-TABLE_NAME = os.environ.get("TABLE_NAME", "jakob-memory-store")
-DRIFT_CHECK_ENABLED = os.getenv("DRIFT_CHECK_ENABLED", "true").lower() == "true"
-JEL_PROTOCOL_VERSION = os.getenv("JEL_PROTOCOL_VERSION", "2.6B")
-SECURITY_AUTH_MODE = os.getenv("SECURITY_AUTH_MODE", "C5_CLEARANCE")
-DYNAMODB = boto3.resource("dynamodb")
+PROTOCOL = "JEL-JKB/6.0"
+FIELDS = frozenset(("protocol", "sender", "receiver", "timestamp", "context_mode",
+                    "jel", "payload_ref", "instruction", "fallback"))
+MAX_BYTES = 65536
+LOGGER = logging.getLogger(__name__)
+_dynamodb = None
 
 
-def drift_checker(event: dict[str, Any]) -> dict[str, Any]:
-    """Inspect protocol/version headers; returns a non-authorizing diagnostic."""
-    headers = event.get("headers") or {}
-    observed = headers.get("x-jel-protocol-version") or event.get("jel_protocol_version")
-    status = "PASS" if not DRIFT_CHECK_ENABLED or observed == JEL_PROTOCOL_VERSION else "DRIFT"
-    return {"enabled": DRIFT_CHECK_ENABLED, "expected": JEL_PROTOCOL_VERSION, "observed": observed, "status": status}
+class Rejected(ValueError):
+    def __init__(self, status: int, code: str):
+        self.status, self.code = status, code
+        super().__init__(code)
 
 
-def verify_from_buffer(payload: str, supplied_digest: str | None) -> bool:
-    """Compare a SHA-256 digest in constant time; integrity only, not authentication."""
-    if not supplied_digest:
-        return False
-    expected = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-    return hmac.compare_digest(expected, supplied_digest)
+def _pairs(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise Rejected(400, "duplicate_json_field")
+        result[key] = value
+    return result
 
 
-async def process_event(event: dict[str, Any]) -> dict[str, Any]:
-    body = event.get("body", event)
+def _invalid_constant(value):
+    raise Rejected(400, "invalid_json_number")
+
+
+def parse_event(event: Any) -> dict:
+    if not isinstance(event, dict):
+        raise Rejected(400, "invalid_event")
+    body = event
+    if "body" in event:
+        body = event["body"]
+        encoded = event.get("isBase64Encoded", False)
+        if not isinstance(encoded, bool):
+            raise Rejected(400, "invalid_encoding_flag")
+        if encoded:
+            if not isinstance(body, str) or len(body) > MAX_BYTES * 2:
+                raise Rejected(400, "invalid_base64_body")
+            try:
+                body = base64.b64decode(body, validate=True).decode("utf-8")
+            except (ValueError, UnicodeError, binascii.Error):
+                raise Rejected(400, "invalid_base64_body") from None
     if isinstance(body, str):
-        body = json.loads(body or "{}")
+        try:
+            if len(body.encode("utf-8")) > MAX_BYTES:
+                raise Rejected(413, "envelope_too_large")
+            body = json.loads(body, object_pairs_hook=_pairs,
+                              parse_constant=_invalid_constant)
+        except (ValueError, UnicodeError, RecursionError) as exc:
+            if isinstance(exc, Rejected):
+                raise
+            raise Rejected(400, "invalid_json") from None
+    if not isinstance(body, dict):
+        raise Rejected(400, "invalid_envelope")
+    if "body" in event:
+        headers = event.get("headers")
+        if headers is None:
+            headers = {}
+        if not isinstance(headers, dict):
+            raise Rejected(400, "invalid_headers")
+        versions = [value for key, value in headers.items()
+                    if isinstance(key, str) and key.lower() == "x-jel-protocol-version"]
+        if any(value != body.get("protocol") for value in versions):
+            raise Rejected(409, "protocol_header_conflict")
+    return body
 
-    payload = json.dumps(body.get("payload", {}), sort_keys=True, separators=(",", ":"))
-    integrity_ok = verify_from_buffer(payload, body.get("buffer_sha256"))
-    drift = drift_checker(event)
 
-    item = {
-        "key": body.get("key", "SYSTEM_STATE_V6"),
-        "value": body.get("value", "ZERO_DELTA_LOCKED"),
-        "protocol_version": JEL_PROTOCOL_VERSION,
-        "security_auth_mode": SECURITY_AUTH_MODE,
-        "integrity_ok": integrity_ok,
-        "drift_status": drift["status"],
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-    }
-
-    if drift["status"] == "DRIFT":
-        return {"statusCode": 409, "body": json.dumps({"message": "drift detected", "drift": drift})}
-
-    DYNAMODB.Table(TABLE_NAME).put_item(Item=item)
-    return {"statusCode": 200, "body": json.dumps({"stored": item["key"], "integrity_ok": integrity_ok, "drift": drift})}
+def canonical_bytes(envelope: dict) -> bytes:
+    """Profile: sorted ASCII field names, compact JSON, literal UTF-8 strings."""
+    unsigned = {key: value for key, value in envelope.items() if key != "integrity"}
+    return json.dumps(unsigned, sort_keys=True, separators=(",", ":"),
+                      ensure_ascii=False, allow_nan=False).encode("utf-8")
 
 
-def lambda_handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
-    """AWS Lambda-compatible synchronous entry point wrapping async work."""
+def validate_envelope(envelope: dict) -> tuple[dict, int]:
+    if "integrity" not in envelope:
+        raise Rejected(422, "integrity_required")
+    if set(envelope) != FIELDS | {"integrity"}:
+        raise Rejected(400, "invalid_envelope_fields")
+    for field in FIELDS:
+        value = envelope[field]
+        if not isinstance(value, str) or not value.strip():
+            raise Rejected(400, "invalid_field")
+        try:
+            length = len(value.encode("utf-8"))
+        except UnicodeError:
+            raise Rejected(400, "invalid_unicode") from None
+        if length > (256 if field in ("sender", "receiver") else 4096):
+            raise Rejected(413, "field_too_large")
+    if envelope["protocol"] != PROTOCOL:
+        raise Rejected(409, "unsupported_protocol")
+    stamp = envelope["timestamp"]
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|\+00:00)", stamp):
+        raise Rejected(400, "invalid_timestamp")
     try:
-        return asyncio.run(process_event(event))
-    except Exception as exc:
-        LOGGER.exception("JaKoB Apex request failed")
-        return {"statusCode": 500, "body": json.dumps({"message": "internal error", "detail": type(exc).__name__})}
+        instant = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        raise Rejected(400, "invalid_timestamp") from None
+    delta = instant - datetime(1970, 1, 1, tzinfo=timezone.utc)
+    millis = (delta.days * 86400 + delta.seconds) * 1000 + delta.microseconds // 1000
+    integrity = envelope["integrity"]
+    if (not isinstance(integrity, dict) or set(integrity) != {"algorithm", "digest"}
+            or integrity.get("algorithm") != "SHA-256"
+            or not isinstance(integrity.get("digest"), str)
+            or not re.fullmatch("[0-9a-f]{64}", integrity["digest"])):
+        raise Rejected(422, "invalid_integrity")
+    encoded = canonical_bytes(envelope)
+    if len(encoded) > MAX_BYTES:
+        raise Rejected(413, "envelope_too_large")
+    if not hmac.compare_digest(hashlib.sha256(encoded).hexdigest(), integrity["digest"]):
+        raise Rejected(422, "integrity_mismatch")
+    # Copy only validated strings and integrity fields; retain exact signed text.
+    snapshot = {field: envelope[field] for field in FIELDS}
+    snapshot["integrity"] = dict(integrity)
+    return snapshot, millis
+
+
+def persist(envelope: dict, millis: int) -> bool:
+    """Return False on an existing sender/timestamp; never overwrite it."""
+    global _dynamodb
+    table_name = os.environ.get("TABLE_NAME")
+    if not table_name or not table_name.strip():
+        raise RuntimeError("TABLE_NAME must be configured")
+    # No AWS client construction until validation has succeeded.
+    import boto3
+    from boto3.dynamodb.conditions import Attr
+    if _dynamodb is None:
+        _dynamodb = boto3.resource("dynamodb")
+    table = _dynamodb.Table(table_name)
+    item = {"userId": envelope["sender"], "timestamp": millis,
+            "schema_version": "JEL-JKB/6.0-envelope-v1", "envelope": envelope}
+    try:
+        table.put_item(Item=item, ConditionExpression=(
+            Attr("userId").not_exists() & Attr("timestamp").not_exists()))
+    except table.meta.client.exceptions.ConditionalCheckFailedException:
+        return False
+    return True
+
+
+def response(status: int, code: str) -> dict:
+    return {"statusCode": status, "headers": {"Content-Type": "application/json"},
+            "body": json.dumps({"code": code})}
+
+
+def lambda_handler(event: Any, context: Any) -> dict:
+    try:
+        envelope, millis = validate_envelope(parse_event(event))
+        if not persist(envelope, millis):
+            return response(409, "record_already_exists")
+        return response(200, "envelope_stored")
+    except Rejected as exc:
+        return response(exc.status, exc.code)
+    except Exception:
+        # Do not serialize SDK exceptions, request bodies, or traceback locals.
+        LOGGER.error("Envelope persistence failed")
+        return response(500, "persistence_failed")
