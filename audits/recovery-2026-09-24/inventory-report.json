@@ -1,0 +1,112 @@
+[
+  {
+    "service": "dynamodb",
+    "name": "jakob-memory-store",
+    "region": null,
+    "evidence": "Python lambda_function.py:21 runtime default; region inherited and TABLE_NAME overridable",
+    "classification": "SOURCE_DEFAULT",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "dynamodb",
+    "name": "jakob-memory-store",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:48-52",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "dynamodb",
+    "name": "jakob-identity-profiles",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:48-52",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "s3",
+    "name": "jakob-asset-store",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:54-58",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "s3",
+    "name": "jakob-backup-vault",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:54-58",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "lambda",
+    "name": "JakobWebhookProcessor",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:60-64",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "lambda",
+    "name": "JakobMemoryRetriever",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:60-64",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "apigateway",
+    "name": "8vkx3p2m1h",
+    "region": "us-east-1",
+    "evidence": "v10.5/JaKoB_V10.5_Architecture_SOP.md:67",
+    "classification": "HISTORICAL_SPEC",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "lambda",
+    "name": "DFSS-ColdStart",
+    "region": "us-east-1",
+    "evidence": "Drive CURRENT STATE, 2026-09-23; not reverified in this audit",
+    "classification": "PRIOR_OBSERVATION",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "lambda",
+    "name": "us-os-brain",
+    "region": "us-east-2",
+    "evidence": "Drive CURRENT STATE, 2026-09-23; not reverified in this audit",
+    "classification": "PRIOR_OBSERVATION",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  },
+  {
+    "service": "apigateway",
+    "name": "kirmld16gb",
+    "region": "us-east-1",
+    "evidence": "index.html:146; POST /session at lines 178 and 215",
+    "classification": "EXECUTABLE_SOURCE_REFERENCE",
+    "status": "🐈📦 UNRESOLVED",
+    "observations": [],
+    "note": "Missing observation or provenance does not prove absence."
+  }
+]
