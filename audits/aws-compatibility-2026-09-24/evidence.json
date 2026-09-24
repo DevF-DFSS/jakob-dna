@@ -1,0 +1,2081 @@
+{
+  "scope": {
+    "account": "083127296577",
+    "pr3": "8b42fd0ebc5850a82e2629006677ad41900c1748",
+    "pr4": "cbe8eeff045802a305a98b78d743328f17403dcf",
+    "no_invocations": true,
+    "no_mutations": true
+  },
+  "discovery": {
+    "observed_at": "2026-09-24T04:54:00.599815+00:00",
+    "account": "083127296577",
+    "regions": [
+      {
+        "region": "ap-south-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "eu-north-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "eu-west-3",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "eu-west-2",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "eu-west-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "ap-northeast-3",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "ap-northeast-2",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "ap-northeast-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "ca-central-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "sa-east-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "ap-southeast-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "ap-southeast-2",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "eu-central-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "us-east-1",
+        "lambda": [
+          {
+            "name": "DFSS-ColdStart",
+            "arn": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart"
+          }
+        ],
+        "dynamodb": [
+          "DFSS_SessionState",
+          "jakob-identity-profiles",
+          "jakob-memory-store"
+        ],
+        "apigateway": [],
+        "apigatewayv2": [
+          {
+            "id": "kirmld16gb",
+            "name": "DFSS-API",
+            "protocol": "HTTP"
+          },
+          {
+            "id": "qjiuor3yak",
+            "name": "us-os-brain",
+            "protocol": "HTTP"
+          }
+        ]
+      },
+      {
+        "region": "us-east-2",
+        "lambda": [
+          {
+            "name": "us-os-brain",
+            "arn": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain"
+          }
+        ],
+        "dynamodb": [
+          "us-os-memory"
+        ],
+        "apigateway": [],
+        "apigatewayv2": [
+          {
+            "id": "p9qtqpd8mc",
+            "name": "us-os-brain-API",
+            "protocol": "HTTP"
+          }
+        ]
+      },
+      {
+        "region": "us-west-1",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      },
+      {
+        "region": "us-west-2",
+        "lambda": [],
+        "dynamodb": [],
+        "apigateway": [],
+        "apigatewayv2": []
+      }
+    ]
+  },
+  "details": {
+    "observed_at": "2026-09-24T04:55:30.280063+00:00",
+    "regions": [
+      {
+        "region": "us-east-1",
+        "functions": [
+          {
+            "FunctionName": "DFSS-ColdStart",
+            "Runtime": "nodejs24.x",
+            "Handler": "index.handler",
+            "Role": "arn:aws:iam::083127296577:role/service-role/DFSS-ColdStart-role-io8kh35x",
+            "CodeSha256": "oxASv7o2YUrSemT/446BL/wOwSFAB48wVLKegnRWcVc=",
+            "CodeSize": 1395,
+            "LastModified": "2026-07-01T00:51:03.000+0000",
+            "PackageType": "Zip",
+            "Architectures": [
+              "x86_64"
+            ],
+            "State": "Active",
+            "LastUpdateStatus": "Successful",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "Version": "$LATEST",
+            "environment_names": [],
+            "table_name_present": false,
+            "table_name_matches_listed": [],
+            "table_name_other_nonempty": false,
+            "environment_error_present": false,
+            "vpc": {},
+            "layers": [],
+            "image_identity": {},
+            "aliases": [],
+            "versions": [
+              {
+                "Version": "$LATEST",
+                "CodeSha256": "oxASv7o2YUrSemT/446BL/wOwSFAB48wVLKegnRWcVc=",
+                "LastModified": "2026-07-01T00:51:03.000+0000",
+                "Runtime": "nodejs24.x",
+                "Handler": "index.handler"
+              }
+            ],
+            "invoke_policy": {
+              "Version": "2012-10-17",
+              "Id": "default",
+              "Statement": [
+                {
+                  "Sid": "15f46014-0a80-5abe-a9a7-a1aa243f8449",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "apigateway.amazonaws.com"
+                  },
+                  "Action": "lambda:InvokeFunction",
+                  "Resource": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart",
+                  "Condition": {
+                    "ArnLike": {
+                      "AWS:SourceArn": "arn:aws:execute-api:us-east-1:083127296577:kirmld16gb/*/*/session"
+                    }
+                  }
+                }
+              ]
+            },
+            "function_urls": []
+          }
+        ],
+        "tables": [
+          {
+            "TableName": "DFSS_SessionState",
+            "TableArn": "arn:aws:dynamodb:us-east-1:083127296577:table/DFSS_SessionState",
+            "TableStatus": "ACTIVE",
+            "KeySchema": [
+              {
+                "AttributeName": "session_id",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "timestamp",
+                "KeyType": "RANGE"
+              }
+            ],
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "session_id",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "timestamp",
+                "AttributeType": "S"
+              }
+            ],
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST",
+              "LastUpdateToPayPerRequestDateTime": "2026-07-01T00:49:22.201000+00:00"
+            }
+          },
+          {
+            "TableName": "jakob-identity-profiles",
+            "TableArn": "arn:aws:dynamodb:us-east-1:083127296577:table/jakob-identity-profiles",
+            "TableStatus": "ACTIVE",
+            "KeySchema": [
+              {
+                "AttributeName": "profileId",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "version",
+                "KeyType": "RANGE"
+              }
+            ],
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "profileId",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "version",
+                "AttributeType": "N"
+              }
+            ],
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST",
+              "LastUpdateToPayPerRequestDateTime": "2026-07-03T02:48:43.173000+00:00"
+            }
+          },
+          {
+            "TableName": "jakob-memory-store",
+            "TableArn": "arn:aws:dynamodb:us-east-1:083127296577:table/jakob-memory-store",
+            "TableStatus": "ACTIVE",
+            "KeySchema": [
+              {
+                "AttributeName": "memoryId",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "timestamp",
+                "KeyType": "RANGE"
+              }
+            ],
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "memoryId",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "sessionId",
+                "AttributeType": "S"
+              },
+              {
+                "AttributeName": "timestamp",
+                "AttributeType": "N"
+              },
+              {
+                "AttributeName": "userId",
+                "AttributeType": "S"
+              }
+            ],
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST",
+              "LastUpdateToPayPerRequestDateTime": "2026-07-03T02:47:52.022000+00:00"
+            },
+            "GlobalSecondaryIndexes": [
+              {
+                "IndexName": "userId-index",
+                "KeySchema": [
+                  {
+                    "AttributeName": "userId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "IndexStatus": "ACTIVE",
+                "ProvisionedThroughput": {
+                  "NumberOfDecreasesToday": 0,
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                },
+                "IndexSizeBytes": 0,
+                "ItemCount": 0,
+                "IndexArn": "arn:aws:dynamodb:us-east-1:083127296577:table/jakob-memory-store/index/userId-index",
+                "WarmThroughput": {
+                  "ReadUnitsPerSecond": 12000,
+                  "WriteUnitsPerSecond": 4000,
+                  "Status": "ACTIVE"
+                }
+              },
+              {
+                "IndexName": "sessionId-index",
+                "KeySchema": [
+                  {
+                    "AttributeName": "sessionId",
+                    "KeyType": "HASH"
+                  }
+                ],
+                "Projection": {
+                  "ProjectionType": "ALL"
+                },
+                "IndexStatus": "ACTIVE",
+                "ProvisionedThroughput": {
+                  "NumberOfDecreasesToday": 0,
+                  "ReadCapacityUnits": 0,
+                  "WriteCapacityUnits": 0
+                },
+                "IndexSizeBytes": 0,
+                "ItemCount": 0,
+                "IndexArn": "arn:aws:dynamodb:us-east-1:083127296577:table/jakob-memory-store/index/sessionId-index",
+                "WarmThroughput": {
+                  "ReadUnitsPerSecond": 12000,
+                  "WriteUnitsPerSecond": 4000,
+                  "Status": "ACTIVE"
+                }
+              }
+            ]
+          }
+        ],
+        "apis": [
+          {
+            "id": "kirmld16gb",
+            "name": "DFSS-API",
+            "protocol": "HTTP",
+            "disable_execute_api_endpoint": false,
+            "routes": [
+              {
+                "RouteId": "178fhu9",
+                "RouteKey": "ANY /session",
+                "Target": "integrations/vdrg1ng",
+                "AuthorizationType": "NONE",
+                "ApiKeyRequired": false
+              }
+            ],
+            "integrations": [
+              {
+                "IntegrationId": "vdrg1ng",
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart",
+                "IntegrationMethod": "POST",
+                "PayloadFormatVersion": "2.0",
+                "ConnectionType": "INTERNET",
+                "TimeoutInMillis": 30000
+              }
+            ],
+            "stages": [
+              {
+                "StageName": "$default",
+                "AutoDeploy": true,
+                "DeploymentId": "9i6n13"
+              }
+            ],
+            "authorizers": []
+          },
+          {
+            "id": "qjiuor3yak",
+            "name": "us-os-brain",
+            "protocol": "HTTP",
+            "disable_execute_api_endpoint": false,
+            "cors": {
+              "AllowCredentials": false,
+              "AllowHeaders": [
+                "content-type"
+              ],
+              "AllowMethods": [
+                "POST",
+                "OPTIONS"
+              ],
+              "AllowOrigins": [
+                "*"
+              ],
+              "MaxAge": 0
+            },
+            "routes": [
+              {
+                "RouteId": "osh6g91",
+                "RouteKey": "ANY /us-os-brain",
+                "Target": "integrations/p8qi7cr",
+                "AuthorizationType": "NONE",
+                "ApiKeyRequired": false,
+                "AuthorizationScopes": []
+              }
+            ],
+            "integrations": [
+              {
+                "IntegrationId": "p8qi7cr",
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+                "IntegrationMethod": "POST",
+                "PayloadFormatVersion": "2.0",
+                "ConnectionType": "INTERNET",
+                "TimeoutInMillis": 30000
+              }
+            ],
+            "stages": [
+              {
+                "StageName": "$default",
+                "AutoDeploy": true,
+                "DeploymentId": "1tdlum"
+              }
+            ],
+            "authorizers": []
+          }
+        ]
+      },
+      {
+        "region": "us-east-2",
+        "functions": [
+          {
+            "FunctionName": "us-os-brain",
+            "Runtime": "python3.12",
+            "Handler": "lambda_function.lambda_handler",
+            "Role": "arn:aws:iam::083127296577:role/service-role/us-os-brain-role-c7v6jeb1",
+            "CodeSha256": "JhkvoF8994yx4+vDTXFULD4+iNXCaafqsJmcrbnoI8M=",
+            "CodeSize": 2909,
+            "LastModified": "2026-06-28T17:51:04.000+0000",
+            "PackageType": "Zip",
+            "Architectures": [
+              "x86_64"
+            ],
+            "State": "Active",
+            "LastUpdateStatus": "Successful",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "Version": "$LATEST",
+            "environment_names": [
+              "GEMINI_API_KEY",
+              "SECRET_HANDSHAKE_TOKEN"
+            ],
+            "table_name_present": false,
+            "table_name_matches_listed": [],
+            "table_name_other_nonempty": false,
+            "environment_error_present": false,
+            "vpc": {},
+            "layers": [],
+            "image_identity": {},
+            "aliases": [],
+            "versions": [
+              {
+                "Version": "$LATEST",
+                "CodeSha256": "JhkvoF8994yx4+vDTXFULD4+iNXCaafqsJmcrbnoI8M=",
+                "LastModified": "2026-06-28T17:51:04.000+0000",
+                "Runtime": "python3.12",
+                "Handler": "lambda_function.lambda_handler"
+              }
+            ],
+            "invoke_policy": {
+              "Version": "2012-10-17",
+              "Id": "default",
+              "Statement": [
+                {
+                  "Sid": "lambda-c0d77fe0-5179-4d3e-877a-73dd0a9e964b",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "apigateway.amazonaws.com"
+                  },
+                  "Action": "lambda:InvokeFunction",
+                  "Resource": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+                  "Condition": {
+                    "ArnLike": {
+                      "AWS:SourceArn": "arn:aws:execute-api:us-east-2:083127296577:p9qtqpd8mc/*/*/us-os-brain"
+                    }
+                  }
+                },
+                {
+                  "Sid": "b11817a8-d8cb-5d38-95ef-7ad019f487df",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "apigateway.amazonaws.com"
+                  },
+                  "Action": "lambda:InvokeFunction",
+                  "Resource": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+                  "Condition": {
+                    "ArnLike": {
+                      "AWS:SourceArn": "arn:aws:execute-api:us-east-2:083127296577:qjiuor3yak/*/*/us-os-brain"
+                    }
+                  }
+                }
+              ]
+            },
+            "function_urls": []
+          }
+        ],
+        "tables": [
+          {
+            "TableName": "us-os-memory",
+            "TableArn": "arn:aws:dynamodb:us-east-2:083127296577:table/us-os-memory",
+            "TableStatus": "ACTIVE",
+            "KeySchema": [
+              {
+                "AttributeName": "session-id",
+                "KeyType": "HASH"
+              }
+            ],
+            "AttributeDefinitions": [
+              {
+                "AttributeName": "session-id",
+                "AttributeType": "S"
+              }
+            ],
+            "BillingModeSummary": {
+              "BillingMode": "PAY_PER_REQUEST",
+              "LastUpdateToPayPerRequestDateTime": "2026-06-28T16:49:58.980000+00:00"
+            }
+          }
+        ],
+        "apis": [
+          {
+            "id": "p9qtqpd8mc",
+            "name": "us-os-brain-API",
+            "protocol": "HTTP",
+            "disable_execute_api_endpoint": false,
+            "cors": {
+              "AllowCredentials": false,
+              "AllowHeaders": [
+                "content-type",
+                "authorization"
+              ],
+              "AllowMethods": [
+                "POST",
+                "OPTIONS"
+              ],
+              "AllowOrigins": [
+                "*"
+              ],
+              "MaxAge": 0
+            },
+            "routes": [
+              {
+                "RouteId": "gwxo1x4",
+                "RouteKey": "ANY /us-os-brain",
+                "Target": "integrations/12kybv7",
+                "AuthorizationType": "NONE",
+                "ApiKeyRequired": false
+              }
+            ],
+            "integrations": [
+              {
+                "IntegrationId": "12kybv7",
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+                "IntegrationMethod": "POST",
+                "PayloadFormatVersion": "2.0",
+                "ConnectionType": "INTERNET",
+                "TimeoutInMillis": 30000
+              }
+            ],
+            "stages": [
+              {
+                "StageName": "default",
+                "AutoDeploy": true,
+                "DeploymentId": "rfpmoo"
+              },
+              {
+                "StageName": "v2",
+                "AutoDeploy": true,
+                "DeploymentId": "rfpmoo"
+              }
+            ],
+            "authorizers": []
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "DFSS-ColdStart-role-io8kh35x",
+        "trust": [
+          {
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "condition_keys": {}
+          }
+        ],
+        "policies": [
+          {
+            "arn": "arn:aws:iam::083127296577:policy/service-role/AWSLambdaBasicExecutionRole-e1b91bbf-5aa0-496d-88db-2204b9aa4f55",
+            "version": "v1",
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": "logs:CreateLogGroup",
+                "Resource": "arn:aws:logs:us-east-1:083127296577:*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": [
+                  "arn:aws:logs:us-east-1:083127296577:log-group:/aws/lambda/DFSS-ColdStart:*"
+                ],
+                "condition_keys": {}
+              }
+            ]
+          },
+          {
+            "arn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+            "version": "v15",
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:*",
+                  "dax:*",
+                  "application-autoscaling:DeleteScalingPolicy",
+                  "application-autoscaling:DeregisterScalableTarget",
+                  "application-autoscaling:DescribeScalableTargets",
+                  "application-autoscaling:DescribeScalingActivities",
+                  "application-autoscaling:DescribeScalingPolicies",
+                  "application-autoscaling:PutScalingPolicy",
+                  "application-autoscaling:RegisterScalableTarget",
+                  "cloudwatch:DeleteAlarms",
+                  "cloudwatch:DescribeAlarmHistory",
+                  "cloudwatch:DescribeAlarms",
+                  "cloudwatch:DescribeAlarmsForMetric",
+                  "cloudwatch:GetMetricStatistics",
+                  "cloudwatch:ListMetrics",
+                  "cloudwatch:PutMetricAlarm",
+                  "cloudwatch:GetMetricData",
+                  "datapipeline:ActivatePipeline",
+                  "datapipeline:CreatePipeline",
+                  "datapipeline:DeletePipeline",
+                  "datapipeline:DescribeObjects",
+                  "datapipeline:DescribePipelines",
+                  "datapipeline:GetPipelineDefinition",
+                  "datapipeline:ListPipelines",
+                  "datapipeline:PutPipelineDefinition",
+                  "datapipeline:QueryObjects",
+                  "ec2:DescribeVpcs",
+                  "ec2:DescribeSubnets",
+                  "ec2:DescribeSecurityGroups",
+                  "iam:GetRole",
+                  "iam:ListRoles",
+                  "kms:DescribeKey",
+                  "kms:ListAliases",
+                  "sns:CreateTopic",
+                  "sns:DeleteTopic",
+                  "sns:ListSubscriptions",
+                  "sns:ListSubscriptionsByTopic",
+                  "sns:ListTopics",
+                  "sns:Subscribe",
+                  "sns:Unsubscribe",
+                  "sns:SetTopicAttributes",
+                  "lambda:CreateFunction",
+                  "lambda:ListFunctions",
+                  "lambda:ListEventSourceMappings",
+                  "lambda:CreateEventSourceMapping",
+                  "lambda:DeleteEventSourceMapping",
+                  "lambda:GetFunctionConfiguration",
+                  "lambda:DeleteFunction",
+                  "resource-groups:ListGroups",
+                  "resource-groups:ListGroupResources",
+                  "resource-groups:GetGroup",
+                  "resource-groups:GetGroupQuery",
+                  "resource-groups:DeleteGroup",
+                  "resource-groups:CreateGroup",
+                  "tag:GetResources",
+                  "kinesis:ListStreams",
+                  "kinesis:DescribeStream",
+                  "kinesis:DescribeStreamSummary"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": "cloudwatch:GetInsightRuleReport",
+                "Resource": "arn:aws:cloudwatch:*:*:insight-rule/DynamoDBContributorInsights*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:PassRole"
+                ],
+                "Resource": "*",
+                "condition_keys": {
+                  "StringLike": [
+                    "iam:PassedToService"
+                  ]
+                }
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:CreateServiceLinkedRole"
+                ],
+                "Resource": "*",
+                "condition_keys": {
+                  "StringEquals": [
+                    "iam:AWSServiceName"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "us-os-brain-role-c7v6jeb1",
+        "trust": [
+          {
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Principal": {
+              "Service": "lambda.amazonaws.com"
+            },
+            "condition_keys": {}
+          }
+        ],
+        "policies": [
+          {
+            "arn": "arn:aws:iam::083127296577:policy/service-role/AWSLambdaBasicExecutionRole-9d8de7e2-2812-4e6d-aaa2-87795fea5d30",
+            "version": "v1",
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": "logs:CreateLogGroup",
+                "Resource": "arn:aws:logs:us-east-2:083127296577:*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": [
+                  "arn:aws:logs:us-east-2:083127296577:log-group:/aws/lambda/us-os-brain:*"
+                ],
+                "condition_keys": {}
+              }
+            ]
+          },
+          {
+            "arn": "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+            "version": "v1",
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              }
+            ]
+          },
+          {
+            "arn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+            "version": "v15",
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:*",
+                  "dax:*",
+                  "application-autoscaling:DeleteScalingPolicy",
+                  "application-autoscaling:DeregisterScalableTarget",
+                  "application-autoscaling:DescribeScalableTargets",
+                  "application-autoscaling:DescribeScalingActivities",
+                  "application-autoscaling:DescribeScalingPolicies",
+                  "application-autoscaling:PutScalingPolicy",
+                  "application-autoscaling:RegisterScalableTarget",
+                  "cloudwatch:DeleteAlarms",
+                  "cloudwatch:DescribeAlarmHistory",
+                  "cloudwatch:DescribeAlarms",
+                  "cloudwatch:DescribeAlarmsForMetric",
+                  "cloudwatch:GetMetricStatistics",
+                  "cloudwatch:ListMetrics",
+                  "cloudwatch:PutMetricAlarm",
+                  "cloudwatch:GetMetricData",
+                  "datapipeline:ActivatePipeline",
+                  "datapipeline:CreatePipeline",
+                  "datapipeline:DeletePipeline",
+                  "datapipeline:DescribeObjects",
+                  "datapipeline:DescribePipelines",
+                  "datapipeline:GetPipelineDefinition",
+                  "datapipeline:ListPipelines",
+                  "datapipeline:PutPipelineDefinition",
+                  "datapipeline:QueryObjects",
+                  "ec2:DescribeVpcs",
+                  "ec2:DescribeSubnets",
+                  "ec2:DescribeSecurityGroups",
+                  "iam:GetRole",
+                  "iam:ListRoles",
+                  "kms:DescribeKey",
+                  "kms:ListAliases",
+                  "sns:CreateTopic",
+                  "sns:DeleteTopic",
+                  "sns:ListSubscriptions",
+                  "sns:ListSubscriptionsByTopic",
+                  "sns:ListTopics",
+                  "sns:Subscribe",
+                  "sns:Unsubscribe",
+                  "sns:SetTopicAttributes",
+                  "lambda:CreateFunction",
+                  "lambda:ListFunctions",
+                  "lambda:ListEventSourceMappings",
+                  "lambda:CreateEventSourceMapping",
+                  "lambda:DeleteEventSourceMapping",
+                  "lambda:GetFunctionConfiguration",
+                  "lambda:DeleteFunction",
+                  "resource-groups:ListGroups",
+                  "resource-groups:ListGroupResources",
+                  "resource-groups:GetGroup",
+                  "resource-groups:GetGroupQuery",
+                  "resource-groups:DeleteGroup",
+                  "resource-groups:CreateGroup",
+                  "tag:GetResources",
+                  "kinesis:ListStreams",
+                  "kinesis:DescribeStream",
+                  "kinesis:DescribeStreamSummary"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": "cloudwatch:GetInsightRuleReport",
+                "Resource": "arn:aws:cloudwatch:*:*:insight-rule/DynamoDBContributorInsights*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:PassRole"
+                ],
+                "Resource": "*",
+                "condition_keys": {
+                  "StringLike": [
+                    "iam:PassedToService"
+                  ]
+                }
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:CreateServiceLinkedRole"
+                ],
+                "Resource": "*",
+                "condition_keys": {
+                  "StringEquals": [
+                    "iam:AWSServiceName"
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "arn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess_v2",
+            "version": "v3",
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:*",
+                  "dax:*"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "kms:DescribeKey",
+                  "kms:ListAliases"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "lambda:ListEventSourceMappings",
+                  "lambda:ListFunctions"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "sns:ListTopics"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "application-autoscaling:DeleteScalingPolicy",
+                  "application-autoscaling:DeregisterScalableTarget",
+                  "application-autoscaling:PutScalingPolicy",
+                  "application-autoscaling:RegisterScalableTarget"
+                ],
+                "Resource": "*",
+                "condition_keys": {
+                  "StringEquals": [
+                    "application-autoscaling:service-namespace"
+                  ]
+                }
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "application-autoscaling:DescribeScalableTargets",
+                  "application-autoscaling:DescribeScalingActivities",
+                  "application-autoscaling:DescribeScalingPolicies"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "tag:GetResources"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "cloudwatch:DescribeAlarms",
+                  "cloudwatch:GetMetricStatistics",
+                  "cloudwatch:GetMetricData"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "kinesis:ListStreams",
+                  "kinesis:DescribeStream",
+                  "kinesis:DescribeStreamSummary"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "ec2:DescribeVpcs",
+                  "ec2:DescribeSubnets",
+                  "ec2:DescribeSecurityGroups"
+                ],
+                "Resource": "*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": "cloudwatch:GetInsightRuleReport",
+                "Resource": "arn:aws:cloudwatch:*:*:insight-rule/DynamoDBContributorInsights*",
+                "condition_keys": {}
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:CreateServiceLinkedRole"
+                ],
+                "Resource": "*",
+                "condition_keys": {
+                  "StringEquals": [
+                    "iam:AWSServiceName"
+                  ]
+                }
+              },
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "iam:ListRoles"
+                ],
+                "Resource": [
+                  "*"
+                ],
+                "condition_keys": {}
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "buckets": {
+    "observed_at": "2026-09-24T04:56:14.679949+00:00",
+    "source_buckets": [
+      {
+        "name": "jakob-asset-store",
+        "region": "us-east-1"
+      },
+      {
+        "name": "jakob-backup-vault",
+        "region": "us-east-1"
+      }
+    ],
+    "source_bucket_names_not_in_list": []
+  },
+  "permissions": {
+    "observed_at": "2026-09-24T04:57:25.877517+00:00",
+    "table_resource_policies": [
+      {
+        "table_arn": "arn:aws:dynamodb:us-east-1:083127296577:table/DFSS_SessionState",
+        "error_code": "PolicyNotFoundException"
+      },
+      {
+        "table_arn": "arn:aws:dynamodb:us-east-1:083127296577:table/jakob-identity-profiles",
+        "error_code": "PolicyNotFoundException"
+      },
+      {
+        "table_arn": "arn:aws:dynamodb:us-east-1:083127296577:table/jakob-memory-store",
+        "error_code": "PolicyNotFoundException"
+      },
+      {
+        "table_arn": "arn:aws:dynamodb:us-east-2:083127296577:table/us-os-memory",
+        "error_code": "PolicyNotFoundException"
+      }
+    ],
+    "identity_policy_simulations": [
+      {
+        "function": "DFSS-ColdStart",
+        "results": [
+          {
+            "EvalActionName": "dynamodb:PutItem",
+            "EvalResourceName": "arn:aws:dynamodb:${Region}:${Account}:${ResourceType}/${ResourcePath}",
+            "EvalDecision": "allowed",
+            "MissingContextValues": []
+          }
+        ]
+      },
+      {
+        "function": "us-os-brain",
+        "results": [
+          {
+            "EvalActionName": "dynamodb:PutItem",
+            "EvalResourceName": "arn:aws:dynamodb:${Region}:${Account}:${ResourceType}/${ResourcePath}",
+            "EvalDecision": "allowed",
+            "MissingContextValues": []
+          }
+        ]
+      }
+    ]
+  },
+  "api_calls": [
+    {
+      "service": "sts",
+      "operation": "GetCallerIdentity",
+      "status": "success"
+    },
+    {
+      "service": "ec2",
+      "operation": "DescribeRegions",
+      "status": "success",
+      "n_items": {
+        "Regions": 17
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 1
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 3
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 2
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 1
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 1
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 0
+      }
+    },
+    {
+      "service": "apigateway",
+      "operation": "GetRestApis",
+      "status": "success",
+      "n_items": {
+        "items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctions",
+      "status": "success",
+      "n_items": {
+        "Functions": 1
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 3
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "ListTables",
+      "status": "success",
+      "n_items": {
+        "TableNames": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 2
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApis",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "GetFunction",
+      "status": "success"
+    },
+    {
+      "service": "lambda",
+      "operation": "GetFunction",
+      "status": "success"
+    },
+    {
+      "service": "lambda",
+      "operation": "ListAliases",
+      "status": "success",
+      "n_items": {
+        "Aliases": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListVersionsByFunction",
+      "status": "success",
+      "n_items": {
+        "Versions": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctionUrlConfigs",
+      "status": "success",
+      "n_items": {
+        "FunctionUrlConfigs": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListAliases",
+      "status": "success",
+      "n_items": {
+        "Aliases": 0
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "ListVersionsByFunction",
+      "status": "success",
+      "n_items": {
+        "Versions": 1
+      }
+    },
+    {
+      "service": "lambda",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "lambda",
+      "operation": "ListFunctionUrlConfigs",
+      "status": "success",
+      "n_items": {
+        "FunctionUrlConfigs": 0
+      }
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "DescribeTable",
+      "status": "success"
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApi",
+      "status": "success"
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetRoutes",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetIntegrations",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetStages",
+      "status": "success",
+      "n_items": {
+        "Items": 2
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetAuthorizers",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApi",
+      "status": "success"
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetRoutes",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetIntegrations",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetStages",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetAuthorizers",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetApi",
+      "status": "success"
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetRoutes",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetIntegrations",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetStages",
+      "status": "success",
+      "n_items": {
+        "Items": 1
+      }
+    },
+    {
+      "service": "apigatewayv2",
+      "operation": "GetAuthorizers",
+      "status": "success",
+      "n_items": {
+        "Items": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "GetRole",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "ListAttachedRolePolicies",
+      "status": "success",
+      "n_items": {
+        "AttachedPolicies": 2
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListRolePolicies",
+      "status": "success",
+      "n_items": {
+        "PolicyNames": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetRole",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "ListAttachedRolePolicies",
+      "status": "success",
+      "n_items": {
+        "AttachedPolicies": 4
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "ListRolePolicies",
+      "status": "success",
+      "n_items": {
+        "PolicyNames": 0
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "s3",
+      "operation": "ListBuckets",
+      "status": "success",
+      "n_items": {
+        "Buckets": 3
+      }
+    },
+    {
+      "service": "s3",
+      "operation": "GetBucketLocation",
+      "status": "success"
+    },
+    {
+      "service": "s3",
+      "operation": "GetBucketLocation",
+      "status": "success"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "GetResourcePolicy",
+      "status": "error",
+      "error": "PolicyNotFoundException: An error occurred (PolicyNotFoundException) when calling the GetResourcePolicy operation: Resource-based policy not found for the provided ResourceArn: arn:aws:dynamodb:us-east-1:083127296577:table/DFSS_SessionState"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "GetResourcePolicy",
+      "status": "error",
+      "error": "PolicyNotFoundException: An error occurred (PolicyNotFoundException) when calling the GetResourcePolicy operation: Resource-based policy not found for the provided ResourceArn: arn:aws:dynamodb:us-east-1:083127296577:table/jakob-identity-profiles"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "GetResourcePolicy",
+      "status": "error",
+      "error": "PolicyNotFoundException: An error occurred (PolicyNotFoundException) when calling the GetResourcePolicy operation: Resource-based policy not found for the provided ResourceArn: arn:aws:dynamodb:us-east-1:083127296577:table/jakob-memory-store"
+    },
+    {
+      "service": "dynamodb",
+      "operation": "GetResourcePolicy",
+      "status": "error",
+      "error": "PolicyNotFoundException: An error occurred (PolicyNotFoundException) when calling the GetResourcePolicy operation: Resource-based policy not found for the provided ResourceArn: arn:aws:dynamodb:us-east-2:083127296577:table/us-os-memory"
+    },
+    {
+      "service": "iam",
+      "operation": "SimulatePrincipalPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulatePrincipalPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    }
+  ]
+}

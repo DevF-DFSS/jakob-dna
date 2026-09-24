@@ -1,0 +1,56 @@
+[
+  {
+    "kind": "table",
+    "region": "us-east-1",
+    "name": "DFSS_SessionState",
+    "status": "⚠️ MIGRATION REQUIRED"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-1",
+    "name": "jakob-identity-profiles",
+    "status": "⚠️ MIGRATION REQUIRED"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-1",
+    "name": "jakob-memory-store",
+    "status": "⚠️ MIGRATION REQUIRED"
+  },
+  {
+    "kind": "function_configuration",
+    "region": "us-east-1",
+    "name": "DFSS-ColdStart",
+    "status": "⚠️ MIGRATION REQUIRED"
+  },
+  {
+    "kind": "route_ingress",
+    "region": "us-east-1",
+    "name": "kirmld16gb ANY /session",
+    "status": "🚫 BLOCKED"
+  },
+  {
+    "kind": "route_ingress",
+    "region": "us-east-1",
+    "name": "qjiuor3yak ANY /us-os-brain",
+    "status": "🚫 BLOCKED"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-2",
+    "name": "us-os-memory",
+    "status": "⚠️ MIGRATION REQUIRED"
+  },
+  {
+    "kind": "function_configuration",
+    "region": "us-east-2",
+    "name": "us-os-brain",
+    "status": "⚠️ MIGRATION REQUIRED"
+  },
+  {
+    "kind": "route_ingress",
+    "region": "us-east-2",
+    "name": "p9qtqpd8mc ANY /us-os-brain",
+    "status": "🚫 BLOCKED"
+  }
+]
