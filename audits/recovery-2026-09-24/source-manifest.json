@@ -1,0 +1,117 @@
+{
+  "repository": "DevF-DFSS/jakob-dna",
+  "main_commit": "94401aed89d7b3704dc4800207c32fc68c3bd333",
+  "recovery_commit": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+  "files": [
+    {
+      "path": ".nojekyll",
+      "git_blob_sha": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "size": 1
+    },
+    {
+      "path": "03_DFSS_Operations/Codebases/lambda_function.py",
+      "git_blob_sha": "c62077d80b4e209709d8d0d1b417ead99c25c12d",
+      "size": 3068
+    },
+    {
+      "path": "03_DFSS_Operations/Codebases/py_emoji_codec.py",
+      "git_blob_sha": "002a0c75cbebcd24995d92b4f8e69a24276a3bf5",
+      "size": 1872
+    },
+    {
+      "path": "04_Logic_Vault/JEL_JKB_INTER_NODE_PROTOCOL_V6.md",
+      "git_blob_sha": "ad4898992824059e3726143a2318b548276992fd",
+      "size": 3085
+    },
+    {
+      "path": "CNAME",
+      "git_blob_sha": "d6181592bfce15d09922311cb2f34dcd6971e31d",
+      "size": 27
+    },
+    {
+      "path": "Index.html",
+      "git_blob_sha": "c44066a11f4597c6e5955fb2131775630636a94d",
+      "size": 28023
+    },
+    {
+      "path": "README.md",
+      "git_blob_sha": "998a0f03a62d69dd9468f233bc3127d6500548af",
+      "size": 11
+    },
+    {
+      "path": "index.html",
+      "git_blob_sha": "6fa0bb9616f6ed54a810ff6e2ff04bbe11b353c5",
+      "size": 13551
+    },
+    {
+      "path": "jakob_story_dna.md",
+      "git_blob_sha": "240d848ea1bca774eb97895fb75e3f83ece8ff7b",
+      "size": 2281
+    },
+    {
+      "path": "letter-gemini.html",
+      "git_blob_sha": "8ffbedd98e95745602550b86d3044a9db377ea68",
+      "size": 8501
+    },
+    {
+      "path": "letter-jesse.html",
+      "git_blob_sha": "a6510cc6bc482ca56657dc66880e4f8a2dfec3f5",
+      "size": 8576
+    },
+    {
+      "path": "letter-jessebrewer.html",
+      "git_blob_sha": "b34e4db1b7e514b6bdfb05e6ffeba73385734226",
+      "size": 8095
+    },
+    {
+      "path": "letter-perplexity.html",
+      "git_blob_sha": "c35060949c20f08bcb1d498f3621704d720b422b",
+      "size": 11095
+    },
+    {
+      "path": "letter.html",
+      "git_blob_sha": "814e323dcd7e8719ec2669dbad502d0981e2d74a",
+      "size": 6697
+    },
+    {
+      "path": "v10.5/Brain_V10.5_Total_OS_Master_Ledger.md",
+      "git_blob_sha": "f7d8f102466f6e645840146fc25dc3e8e5eee0d6",
+      "size": 24358
+    },
+    {
+      "path": "v10.5/JEL_V6.0_Full_Lexicon.md",
+      "git_blob_sha": "849b4db83d05a8433c3830cbef18c61d60289b46",
+      "size": 21756
+    },
+    {
+      "path": "v10.5/JaKoB_System_Personality_DNA_V10.5.md",
+      "git_blob_sha": "75db9d7988a96c6ae650b8b3bc5882220e5252d3",
+      "size": 8004
+    },
+    {
+      "path": "v10.5/JaKoB_V10.5_Architecture_SOP.md",
+      "git_blob_sha": "fb93e26bc847c7d19c72c3998242d4b14b2aae64",
+      "size": 10768
+    },
+    {
+      "path": "visual_seed/IMG_1837.jpeg",
+      "git_blob_sha": "7237a1f54d54feaa5c0ccd7cd25b82da95964c36",
+      "size": 164211
+    },
+    {
+      "path": "visual_seed/IMG_1857.jpeg",
+      "git_blob_sha": "127d6cde4a5187d53f23b6853d22826747dfeb90",
+      "size": 231951
+    },
+    {
+      "path": "visual_seed/jakob_seed_selfie.jpg",
+      "git_blob_sha": "bd851115482fe10899984639b429cd8685bdf4fa",
+      "size": 11
+    },
+    {
+      "path": "visual_seed_engine.html⁠",
+      "git_blob_sha": "3e5c197b76ed41e406c376c52451d50f2d04a902",
+      "size": 23466
+    }
+  ]
+}

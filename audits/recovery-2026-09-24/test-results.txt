@@ -1,0 +1,24 @@
+test_missing_is_unresolved (test_inventory.InventoryTests.test_missing_is_unresolved) ... ok
+test_name_without_provenance_is_unresolved (test_inventory.InventoryTests.test_name_without_provenance_is_unresolved) ... ok
+test_other_region_is_unresolved (test_inventory.InventoryTests.test_other_region_is_unresolved) ... ok
+test_scoped_evidence_matches (test_inventory.InventoryTests.test_scoped_evidence_matches) ... ok
+test_codec_balanced (test_recovery.RecoveryTests.test_codec_balanced) ... ok
+test_codec_unclosed (test_recovery.RecoveryTests.test_codec_unclosed) ... ok
+test_drift_blocks_write (test_recovery.RecoveryTests.test_drift_blocks_write) ... ok
+test_header_case_is_not_normalized (test_recovery.RecoveryTests.test_header_case_is_not_normalized) ... ok
+test_invalid_and_missing_digest (test_recovery.RecoveryTests.test_invalid_and_missing_digest) ... ok
+test_known_gap_bad_integrity_still_writes (test_recovery.RecoveryTests.test_known_gap_bad_integrity_still_writes) ... ok
+test_known_gap_digest_does_not_cover_stored_value (test_recovery.RecoveryTests.test_known_gap_digest_does_not_cover_stored_value) ... ok
+test_known_gap_extra_close_is_accepted (test_recovery.RecoveryTests.test_known_gap_extra_close_is_accepted) ... ok
+test_known_gap_missing_integrity_still_writes (test_recovery.RecoveryTests.test_known_gap_missing_integrity_still_writes) ... ok
+test_known_gap_v6_envelope_not_parsed (test_recovery.RecoveryTests.test_known_gap_v6_envelope_not_parsed) ... ok
+test_malformed_json_fails_without_write (test_recovery.RecoveryTests.test_malformed_json_fails_without_write) ... ok
+test_nonobject_json_fails_without_write (test_recovery.RecoveryTests.test_nonobject_json_fails_without_write) ... ok
+test_unicode_serialization (test_recovery.RecoveryTests.test_unicode_serialization) ... ok
+test_v6_protocol_header_is_drift (test_recovery.RecoveryTests.test_v6_protocol_header_is_drift) ... ok
+test_valid_digest (test_recovery.RecoveryTests.test_valid_digest) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.011s
+
+OK
