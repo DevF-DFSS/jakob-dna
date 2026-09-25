@@ -4,6 +4,7 @@ No downloading, SDK construction, credential discovery, signing, or uploading.
 """
 import argparse
 import hashlib
+import importlib.metadata
 import json
 from pathlib import Path
 import re
@@ -12,7 +13,7 @@ import sys
 import zipfile
 
 
-def build(core, candidate, output, source_commit, run_tests=True):
+def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=None):
     if not re.fullmatch('[0-9a-f]{40}', source_commit):
         raise ValueError('full_source_commit_required')
     if sys.version_info[:2] != (3,13):
@@ -23,12 +24,30 @@ def build(core, candidate, output, source_commit, run_tests=True):
             if path.is_symlink(): raise ValueError('symlink_not_allowed')
             files[name+'/'+path.name]=path.read_bytes()
     if not files: raise ValueError('empty_package')
+    files['aws_v6/bindings.json']=(candidate/'aws_v6/bindings.json').read_bytes()
+    dependencies=json.loads((candidate/'dependencies.lock.json').read_text())
+    wheelhouse=Path(wheelhouse) if wheelhouse else candidate/'wheelhouse'
+    for dependency in dependencies:
+        wheel=wheelhouse/dependency['filename']
+        if hashlib.sha256(wheel.read_bytes()).hexdigest()!=dependency['sha256']:
+            raise ValueError('wheel_hash_mismatch')
+        with zipfile.ZipFile(wheel) as archive:
+            for name in sorted(archive.namelist()):
+                if name.endswith('/'): continue
+                if name.startswith('/') or '..' in Path(name).parts: raise ValueError('invalid_wheel_path')
+                if '.data/' in name:
+                    # CLI scripts are not needed by the Lambda runtime.
+                    if '.data/scripts/' in name: continue
+                    raise ValueError('unsupported_wheel_data')
+                if name in files: raise ValueError('package_collision')
+                files[name]=archive.read(name)
     tests={'passed':False,'status':'not_run'}
     if run_tests:
         completed=subprocess.run([sys.executable,'-B',str(candidate/'tools/run_checks.py'),'--core',str(core)],
             check=True, capture_output=True, text=True)
         tests=json.loads(completed.stdout)
         if not tests['passed']: raise RuntimeError('checks_failed')
+        subprocess.run([sys.executable,'-B',str(candidate/'tools/lint_offline.py'),'-t',str(candidate/'infra/template.json'),'-r','us-east-1'],check=True,capture_output=True,text=True)
     output.mkdir(parents=True,exist_ok=True)
     artifact=output/'isolated-v6-candidate.zip'
     with zipfile.ZipFile(artifact,'w',compression=zipfile.ZIP_STORED) as archive:
@@ -41,15 +60,15 @@ def build(core, candidate, output, source_commit, run_tests=True):
     evidence=[]
     for root,prefix in [(core,'reference/isolated-v6'),(candidate,'aws/isolated-v6')]:
         for path in sorted(root.rglob('*')):
-            allowed = {'isolated_v6','tests','README.md'} if root == core else {'aws_v6','tests','tools','infra','README.md'}
+            allowed = {'isolated_v6','tests','README.md'} if root == core else {'aws_v6','tests','tools','infra','README.md','PREFLIGHT.md','dependencies.lock.json','requirements.lock','validation-toolchain.lock'}
             if (path.is_file() and path.relative_to(root).parts[0] in allowed and
-                    path.suffix in ('.py','.json','.md') and '__pycache__' not in path.parts):
+                    path.suffix in ('.py','.json','.md','.lock') and '__pycache__' not in path.parts):
                 evidence.append({'path':prefix+'/'+str(path.relative_to(root)), 'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
     manifest={'source_commit':source_commit,'source_binding':'caller-supplied commit; verify every input hash against that Git tree before deployment',
         'runtime_target':'python3.13','architecture':'x86_64','build_python':sys.version.split()[0],
-        'dependencies':{'third_party':{},'aws_sdk':'not bundled or imported; low-level client is injected; SDK selection/pinning unresolved'},
+        'dependencies':{'third_party':{d['name']:d['version'] for d in dependencies},'wheels':dependencies},
         'included_files':included,'source_inputs':evidence,'artifact_sha256':hashlib.sha256(artifact.read_bytes()).hexdigest(),
-        'tests':tests,'activation':'deny-all packaged entry point; authentication/SDK composition unresolved'}
+        'tests':tests,'cloudformation':{'tool':'cfn-lint','version':importlib.metadata.version('cfn-lint'),'region_schema':'us-east-1','passed':bool(run_tests),'network':'blocked'},'activation':'composition root wired; packaged bindings intentionally unconfigured; AWS trust unproven'}
     (output/'provenance.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
     return manifest
 
@@ -59,8 +78,9 @@ def main():
     parser.add_argument('--core',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--source-commit',required=True)
+    parser.add_argument('--wheelhouse',type=Path)
     args=parser.parse_args()
-    manifest=build(args.core.resolve(),Path(__file__).resolve().parents[1],args.output.resolve(),args.source_commit)
+    manifest=build(args.core.resolve(),Path(__file__).resolve().parents[1],args.output.resolve(),args.source_commit,wheelhouse=args.wheelhouse)
     print(json.dumps({'sha256':manifest['artifact_sha256'],'tests':manifest['tests']},sort_keys=True))
 
 if __name__=='__main__':

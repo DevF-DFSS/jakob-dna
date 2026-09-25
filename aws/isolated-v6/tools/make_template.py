@@ -13,13 +13,16 @@ def template():
     params = {
         'JwtIssuer': {'Type': 'String', 'AllowedPattern': 'https://.+', 'Description': 'Approved issuer; no provider provisioned'},
         'JwtAudience': {'Type': 'String', 'MinLength': 1},
+        'ClientIdsJson': {'Type': 'String', 'MinLength': 3, 'Description': 'Approved nonempty JSON array of client IDs'},
+        'BindingsVersion': {'Type': 'String', 'AllowedPattern': '[A-Za-z0-9_.-]{1,64}'},
+        'BindingsSha256': {'Type': 'String', 'AllowedPattern': '[0-9a-f]{64}'},
         'ArtifactBucket': {'Type': 'String', 'MinLength': 3},
         'ArtifactKey': {'Type': 'String', 'MinLength': 1},
         'ArtifactVersion': {'Type': 'String', 'MinLength': 1},
         'ArtifactCodeSha256': {'Type': 'String', 'AllowedPattern': '[A-Za-z0-9+/]{43}='},
     }
     r = {}
-    r['Events'] = resource('DynamoDB::Table', BillingMode='PAY_PER_REQUEST',
+    r['Events'] = resource('DynamoDB::Table', TableName=sub('jel-v6-${AWS::StackName}-events'), BillingMode='PAY_PER_REQUEST',
         AttributeDefinitions=[{'AttributeName': k, 'AttributeType': 'S'} for k in ('PK','SK')],
         KeySchema=[{'AttributeName': 'PK','KeyType': 'HASH'}, {'AttributeName': 'SK','KeyType': 'RANGE'}],
         PointInTimeRecoverySpecification={'PointInTimeRecoveryEnabled': True},
@@ -38,13 +41,16 @@ def template():
     r['Authorizer'] = resource('ApiGatewayV2::Authorizer', ApiId=ref('Api'), Name='V6Jwt', AuthorizerType='JWT',
         IdentitySource=['$request.header.Authorization'], JwtConfiguration={'Issuer':ref('JwtIssuer'),'Audience':[ref('JwtAudience')]})
     r['Function'] = resource('Lambda::Function', FunctionName=sub('${AWS::StackName}-v6'), Runtime='python3.13',
-        Architectures=['x86_64'], Handler='aws_v6.host.handler', Role=arn('ExecutionRole'), Timeout=10, MemorySize=256,
+        Architectures=['x86_64'], Handler='aws_v6.activation.handler', Role=arn('ExecutionRole'), Timeout=10, MemorySize=256,
         ReservedConcurrentExecutions=2,
         Code={'S3Bucket':ref('ArtifactBucket'),'S3Key':ref('ArtifactKey'),'S3ObjectVersion':ref('ArtifactVersion')},
         Environment={'Variables':{'V6_TABLE_NAME':ref('Events'),'EXPECTED_API_ID':ref('Api'),'EXPECTED_STAGE':'sandbox',
-            'EXPECTED_ISSUER':ref('JwtIssuer'),'EXPECTED_AUDIENCE':ref('JwtAudience'),'EXPECTED_REGION':ref('AWS::Region')}})
+            'EXPECTED_ISSUER':ref('JwtIssuer'),'EXPECTED_AUDIENCE':ref('JwtAudience'),'EXPECTED_REGION':ref('AWS::Region'),
+            'EXPECTED_CLIENT_IDS':ref('ClientIdsJson'),'BINDINGS_VERSION':ref('BindingsVersion'),
+            'BINDINGS_SHA256':ref('BindingsSha256'),
+            'EXPECTED_ALIAS_ARN':sub('arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-v6:sandbox')}})
     r['Function']['DependsOn'] = ['FunctionLogs']
-    r['CandidateVersion'] = resource('Lambda::Version', FunctionName=ref('Function'), CodeSha256=ref('ArtifactCodeSha256'), Description='Offline candidate; authentication not activated')
+    r['CandidateVersion'] = resource('Lambda::Version', FunctionName=ref('Function'), CodeSha256=ref('ArtifactCodeSha256'), Description='Offline candidate; reviewed packaged registry required')
     r['Alias'] = resource('Lambda::Alias', Name='sandbox', FunctionName=ref('Function'), FunctionVersion={'Fn::GetAtt':['CandidateVersion','Version']})
     r['Integration'] = resource('ApiGatewayV2::Integration', ApiId=ref('Api'), IntegrationType='AWS_PROXY', IntegrationMethod='POST',
         IntegrationUri=ref('Alias'), PayloadFormatVersion='2.0', TimeoutInMillis=10000)
@@ -57,7 +63,7 @@ def template():
         r[name] = resource('Lambda::Permission', Action='lambda:InvokeFunction', FunctionName=ref('Alias'), Principal='apigateway.amazonaws.com', SourceAccount=ref('AWS::AccountId'), SourceArn=sub('arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/'+path))
     r['ErrorsAlarm'] = resource('CloudWatch::Alarm', AlarmDescription='Sandbox invocation failures; action destination requires owner approval', Namespace='AWS/Lambda', MetricName='Errors', Dimensions=[{'Name':'FunctionName','Value':ref('Function')}], Statistic='Sum', Period=60, EvaluationPeriods=1, Threshold=1, ComparisonOperator='GreaterThanOrEqualToThreshold', TreatMissingData='notBreaching')
     r['ThrottleAlarm'] = resource('CloudWatch::Alarm', Namespace='AWS/Lambda', MetricName='Throttles', Dimensions=[{'Name':'FunctionName','Value':ref('Function')}], Statistic='Sum', Period=60, EvaluationPeriods=1, Threshold=1, ComparisonOperator='GreaterThanOrEqualToThreshold', TreatMissingData='notBreaching')
-    return {'AWSTemplateFormatVersion':'2010-09-09','Description':'OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged handler denies all traffic.',
+    return {'AWSTemplateFormatVersion':'2010-09-09','Description':'OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged registry is intentionally unconfigured.',
             'Parameters':params,'Resources':r,'Outputs':{'SandboxApi':{'Description':'Proposed sandbox endpoint','Value':sub('https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/sandbox')},'AliasArn':{'Description':'Only intended invocation target','Value':ref('Alias')}}}
 
 

@@ -158,7 +158,7 @@ class InfrastructureTests(unittest.TestCase):
             b=build(CORE,ROOT,Path(temp)/'b','1'*40,run_tests=False)
             self.assertEqual(a,b)
             self.assertEqual((Path(temp)/'a/isolated-v6-candidate.zip').read_bytes(),(Path(temp)/'b/isolated-v6-candidate.zip').read_bytes())
-            self.assertEqual({},a['dependencies']['third_party'])
+            self.assertEqual('1.40.35',a['dependencies']['third_party']['boto3'])
             self.assertFalse(a['tests']['passed'])
             self.assertTrue(all(not f['path'].startswith('tests') for f in a['included_files']))
     def test_source_sha_required(self):

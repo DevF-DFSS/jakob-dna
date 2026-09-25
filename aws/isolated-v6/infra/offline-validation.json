@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-25",
+  "cfn_lint": {
+    "version": "1.40.2",
+    "exit_code": 0,
+    "findings": 0,
+    "schema_region": "us-east-1",
+    "network": "blocked"
+  },
+  "template_sha256": "f413e926d52bfc339cd11588b55fe6784b09ad9f03014eb8569d43007266d9c8",
+  "unittest": {
+    "run": 177,
+    "pass": 177,
+    "fail": 0,
+    "skip": 0
+  },
+  "static_security": "allowlist and negative tests passed",
+  "cfn_guard": "not installed/not run",
+  "effective_aws_authorization": "UNRESOLVED"
+}

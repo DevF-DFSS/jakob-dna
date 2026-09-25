@@ -1,0 +1,44 @@
+[
+  {
+    "filename": "boto3-1.40.35-py3-none-any.whl",
+    "name": "boto3",
+    "sha256": "f4c1b01dd61e7733b453bca38b004ce030e26ee36e7a3d4a9e45a730b67bc38d",
+    "version": "1.40.35"
+  },
+  {
+    "filename": "botocore-1.40.35-py3-none-any.whl",
+    "name": "botocore",
+    "sha256": "c545de2cbbce161f54ca589fbb677bae14cdbfac7d5f1a27f6a620cb057c26f4",
+    "version": "1.40.35"
+  },
+  {
+    "filename": "jmespath-1.1.0-py3-none-any.whl",
+    "name": "jmespath",
+    "sha256": "a5663118de4908c91729bea0acadca56526eb2698e83de10cd116ae0f4e97c64",
+    "version": "1.1.0"
+  },
+  {
+    "filename": "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+    "name": "python-dateutil",
+    "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "version": "2.9.0.post0"
+  },
+  {
+    "filename": "s3transfer-0.14.0-py3-none-any.whl",
+    "name": "s3transfer",
+    "sha256": "ea3b790c7077558ed1f02a3072fb3cb992bbbd253392f4b6e9e8976941c7d456",
+    "version": "0.14.0"
+  },
+  {
+    "filename": "six-1.17.0-py2.py3-none-any.whl",
+    "name": "six",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "version": "1.17.0"
+  },
+  {
+    "filename": "urllib3-2.8.0-py3-none-any.whl",
+    "name": "urllib3",
+    "sha256": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3",
+    "version": "2.8.0"
+  }
+]
