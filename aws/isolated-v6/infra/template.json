@@ -192,7 +192,6 @@
         },
         "Timeout": 10,
         "MemorySize": 256,
-        "ReservedConcurrentExecutions": 2,
         "Code": {
           "S3Bucket": {
             "Ref": "ArtifactBucket"
@@ -346,8 +345,8 @@
           "Ref": "CandidateDeployment"
         },
         "DefaultRouteSettings": {
-          "ThrottlingBurstLimit": 10,
-          "ThrottlingRateLimit": 5
+          "ThrottlingBurstLimit": 2,
+          "ThrottlingRateLimit": 1
         }
       }
     },
@@ -422,6 +421,99 @@
         "Period": 60,
         "EvaluationPeriods": 1,
         "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "RejectedMetric": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "FunctionLogs"
+        },
+        "FilterPattern": "{ $.kind = \"v6_outcome\" && $.outcome = \"rejected\" }",
+        "MetricTransformations": [
+          {
+            "MetricNamespace": "JELV6/Sandbox",
+            "MetricName": {
+              "Fn::Sub": "${AWS::StackName}-rejected"
+            },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+    "RejectedAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "JELV6/Sandbox",
+        "MetricName": {
+          "Fn::Sub": "${AWS::StackName}-rejected"
+        },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "UnavailableMetric": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "FunctionLogs"
+        },
+        "FilterPattern": "{ $.kind = \"v6_outcome\" && $.outcome = \"unavailable\" }",
+        "MetricTransformations": [
+          {
+            "MetricNamespace": "JELV6/Sandbox",
+            "MetricName": {
+              "Fn::Sub": "${AWS::StackName}-unavailable"
+            },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+    "UnavailableAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "JELV6/Sandbox",
+        "MetricName": {
+          "Fn::Sub": "${AWS::StackName}-unavailable"
+        },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching"
+      }
+    },
+    "Gateway4xxAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "4xx",
+        "Dimensions": [
+          {
+            "Name": "ApiId",
+            "Value": {
+              "Ref": "Api"
+            }
+          },
+          {
+            "Name": "Stage",
+            "Value": "sandbox"
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 5,
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "TreatMissingData": "notBreaching"
       }

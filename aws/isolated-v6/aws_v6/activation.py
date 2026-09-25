@@ -6,6 +6,7 @@ from .claims import GatewayClaims
 from .config import settings, load_registry
 from .dynamodb import DynamoEventStore
 from .host import LambdaHost
+from .telemetry import emit_outcome
 
 
 def sdk_client(config):
@@ -36,7 +37,9 @@ def handler(event, context):
     try:
         if _host is None:
             _host=compose(os.environ)
-        return _host(event,context)
+        response = _host(event,context)
     except Exception:
         # Never emit configuration, SDK error text, claims or stack locals.
-        return Ingress._response(503,{'code':'startup_unavailable'})
+        response = Ingress._response(503,{'code':'startup_unavailable'})
+    emit_outcome(response.get('statusCode'))
+    return response

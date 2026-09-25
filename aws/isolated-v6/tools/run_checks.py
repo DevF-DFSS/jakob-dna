@@ -1,5 +1,7 @@
 """Offline test runner; deny socket use and record machine-readable results."""
 import argparse
+from contextlib import redirect_stdout
+import io
 import json
 from pathlib import Path
 import socket
@@ -22,7 +24,8 @@ def run(core, candidate):
     suite = unittest.TestSuite()
     for directory in [core / 'tests', candidate / 'tests']:
         suite.addTests(unittest.TestLoader().discover(str(directory)))
-    result = unittest.TextTestRunner(verbosity=0).run(suite)
+    with redirect_stdout(io.StringIO()):
+        result = unittest.TextTestRunner(verbosity=0).run(suite)
     return {'tests_run':result.testsRun, 'failures':len(result.failures), 'errors':len(result.errors),
             'skipped':len(result.skipped), 'passed':result.wasSuccessful(), 'network':'socket and SDK HTTP send denied; credential resolver denied'}
 

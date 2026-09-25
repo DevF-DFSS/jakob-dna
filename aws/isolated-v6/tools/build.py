@@ -60,7 +60,7 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
     evidence=[]
     for root,prefix in [(core,'reference/isolated-v6'),(candidate,'aws/isolated-v6')]:
         for path in sorted(root.rglob('*')):
-            allowed = {'isolated_v6','tests','README.md'} if root == core else {'aws_v6','tests','tools','infra','README.md','PREFLIGHT.md','dependencies.lock.json','requirements.lock','validation-toolchain.lock'}
+            allowed = {'isolated_v6','tests','README.md'} if root == core else {'aws_v6','tests','tools','infra','release','README.md','PREFLIGHT.md','dependencies.lock.json','requirements.lock','validation-toolchain.lock'}
             if (path.is_file() and path.relative_to(root).parts[0] in allowed and
                     path.suffix in ('.py','.json','.md','.lock') and '__pycache__' not in path.parts):
                 evidence.append({'path':prefix+'/'+str(path.relative_to(root)), 'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
@@ -68,6 +68,9 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
         'runtime_target':'python3.13','architecture':'x86_64','build_python':sys.version.split()[0],
         'dependencies':{'third_party':{d['name']:d['version'] for d in dependencies},'wheels':dependencies},
         'included_files':included,'source_inputs':evidence,'artifact_sha256':hashlib.sha256(artifact.read_bytes()).hexdigest(),
+        'template_sha256':hashlib.sha256((candidate/'infra/template.json').read_bytes()).hexdigest(),
+        'binding_sha256':hashlib.sha256((candidate/'aws_v6/bindings.json').read_bytes()).hexdigest(),
+        'release_manifest':'UNAPPROVED; offline consistency is not deployment authorization',
         'tests':tests,'cloudformation':{'tool':'cfn-lint','version':importlib.metadata.version('cfn-lint'),'region_schema':'us-east-1','passed':bool(run_tests),'network':'blocked'},'activation':'composition root wired; packaged bindings intentionally unconfigured; AWS trust unproven'}
     (output/'provenance.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
     return manifest
