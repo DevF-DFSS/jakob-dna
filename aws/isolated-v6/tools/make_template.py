@@ -42,7 +42,7 @@ def template():
         IdentitySource=['$request.header.Authorization'], JwtConfiguration={'Issuer':ref('JwtIssuer'),'Audience':[ref('JwtAudience')]})
     r['Function'] = resource('Lambda::Function', FunctionName=sub('${AWS::StackName}-v6'), Runtime='python3.13',
         Architectures=['x86_64'], Handler='aws_v6.activation.handler', Role=arn('ExecutionRole'), Timeout=10, MemorySize=256,
-        ReservedConcurrentExecutions=2,
+        
         Code={'S3Bucket':ref('ArtifactBucket'),'S3Key':ref('ArtifactKey'),'S3ObjectVersion':ref('ArtifactVersion')},
         Environment={'Variables':{'V6_TABLE_NAME':ref('Events'),'EXPECTED_API_ID':ref('Api'),'EXPECTED_STAGE':'sandbox',
             'EXPECTED_ISSUER':ref('JwtIssuer'),'EXPECTED_AUDIENCE':ref('JwtAudience'),'EXPECTED_REGION':ref('AWS::Region'),
@@ -58,11 +58,21 @@ def template():
         r[name] = resource('ApiGatewayV2::Route', ApiId=ref('Api'), RouteKey=route, AuthorizationType='JWT', AuthorizerId=ref('Authorizer'), AuthorizationScopes=[scope], Target=sub('integrations/${Integration}'))
     r['CandidateDeployment'] = resource('ApiGatewayV2::Deployment', ApiId=ref('Api'), Description='Explicit reviewed sandbox snapshot')
     r['CandidateDeployment']['DependsOn'] = ['PostRoute','GetRoute']
-    r['Stage'] = resource('ApiGatewayV2::Stage', ApiId=ref('Api'), StageName='sandbox', AutoDeploy=False, DeploymentId=ref('CandidateDeployment'), DefaultRouteSettings={'ThrottlingBurstLimit':10,'ThrottlingRateLimit':5})
+    r['Stage'] = resource('ApiGatewayV2::Stage', ApiId=ref('Api'), StageName='sandbox', AutoDeploy=False, DeploymentId=ref('CandidateDeployment'), DefaultRouteSettings={'ThrottlingBurstLimit':2,'ThrottlingRateLimit':1})
     for name, path in [('PostPermission','POST/v6/events'), ('GetPermission','GET/v6/senders/*/events/*')]:
         r[name] = resource('Lambda::Permission', Action='lambda:InvokeFunction', FunctionName=ref('Alias'), Principal='apigateway.amazonaws.com', SourceAccount=ref('AWS::AccountId'), SourceArn=sub('arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/'+path))
     r['ErrorsAlarm'] = resource('CloudWatch::Alarm', AlarmDescription='Sandbox invocation failures; action destination requires owner approval', Namespace='AWS/Lambda', MetricName='Errors', Dimensions=[{'Name':'FunctionName','Value':ref('Function')}], Statistic='Sum', Period=60, EvaluationPeriods=1, Threshold=1, ComparisonOperator='GreaterThanOrEqualToThreshold', TreatMissingData='notBreaching')
     r['ThrottleAlarm'] = resource('CloudWatch::Alarm', Namespace='AWS/Lambda', MetricName='Throttles', Dimensions=[{'Name':'FunctionName','Value':ref('Function')}], Statistic='Sum', Period=60, EvaluationPeriods=1, Threshold=1, ComparisonOperator='GreaterThanOrEqualToThreshold', TreatMissingData='notBreaching')
+    for outcome in ['rejected', 'unavailable']:
+        name = outcome.title()
+        r[name+'Metric'] = resource('Logs::MetricFilter', LogGroupName=ref('FunctionLogs'),
+            FilterPattern='{ $.kind = "v6_outcome" && $.outcome = "'+outcome+'" }',
+            MetricTransformations=[{'MetricNamespace':'JELV6/Sandbox','MetricName':sub('${AWS::StackName}-'+outcome),'MetricValue':'1','DefaultValue':0}])
+        r[name+'Alarm'] = resource('CloudWatch::Alarm', Namespace='JELV6/Sandbox', MetricName=sub('${AWS::StackName}-'+outcome),
+            Statistic='Sum',Period=60,EvaluationPeriods=1,Threshold=1,ComparisonOperator='GreaterThanOrEqualToThreshold',TreatMissingData='notBreaching')
+    r['Gateway4xxAlarm'] = resource('CloudWatch::Alarm', Namespace='AWS/ApiGateway',MetricName='4xx',
+        Dimensions=[{'Name':'ApiId','Value':ref('Api')},{'Name':'Stage','Value':'sandbox'}],
+        Statistic='Sum',Period=60,EvaluationPeriods=1,Threshold=5,ComparisonOperator='GreaterThanOrEqualToThreshold',TreatMissingData='notBreaching')
     return {'AWSTemplateFormatVersion':'2010-09-09','Description':'OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged registry is intentionally unconfigured.',
             'Parameters':params,'Resources':r,'Outputs':{'SandboxApi':{'Description':'Proposed sandbox endpoint','Value':sub('https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/sandbox')},'AliasArn':{'Description':'Only intended invocation target','Value':ref('Alias')}}}
 

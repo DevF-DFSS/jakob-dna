@@ -1,0 +1,16 @@
+{
+  "claims": {
+    "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_SYNTHETIC",
+    "aud": "https://v6.sandbox.invalid",
+    "client_id": "syntheticclient000000000001",
+    "sub": "11111111-2222-4333-8444-555555555555",
+    "token_use": "access",
+    "scope": "jel-v6/read jel-v6/write",
+    "exp": "1790251260",
+    "iat": "1790251190",
+    "auth_time": "1790251180",
+    "version": "2",
+    "jti": "22222222-3333-4444-8555-666666666666"
+  },
+  "scopes": ["jel-v6/read", "jel-v6/write"]
+}

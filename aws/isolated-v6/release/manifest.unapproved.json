@@ -1,0 +1,16 @@
+{
+  "schema_version": "jel-v6-release/1",
+  "approval": {"status": "UNAPPROVED", "review_reference": null},
+  "account_id": null,
+  "region": null,
+  "issuer": null,
+  "audience": null,
+  "client_id": null,
+  "allowed_scopes": [],
+  "binding_version": null,
+  "binding_sha256": null,
+  "source_commit": null,
+  "template_sha256": null,
+  "artifact_sha256": null,
+  "artifact": {"bucket": null, "key": null, "version": null}
+}

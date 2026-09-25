@@ -4,13 +4,13 @@ import json
 
 def check(t):
     r = t['Resources']
-    allowed = {'DynamoDB::Table','Logs::LogGroup','IAM::Role','ApiGatewayV2::Api','ApiGatewayV2::Authorizer',
+    allowed = {'DynamoDB::Table','Logs::LogGroup','Logs::MetricFilter','IAM::Role','ApiGatewayV2::Api','ApiGatewayV2::Authorizer',
                'Lambda::Function','Lambda::Version','Lambda::Alias','ApiGatewayV2::Integration','ApiGatewayV2::Route',
                'ApiGatewayV2::Deployment','ApiGatewayV2::Stage','Lambda::Permission','CloudWatch::Alarm'}
     assert all(x['Type'].removeprefix('AWS::') in allowed for x in r.values())
     text = json.dumps(t)
     for forbidden in ['DFSS-ColdStart','us-os-brain','DFSS_SessionState','jakob-memory-store','jakob-identity-profiles',
-                      'us-os-memory','GEMINI_API_KEY','SECRET_HANDSHAKE_TOKEN','AWS::Lambda::Url','ManagedPolicyArns','ImportValue']:
+                      'us-os-memory','kirmld16gb','qjiuor3yak','p9qtqpd8mc','JakobLambdaExecutionRole','GEMINI_API_KEY','SECRET_HANDSHAKE_TOKEN','AWS::Lambda::Url','ManagedPolicyArns','ImportValue']:
         assert forbidden not in text, forbidden
     routes = [x['Properties'] for x in r.values() if x['Type']=='AWS::ApiGatewayV2::Route']
     assert {x['RouteKey'] for x in routes} == {'POST /v6/events','GET /v6/senders/{sender}/events/{event_id}'}
@@ -19,6 +19,9 @@ def check(t):
         assert route['AuthorizationType']=='JWT' and route['AuthorizerId']=={'Ref':'Authorizer'}
         assert route['AuthorizationScopes']==['jel-v6/write' if route['RouteKey'].startswith('POST') else 'jel-v6/read']
         assert route['Target']=={'Fn::Sub':'integrations/${Integration}'}
+    assert 'ReservedConcurrentExecutions' not in r['Function']['Properties']
+    assert r['Stage']['Properties']['DefaultRouteSettings']=={'ThrottlingBurstLimit':2,'ThrottlingRateLimit':1}
+    assert 'RouteSettings' not in r['Stage']['Properties']
     assert r['Stage']['Properties']['StageName']=='sandbox'
     assert r['Stage']['Properties']['AutoDeploy'] is False
     assert r['Stage']['Properties']['DeploymentId']=={'Ref':'CandidateDeployment'}
@@ -62,5 +65,15 @@ def check(t):
     assert r['Events']['Properties']['KeySchema']==[{'AttributeName':'PK','KeyType':'HASH'},{'AttributeName':'SK','KeyType':'RANGE'}]
     # No additional resource with a second policy or invocation grant may bypass the checks.
     assert set(r)=={'Events','FunctionLogs','ExecutionRole','Api','Authorizer','Function','CandidateVersion','Alias',
-                   'Integration','PostRoute','GetRoute','CandidateDeployment','Stage','PostPermission','GetPermission','ErrorsAlarm','ThrottleAlarm'}
+                   'Integration','PostRoute','GetRoute','CandidateDeployment','Stage','PostPermission','GetPermission','ErrorsAlarm','ThrottleAlarm','RejectedMetric','UnavailableMetric','RejectedAlarm','UnavailableAlarm','Gateway4xxAlarm'}
+    for outcome in ['rejected','unavailable']:
+        name=outcome.title()
+        assert r[name+'Metric']['Properties']=={
+            'LogGroupName':{'Ref':'FunctionLogs'},
+            'FilterPattern':'{ $.kind = "v6_outcome" && $.outcome = "'+outcome+'" }',
+            'MetricTransformations':[{'MetricNamespace':'JELV6/Sandbox','MetricName':{'Fn::Sub':'${AWS::StackName}-'+outcome},'MetricValue':'1','DefaultValue':0}]}
+        alarm=r[name+'Alarm']['Properties']
+        assert alarm['Namespace']=='JELV6/Sandbox'
+        assert alarm['MetricName']=={'Fn::Sub':'${AWS::StackName}-'+outcome}
+    assert r['FunctionLogs']['Properties']['RetentionInDays']==30
     return True

@@ -26,7 +26,7 @@ class GatewayClaims:
             if type(claims) is not dict or len(claims) > 64: return None
             # Explicit single-audience, access-token profile. No azp/client_id or
             # missing-aud fallback and no client-provided identity fields.
-            required = {'iss','aud','sub','client_id','token_use','scope','exp','iat','nbf'}
+            required = {'iss','aud','sub','client_id','token_use','scope','exp','iat'}
             if not required <= set(claims): return None
             if any(type(k) is not str or type(v) is not str or len(k) > 128 or len(v) > 4096 for k,v in claims.items()): return None
             if claims['iss'] != c.issuer or claims['aud'] != c.audience or claims['token_use'] != 'access': return None
@@ -34,11 +34,15 @@ class GatewayClaims:
             for name in ('sub','client_id'):
                 value = claims[name]
                 if not value or value != value.strip() or any(ord(ch) < 33 or ord(ch) == 127 for ch in value): return None
-            for name in ('exp','iat','nbf'):
+            for name in ('exp','iat') + (('nbf',) if 'nbf' in claims else ()):
                 if not re.fullmatch(r'[0-9]{1,12}', claims[name]): return None
             now = self.clock_ms() / 1000
-            exp, issued, nbf = (int(claims[k]) for k in ('exp','iat','nbf'))
-            if exp <= now or issued > now or nbf > now or issued >= exp or nbf >= exp: return None
+            exp, issued = (int(claims[k]) for k in ('exp','iat'))
+            if exp <= now or issued > now or issued >= exp: return None
+            # Absence is allowed; a present value is never ignored or coerced.
+            if 'nbf' in claims:
+                nbf = int(claims['nbf'])
+                if nbf > now or nbf >= exp: return None
             if type(scopes) is not list or not scopes or any(type(s) is not str for s in scopes): return None
             claim_scopes = claims['scope'].split(' ')
             if (len(scopes) != len(set(scopes)) or len(claim_scopes) != len(set(claim_scopes)) or
