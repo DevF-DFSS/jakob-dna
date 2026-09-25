@@ -1,0 +1,696 @@
+[
+  {
+    "kind": "function",
+    "region": "us-east-1",
+    "name": "DFSS-ColdStart",
+    "before": {
+      "FunctionName": "DFSS-ColdStart",
+      "Runtime": "nodejs24.x",
+      "Handler": "index.handler",
+      "Role": "arn:aws:iam::083127296577:role/service-role/DFSS-ColdStart-role-io8kh35x",
+      "CodeSha256": "oxASv7o2YUrSemT/446BL/wOwSFAB48wVLKegnRWcVc=",
+      "CodeSize": 1395,
+      "LastModified": "2026-07-01T00:51:03.000+0000",
+      "PackageType": "Zip",
+      "Architectures": [
+        "x86_64"
+      ],
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "Timeout": 3,
+      "MemorySize": 128,
+      "environment_names": []
+    },
+    "after": {
+      "FunctionName": "DFSS-ColdStart",
+      "Runtime": "nodejs24.x",
+      "Handler": "index.handler",
+      "Role": "arn:aws:iam::083127296577:role/service-role/DFSS-ColdStart-role-io8kh35x",
+      "CodeSha256": "oxASv7o2YUrSemT/446BL/wOwSFAB48wVLKegnRWcVc=",
+      "CodeSize": 1395,
+      "LastModified": "2026-07-01T00:51:03.000+0000",
+      "PackageType": "Zip",
+      "Architectures": [
+        "x86_64"
+      ],
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "Timeout": 3,
+      "MemorySize": 128,
+      "environment_names": []
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "invoke_policy",
+    "region": "us-east-1",
+    "name": "DFSS-ColdStart",
+    "before": {
+      "Version": "2012-10-17",
+      "Id": "default",
+      "Statement": [
+        {
+          "Sid": "15f46014-0a80-5abe-a9a7-a1aa243f8449",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-east-1:083127296577:kirmld16gb/*/*/session"
+            }
+          }
+        }
+      ]
+    },
+    "after": {
+      "Version": "2012-10-17",
+      "Id": "default",
+      "Statement": [
+        {
+          "Sid": "15f46014-0a80-5abe-a9a7-a1aa243f8449",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-east-1:083127296577:kirmld16gb/*/*/session"
+            }
+          }
+        }
+      ]
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "aliases",
+    "region": "us-east-1",
+    "name": "DFSS-ColdStart",
+    "before": [],
+    "after": [],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-1",
+    "name": "DFSS_SessionState",
+    "before": {
+      "TableName": "DFSS_SessionState",
+      "KeySchema": [
+        {
+          "AttributeName": "session_id",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "timestamp",
+          "KeyType": "RANGE"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "session_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "timestamp",
+          "AttributeType": "S"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "after": {
+      "TableName": "DFSS_SessionState",
+      "KeySchema": [
+        {
+          "AttributeName": "session_id",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "timestamp",
+          "KeyType": "RANGE"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "session_id",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "timestamp",
+          "AttributeType": "S"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-1",
+    "name": "jakob-identity-profiles",
+    "before": {
+      "TableName": "jakob-identity-profiles",
+      "KeySchema": [
+        {
+          "AttributeName": "profileId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "version",
+          "KeyType": "RANGE"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "profileId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "version",
+          "AttributeType": "N"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "after": {
+      "TableName": "jakob-identity-profiles",
+      "KeySchema": [
+        {
+          "AttributeName": "profileId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "version",
+          "KeyType": "RANGE"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "profileId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "version",
+          "AttributeType": "N"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-1",
+    "name": "jakob-memory-store",
+    "before": {
+      "TableName": "jakob-memory-store",
+      "KeySchema": [
+        {
+          "AttributeName": "memoryId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "timestamp",
+          "KeyType": "RANGE"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "memoryId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "sessionId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "timestamp",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "userId",
+          "AttributeType": "S"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "after": {
+      "TableName": "jakob-memory-store",
+      "KeySchema": [
+        {
+          "AttributeName": "memoryId",
+          "KeyType": "HASH"
+        },
+        {
+          "AttributeName": "timestamp",
+          "KeyType": "RANGE"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "memoryId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "sessionId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "timestamp",
+          "AttributeType": "N"
+        },
+        {
+          "AttributeName": "userId",
+          "AttributeType": "S"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_routes",
+    "region": "us-east-1",
+    "name": "kirmld16gb",
+    "before": [
+      {
+        "RouteId": "178fhu9",
+        "RouteKey": "ANY /session",
+        "Target": "integrations/vdrg1ng",
+        "AuthorizationType": "NONE",
+        "ApiKeyRequired": false
+      }
+    ],
+    "after": [
+      {
+        "RouteId": "178fhu9",
+        "RouteKey": "ANY /session",
+        "Target": "integrations/vdrg1ng",
+        "AuthorizationType": "NONE",
+        "ApiKeyRequired": false
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_integrations",
+    "region": "us-east-1",
+    "name": "kirmld16gb",
+    "before": [
+      {
+        "IntegrationId": "vdrg1ng",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart",
+        "IntegrationMethod": "POST",
+        "PayloadFormatVersion": "2.0",
+        "ConnectionType": "INTERNET",
+        "TimeoutInMillis": 30000
+      }
+    ],
+    "after": [
+      {
+        "IntegrationId": "vdrg1ng",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:us-east-1:083127296577:function:DFSS-ColdStart",
+        "IntegrationMethod": "POST",
+        "PayloadFormatVersion": "2.0",
+        "ConnectionType": "INTERNET",
+        "TimeoutInMillis": 30000
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_stages",
+    "region": "us-east-1",
+    "name": "kirmld16gb",
+    "before": [
+      {
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DeploymentId": "9i6n13"
+      }
+    ],
+    "after": [
+      {
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DeploymentId": "9i6n13"
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_authorizers",
+    "region": "us-east-1",
+    "name": "kirmld16gb",
+    "before": [],
+    "after": [],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_routes",
+    "region": "us-east-1",
+    "name": "qjiuor3yak",
+    "before": [
+      {
+        "RouteId": "osh6g91",
+        "RouteKey": "ANY /us-os-brain",
+        "Target": "integrations/p8qi7cr",
+        "AuthorizationType": "NONE",
+        "ApiKeyRequired": false,
+        "AuthorizationScopes": []
+      }
+    ],
+    "after": [
+      {
+        "RouteId": "osh6g91",
+        "RouteKey": "ANY /us-os-brain",
+        "Target": "integrations/p8qi7cr",
+        "AuthorizationType": "NONE",
+        "ApiKeyRequired": false,
+        "AuthorizationScopes": []
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_integrations",
+    "region": "us-east-1",
+    "name": "qjiuor3yak",
+    "before": [
+      {
+        "IntegrationId": "p8qi7cr",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+        "IntegrationMethod": "POST",
+        "PayloadFormatVersion": "2.0",
+        "ConnectionType": "INTERNET",
+        "TimeoutInMillis": 30000
+      }
+    ],
+    "after": [
+      {
+        "IntegrationId": "p8qi7cr",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+        "IntegrationMethod": "POST",
+        "PayloadFormatVersion": "2.0",
+        "ConnectionType": "INTERNET",
+        "TimeoutInMillis": 30000
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_stages",
+    "region": "us-east-1",
+    "name": "qjiuor3yak",
+    "before": [
+      {
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DeploymentId": "1tdlum"
+      }
+    ],
+    "after": [
+      {
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DeploymentId": "1tdlum"
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_authorizers",
+    "region": "us-east-1",
+    "name": "qjiuor3yak",
+    "before": [],
+    "after": [],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "function",
+    "region": "us-east-2",
+    "name": "us-os-brain",
+    "before": {
+      "FunctionName": "us-os-brain",
+      "Runtime": "python3.12",
+      "Handler": "lambda_function.lambda_handler",
+      "Role": "arn:aws:iam::083127296577:role/service-role/us-os-brain-role-c7v6jeb1",
+      "CodeSha256": "JhkvoF8994yx4+vDTXFULD4+iNXCaafqsJmcrbnoI8M=",
+      "CodeSize": 2909,
+      "LastModified": "2026-06-28T17:51:04.000+0000",
+      "PackageType": "Zip",
+      "Architectures": [
+        "x86_64"
+      ],
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "Timeout": 3,
+      "MemorySize": 128,
+      "environment_names": [
+        "GEMINI_API_KEY",
+        "SECRET_HANDSHAKE_TOKEN"
+      ]
+    },
+    "after": {
+      "FunctionName": "us-os-brain",
+      "Runtime": "python3.12",
+      "Handler": "lambda_function.lambda_handler",
+      "Role": "arn:aws:iam::083127296577:role/service-role/us-os-brain-role-c7v6jeb1",
+      "CodeSha256": "JhkvoF8994yx4+vDTXFULD4+iNXCaafqsJmcrbnoI8M=",
+      "CodeSize": 2909,
+      "LastModified": "2026-06-28T17:51:04.000+0000",
+      "PackageType": "Zip",
+      "Architectures": [
+        "x86_64"
+      ],
+      "State": "Active",
+      "LastUpdateStatus": "Successful",
+      "Timeout": 3,
+      "MemorySize": 128,
+      "environment_names": [
+        "GEMINI_API_KEY",
+        "SECRET_HANDSHAKE_TOKEN"
+      ]
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "invoke_policy",
+    "region": "us-east-2",
+    "name": "us-os-brain",
+    "before": {
+      "Version": "2012-10-17",
+      "Id": "default",
+      "Statement": [
+        {
+          "Sid": "lambda-c0d77fe0-5179-4d3e-877a-73dd0a9e964b",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-east-2:083127296577:p9qtqpd8mc/*/*/us-os-brain"
+            }
+          }
+        },
+        {
+          "Sid": "b11817a8-d8cb-5d38-95ef-7ad019f487df",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-east-2:083127296577:qjiuor3yak/*/*/us-os-brain"
+            }
+          }
+        }
+      ]
+    },
+    "after": {
+      "Version": "2012-10-17",
+      "Id": "default",
+      "Statement": [
+        {
+          "Sid": "lambda-c0d77fe0-5179-4d3e-877a-73dd0a9e964b",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-east-2:083127296577:p9qtqpd8mc/*/*/us-os-brain"
+            }
+          }
+        },
+        {
+          "Sid": "b11817a8-d8cb-5d38-95ef-7ad019f487df",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "apigateway.amazonaws.com"
+          },
+          "Action": "lambda:InvokeFunction",
+          "Resource": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+          "Condition": {
+            "ArnLike": {
+              "AWS:SourceArn": "arn:aws:execute-api:us-east-2:083127296577:qjiuor3yak/*/*/us-os-brain"
+            }
+          }
+        }
+      ]
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "aliases",
+    "region": "us-east-2",
+    "name": "us-os-brain",
+    "before": [],
+    "after": [],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "table",
+    "region": "us-east-2",
+    "name": "us-os-memory",
+    "before": {
+      "TableName": "us-os-memory",
+      "KeySchema": [
+        {
+          "AttributeName": "session-id",
+          "KeyType": "HASH"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "session-id",
+          "AttributeType": "S"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "after": {
+      "TableName": "us-os-memory",
+      "KeySchema": [
+        {
+          "AttributeName": "session-id",
+          "KeyType": "HASH"
+        }
+      ],
+      "AttributeDefinitions": [
+        {
+          "AttributeName": "session-id",
+          "AttributeType": "S"
+        }
+      ],
+      "TableStatus": "ACTIVE"
+    },
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_routes",
+    "region": "us-east-2",
+    "name": "p9qtqpd8mc",
+    "before": [
+      {
+        "RouteId": "gwxo1x4",
+        "RouteKey": "ANY /us-os-brain",
+        "Target": "integrations/12kybv7",
+        "AuthorizationType": "NONE",
+        "ApiKeyRequired": false
+      }
+    ],
+    "after": [
+      {
+        "RouteId": "gwxo1x4",
+        "RouteKey": "ANY /us-os-brain",
+        "Target": "integrations/12kybv7",
+        "AuthorizationType": "NONE",
+        "ApiKeyRequired": false
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_integrations",
+    "region": "us-east-2",
+    "name": "p9qtqpd8mc",
+    "before": [
+      {
+        "IntegrationId": "12kybv7",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+        "IntegrationMethod": "POST",
+        "PayloadFormatVersion": "2.0",
+        "ConnectionType": "INTERNET",
+        "TimeoutInMillis": 30000
+      }
+    ],
+    "after": [
+      {
+        "IntegrationId": "12kybv7",
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": "arn:aws:lambda:us-east-2:083127296577:function:us-os-brain",
+        "IntegrationMethod": "POST",
+        "PayloadFormatVersion": "2.0",
+        "ConnectionType": "INTERNET",
+        "TimeoutInMillis": 30000
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_stages",
+    "region": "us-east-2",
+    "name": "p9qtqpd8mc",
+    "before": [
+      {
+        "StageName": "default",
+        "AutoDeploy": true,
+        "DeploymentId": "rfpmoo"
+      },
+      {
+        "StageName": "v2",
+        "AutoDeploy": true,
+        "DeploymentId": "rfpmoo"
+      }
+    ],
+    "after": [
+      {
+        "StageName": "default",
+        "AutoDeploy": true,
+        "DeploymentId": "rfpmoo"
+      },
+      {
+        "StageName": "v2",
+        "AutoDeploy": true,
+        "DeploymentId": "rfpmoo"
+      }
+    ],
+    "delta": "unchanged"
+  },
+  {
+    "kind": "api_authorizers",
+    "region": "us-east-2",
+    "name": "p9qtqpd8mc",
+    "before": [],
+    "after": [],
+    "delta": "unchanged"
+  }
+]
