@@ -1,0 +1,600 @@
+[
+  {
+    "number": 2,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/2",
+    "head": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+    "head_ref": "jakob-recovery-2026-09-23",
+    "base": "94401aed89d7b3704dc4800207c32fc68c3bd333",
+    "base_ref": "main",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "AGENTS.md",
+        "status": "added",
+        "additions": 61,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/CAPABILITY_REGISTRY.md",
+        "status": "added",
+        "additions": 19,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/RECOVERY_SEED.md",
+        "status": "added",
+        "additions": 52,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/UNRESOLVED.md",
+        "status": "added",
+        "additions": 28,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "c39b0df03a709a89bca2383133ed270ed1fb1529",
+        "parents": [
+          "94401aed89d7b3704dc4800207c32fc68c3bd333"
+        ]
+      },
+      {
+        "sha": "0df329c28ee6762a988fe45b314260560e6ceb68",
+        "parents": [
+          "c39b0df03a709a89bca2383133ed270ed1fb1529"
+        ]
+      },
+      {
+        "sha": "92d84fab06205ac3060cc1f6fefac4cfaa7b9028",
+        "parents": [
+          "0df329c28ee6762a988fe45b314260560e6ceb68"
+        ]
+      },
+      {
+        "sha": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+        "parents": [
+          "92d84fab06205ac3060cc1f6fefac4cfaa7b9028"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 3,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/3",
+    "head": "8b42fd0ebc5850a82e2629006677ad41900c1748",
+    "head_ref": "codex/recovery-audit-2026-09-24",
+    "base": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+    "base_ref": "jakob-recovery-2026-09-23",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "audits/recovery-2026-09-24/AUDIT.md",
+        "status": "added",
+        "additions": 102,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/compare_inventory.py",
+        "status": "added",
+        "additions": 23,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/expected_resources.json",
+        "status": "added",
+        "additions": 79,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/inventory-report.json",
+        "status": "added",
+        "additions": 112,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/inventory.empty.json",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/source-manifest.json",
+        "status": "added",
+        "additions": 117,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/test-results.txt",
+        "status": "added",
+        "additions": 24,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/test_inventory.py",
+        "status": "added",
+        "additions": 18,
+        "deletions": 0
+      },
+      {
+        "path": "audits/recovery-2026-09-24/test_recovery.py",
+        "status": "added",
+        "additions": 106,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/RECOVERY_AUDIT_2026-09-24.md",
+        "status": "added",
+        "additions": 20,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "8b42fd0ebc5850a82e2629006677ad41900c1748",
+        "parents": [
+          "6cc3649a9801fa7a5f7e14f399e8725190180083"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 4,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/4",
+    "head": "cbe8eeff045802a305a98b78d743328f17403dcf",
+    "head_ref": "codex/jel-v6-integrity-remediation-2026-09-24",
+    "base": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+    "base_ref": "jakob-recovery-2026-09-23",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "03_DFSS_Operations/Codebases/lambda_function.py",
+        "status": "modified",
+        "additions": 157,
+        "deletions": 59
+      },
+      {
+        "path": "04_Logic_Vault/JEL_JKB_INTER_NODE_PROTOCOL_V6.md",
+        "status": "modified",
+        "additions": 74,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/REMEDIATION_2026-09-24.md",
+        "status": "added",
+        "additions": 41,
+        "deletions": 0
+      },
+      {
+        "path": "tests/test_lambda_envelope.py",
+        "status": "added",
+        "additions": 256,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "cbe8eeff045802a305a98b78d743328f17403dcf",
+        "parents": [
+          "6cc3649a9801fa7a5f7e14f399e8725190180083"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 5,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/5",
+    "head": "a4c2c2666345e663e9f0678878b3c0e1abcc6a9a",
+    "head_ref": "codex/aws-compatibility-audit-2026-09-24",
+    "base": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+    "base_ref": "jakob-recovery-2026-09-23",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "audits/aws-compatibility-2026-09-24/AUDIT.md",
+        "status": "added",
+        "additions": 183,
+        "deletions": 0
+      },
+      {
+        "path": "audits/aws-compatibility-2026-09-24/check_contract.py",
+        "status": "added",
+        "additions": 55,
+        "deletions": 0
+      },
+      {
+        "path": "audits/aws-compatibility-2026-09-24/contract-checks.json",
+        "status": "added",
+        "additions": 56,
+        "deletions": 0
+      },
+      {
+        "path": "audits/aws-compatibility-2026-09-24/evidence.json",
+        "status": "added",
+        "additions": 2081,
+        "deletions": 0
+      },
+      {
+        "path": "audits/aws-compatibility-2026-09-24/test_contract.py",
+        "status": "added",
+        "additions": 34,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/AWS_COMPATIBILITY_2026-09-24.md",
+        "status": "added",
+        "additions": 35,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "a4c2c2666345e663e9f0678878b3c0e1abcc6a9a",
+        "parents": [
+          "6cc3649a9801fa7a5f7e14f399e8725190180083"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 6,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/6",
+    "head": "8ec33eda8a75e1994257456c3efa1985a31039e7",
+    "head_ref": "codex/isolated-v6-design-2026-09-24",
+    "base": "6cc3649a9801fa7a5f7e14f399e8725190180083",
+    "base_ref": "jakob-recovery-2026-09-23",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "designs/isolated-v6-2026-09-24/DESIGN.md",
+        "status": "added",
+        "additions": 321,
+        "deletions": 0
+      },
+      {
+        "path": "designs/isolated-v6-2026-09-24/README.md",
+        "status": "added",
+        "additions": 27,
+        "deletions": 0
+      },
+      {
+        "path": "designs/isolated-v6-2026-09-24/model.py",
+        "status": "added",
+        "additions": 85,
+        "deletions": 0
+      },
+      {
+        "path": "designs/isolated-v6-2026-09-24/test_model.py",
+        "status": "added",
+        "additions": 110,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/ISOLATED_V6_DESIGN_2026-09-24.md",
+        "status": "added",
+        "additions": 46,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "8ec33eda8a75e1994257456c3efa1985a31039e7",
+        "parents": [
+          "6cc3649a9801fa7a5f7e14f399e8725190180083"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 7,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/7",
+    "head": "401893f24e784795efa900ea32554ab1ca61e64c",
+    "head_ref": "codex/isolated-v6-offline-2026-09-24",
+    "base": "8ec33eda8a75e1994257456c3efa1985a31039e7",
+    "base_ref": "codex/isolated-v6-design-2026-09-24",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "docs/current-canon/ISOLATED_V6_OFFLINE_2026-09-24.md",
+        "status": "added",
+        "additions": 38,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/README.md",
+        "status": "added",
+        "additions": 128,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/__init__.py",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/auth.py",
+        "status": "added",
+        "additions": 82,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/contract.py",
+        "status": "added",
+        "additions": 56,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/envelope.py",
+        "status": "added",
+        "additions": 64,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/errors.py",
+        "status": "added",
+        "additions": 5,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/http.py",
+        "status": "added",
+        "additions": 130,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/service.py",
+        "status": "added",
+        "additions": 75,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/isolated_v6/store.py",
+        "status": "added",
+        "additions": 59,
+        "deletions": 0
+      },
+      {
+        "path": "reference/isolated-v6/tests/test_ingress.py",
+        "status": "added",
+        "additions": 296,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "401893f24e784795efa900ea32554ab1ca61e64c",
+        "parents": [
+          "8ec33eda8a75e1994257456c3efa1985a31039e7"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 8,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/8",
+    "head": "d1f24c260d0b5dd00dafae39fc4e585cf496780c",
+    "head_ref": "codex/isolated-v6-aws-candidate-2026-09-24",
+    "base": "401893f24e784795efa900ea32554ab1ca61e64c",
+    "base_ref": "codex/isolated-v6-offline-2026-09-24",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "aws/isolated-v6/README.md",
+        "status": "added",
+        "additions": 161,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/__init__.py",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/dynamodb.py",
+        "status": "added",
+        "additions": 116,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/host.py",
+        "status": "added",
+        "additions": 36,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/infra/template.json",
+        "status": "added",
+        "additions": 416,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tests/test_aws_candidate.py",
+        "status": "added",
+        "additions": 187,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tools/build.py",
+        "status": "added",
+        "additions": 67,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tools/make_template.py",
+        "status": "added",
+        "additions": 65,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tools/run_checks.py",
+        "status": "added",
+        "additions": 34,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tools/security.py",
+        "status": "added",
+        "additions": 63,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/ISOLATED_V6_AWS_CANDIDATE_2026-09-24.md",
+        "status": "added",
+        "additions": 47,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "d1f24c260d0b5dd00dafae39fc4e585cf496780c",
+        "parents": [
+          "401893f24e784795efa900ea32554ab1ca61e64c"
+        ]
+      }
+    ]
+  },
+  {
+    "number": 9,
+    "url": "https://github.com/DevF-DFSS/jakob-dna/pull/9",
+    "head": "f7acf43f1f4a87fbbcda068a94a5037427750b24",
+    "head_ref": "codex/isolated-v6-activation-2026-09-25",
+    "base": "d1f24c260d0b5dd00dafae39fc4e585cf496780c",
+    "base_ref": "codex/isolated-v6-aws-candidate-2026-09-24",
+    "state": "open",
+    "merged": false,
+    "files": [
+      {
+        "path": "aws/isolated-v6/PREFLIGHT.md",
+        "status": "added",
+        "additions": 29,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/README.md",
+        "status": "modified",
+        "additions": 153,
+        "deletions": 157
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/activation.py",
+        "status": "added",
+        "additions": 42,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/bindings.json",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/claims.py",
+        "status": "added",
+        "additions": 48,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/aws_v6/config.py",
+        "status": "added",
+        "additions": 84,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/dependencies.lock.json",
+        "status": "added",
+        "additions": 44,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/infra/offline-validation.json",
+        "status": "added",
+        "additions": 20,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/infra/template.json",
+        "status": "modified",
+        "additions": 31,
+        "deletions": 3
+      },
+      {
+        "path": "aws/isolated-v6/requirements.lock",
+        "status": "added",
+        "additions": 7,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tests/test_activation.py",
+        "status": "added",
+        "additions": 218,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tests/test_aws_candidate.py",
+        "status": "modified",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "aws/isolated-v6/tools/build.py",
+        "status": "modified",
+        "additions": 26,
+        "deletions": 6
+      },
+      {
+        "path": "aws/isolated-v6/tools/lint_offline.py",
+        "status": "added",
+        "additions": 21,
+        "deletions": 0
+      },
+      {
+        "path": "aws/isolated-v6/tools/make_template.py",
+        "status": "modified",
+        "additions": 11,
+        "deletions": 5
+      },
+      {
+        "path": "aws/isolated-v6/tools/run_checks.py",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 1
+      },
+      {
+        "path": "aws/isolated-v6/tools/security.py",
+        "status": "modified",
+        "additions": 6,
+        "deletions": 3
+      },
+      {
+        "path": "aws/isolated-v6/validation-toolchain.lock",
+        "status": "added",
+        "additions": 27,
+        "deletions": 0
+      },
+      {
+        "path": "docs/current-canon/ISOLATED_V6_ACTIVATION_2026-09-25.md",
+        "status": "added",
+        "additions": 42,
+        "deletions": 0
+      }
+    ],
+    "commits": [
+      {
+        "sha": "f7acf43f1f4a87fbbcda068a94a5037427750b24",
+        "parents": [
+          "d1f24c260d0b5dd00dafae39fc4e585cf496780c"
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-25",
+  "parent": "f7acf43f1f4a87fbbcda068a94a5037427750b24",
+  "offline_tests": {
+    "run": 9,
+    "passed": 9
+  },
+  "api_calls": 180,
+  "successful": 177,
+  "expected_organization_nonmembership_errors": 3,
+  "files": {
+    "CANON_DELTA.md": "d970aaf5da51c37197a05c08605fadcef9b54dd31dce19e2d66c6888dde956d4",
+    "CONVERGENCE.md": "9cbb72074f008f896ae373ca29dea9087538e36c49922d2b622ee1b4944d1c38",
+    "IDENTITY_COST.md": "890e1ddac15c84f41d007955cc03601ae666d55eeb336d06634a3aae807b0a06",
+    "README.md": "ab0de7e13ad43d3ead861da44b892f226f63327501bd034a51f795381b49ea1d",
+    "compare.py": "c096eca4c74196b7479fd7fcd70a6899381ce4684c9d1782771b3e6dfe4ee42f",
+    "delta.json": "d01f2f21488dbfad927e7ba9404edd7997a873c3eb84fd86bcf15e25b01c406e",
+    "evidence.json": "a8fb9d4c08af34f9338b453157d509931dcc09974b5df0b91d6b6c2e6e316ff8",
+    "lineage.json": "abac97c01a99f22ed8d83fcbed4294567ebf89f9482a02e193a75cdf5654b495",
+    "scripts/discovery.py": "d931063d5fb85ea84ed98eb58ed3224c04ea6778a3a4e026b78c342403519e05",
+    "scripts/iam_inventory.py": "bd5b47712d5bc75c479b27e0857b9cfc7b0d5ac36569a14b50f547d18c3b368c",
+    "scripts/planning_inventory.py": "ef61459d5bde11c1902863c08119be060a1e7e1a0669a6937fefbe27b7dbd7d8",
+    "scripts/runtime_inventory.py": "c2afb7a0e5a83b0d678933ebb2bdaf65e499e8f630b3c9fb67380b6f98c2865c",
+    "scripts/simulation.py": "b6c8e316d71f58609a72556fe31b9ee8198ae56177a702d5f41efb980356e4f9",
+    "test_evidence.py": "a457e4c12a9c119e410a8a1f752d57c78050b001015ffccebec2e643ed166a7e"
+  }
+}
