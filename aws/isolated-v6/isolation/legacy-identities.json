@@ -1,0 +1,12 @@
+{
+  "schema_version": "jel-v6-isolation-evidence/1",
+  "observed_account": "083127296577",
+  "date": "2026-09-25",
+  "principals": [
+    {"name":"us-os-gateway","patterns":["user/us-os-gateway","user/*/us-os-gateway"],"source":"User-supplied identity in PR #12 request; full ARN/path not re-observed. Both root and nested IAM paths denied."},
+    {"name":"DFSS-ColdStart-role-io8kh35x","patterns":["role/service-role/DFSS-ColdStart-role-io8kh35x"],"source":"PR #10 batch3 role metadata"},
+    {"name":"us-os-brain-role-c7v6jeb1","patterns":["role/service-role/us-os-brain-role-c7v6jeb1"],"source":"PR #10 batch3 role metadata"},
+    {"name":"JakobLambdaExecutionRole","patterns":["role/JakobLambdaExecutionRole"],"source":"PR #10 batch3 role metadata"}
+  ],
+  "limits":"Evidence/configuration, not current complete IAM inventory. Role sessions use role ARN for aws:PrincipalArn. No AWS reads in PR #12."
+}

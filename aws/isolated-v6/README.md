@@ -1,11 +1,11 @@
 # Isolated V6 offline activation readiness — 2026-09-25
 
-Status: DOCUMENTED / OFFLINE VERIFIED, not deployed or approved for deployment.
-PR #11 portable remediation is stacked directly on PR #10 head
-c81298bc84a3c58590e9155f0d6e3e40a7c994ff. PR #9 remains historical and unchanged.
-The provider-neutral core and DynamoDB adapter remain unchanged. No AWS call or
-deployment is part of this remediation. PR #10's same-account isolation finding
-still applies; a separate approved sandbox account remains preferred.
+Status: DOCUMENTED / OFFLINE TESTED, not deployed or approved for deployment.
+PR #12 same-account isolation candidate is stacked directly on reviewed PR #11
+`42cf882bae2fe9ab7020c8c62c7cea189525bc64`. The recovered local work was preserved.
+Read [the isolation design](isolation/DESIGN.md) for bootstrap/runtime fencing,
+action-level enforcement limits, and unresolved CloudFormation schema conflict.
+Provider-neutral core, runtime code and empty bindings remain unchanged.
 
 ## Activation components
 
@@ -55,8 +55,9 @@ actor allowed to invoke that alias. A regression test intentionally demonstrates
 that a fully forged structurally valid event passes these local checks. Never
 represent this test as authenticated identity or effective invocation isolation.
 
-The candidate resource policy grants only the two new API/stage routes access to
-the alias. This does not cancel unrelated same-account identity-policy grants.
+The candidate full resource policy grants only the two new API/stage routes access
+to the alias and models explicit non-Gateway/legacy denies. Unlike an Allow alone,
+a supported explicit Deny overrides identity grants; actual enforcement is unproven.
 Real IAM/SCP/boundary evaluation and negative invocation tests are mandatory gates.
 
 ## Required claim profile (proposal, not observed provider behavior)
@@ -124,7 +125,7 @@ From repository root, with a Python 3.13 virtualenv and approved local wheel cac
 python -m pip --isolated install --no-index --find-links aws/isolated-v6/wheelhouse --require-hashes -r aws/isolated-v6/requirements.lock
 python -B aws/isolated-v6/tools/run_checks.py --core reference/isolated-v6
 python -B aws/isolated-v6/tools/lint_offline.py -t aws/isolated-v6/infra/template.json -r us-east-1
-python -B aws/isolated-v6/tools/build.py --core reference/isolated-v6 --source-commit FULL_40_HEX_COMMIT --output work/v6-build
+python -B aws/isolated-v6/tools/build.py --core reference/isolated-v6 --source-commit FULL_40_HEX_COMMIT --output work/v6-build --diagnostic-only
 ```
 
 Install the recorded cfn-lint development environment separately from an approved
@@ -135,15 +136,16 @@ the default cache. No install or download happens inside build/test tooling.
 
 ## Validation and artifact evidence
 
-206 offline tests pass: 86 unchanged core, 41 candidate, 50 prior activation/
-real-SDK cases, and 29 new remediation tests (with additional negative subcases).
+231 offline tests pass: 86 unchanged core, 41 candidate, 50 activation/real-SDK,
+29 PR #11 remediation, one new failed-lint release-gate test and 24 isolation tests (with negative subcases).
 PR #9 historical result was 177 tests; it is not the result for this candidate. Runner blocks socket creation, botocore HTTP send and credential
 resolver. Real Stubber validates operation shapes/typed errors; separate botocore
 serializer tests verify JSON AttributeValues. No actual service behavior is proven.
 
-cfn-lint 1.40.2 passes the generated CloudFormation template using its installed
-us-east-1 schema with network and credential resolver blocked; schema-region
-selection is a test fixture, NOT approval of an account/region. Existing security
+cfn-lint 1.40.2 does NOT pass this candidate: missing us-east-1 resource schema
+and outdated action catalog. Both templates and auxiliary eu-west-1 diagnostics
+are recorded in infra/offline-validation.json. No findings are suppressed.
+Region selection is a test fixture, NOT approval of an account/region. Existing security
 checks reject legacy references, additional env vars, broad permissions, NONE/ANY
 routes, public Function URLs and unqualified invocation grants.
 
@@ -151,6 +153,8 @@ Build verifies wheel hashes, includes runtime modules + bindings + locked wheel
 contents, normalizes ZIP order/timestamps/permissions, excludes wheel CLI scripts,
 and records source commit, every included file hash, dependency wheel hashes,
 Python/runtime/architecture, actual test results and offline lint result.
+Use --diagnostic-only solely to retain review artifacts with failed lint marked
+false; ordinary builds fail. Release validation rejects that provenance.
 Two independent builds must yield byte-identical ZIP and provenance. Manifest
 source commit remains caller-supplied: verify its source-input hashes against the
 Git tree before uploading. Local verification is unsigned, not a supply-chain

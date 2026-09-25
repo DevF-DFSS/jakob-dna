@@ -1,6 +1,7 @@
 """Offline template source generator; never calls AWS."""
 import json
 from pathlib import Path
+from isolation_policy import apply, bootstrap
 
 
 def ref(name): return {'Ref': name}
@@ -59,8 +60,6 @@ def template():
     r['CandidateDeployment'] = resource('ApiGatewayV2::Deployment', ApiId=ref('Api'), Description='Explicit reviewed sandbox snapshot')
     r['CandidateDeployment']['DependsOn'] = ['PostRoute','GetRoute']
     r['Stage'] = resource('ApiGatewayV2::Stage', ApiId=ref('Api'), StageName='sandbox', AutoDeploy=False, DeploymentId=ref('CandidateDeployment'), DefaultRouteSettings={'ThrottlingBurstLimit':2,'ThrottlingRateLimit':1})
-    for name, path in [('PostPermission','POST/v6/events'), ('GetPermission','GET/v6/senders/*/events/*')]:
-        r[name] = resource('Lambda::Permission', Action='lambda:InvokeFunction', FunctionName=ref('Alias'), Principal='apigateway.amazonaws.com', SourceAccount=ref('AWS::AccountId'), SourceArn=sub('arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/'+path))
     r['ErrorsAlarm'] = resource('CloudWatch::Alarm', AlarmDescription='Sandbox invocation failures; action destination requires owner approval', Namespace='AWS/Lambda', MetricName='Errors', Dimensions=[{'Name':'FunctionName','Value':ref('Function')}], Statistic='Sum', Period=60, EvaluationPeriods=1, Threshold=1, ComparisonOperator='GreaterThanOrEqualToThreshold', TreatMissingData='notBreaching')
     r['ThrottleAlarm'] = resource('CloudWatch::Alarm', Namespace='AWS/Lambda', MetricName='Throttles', Dimensions=[{'Name':'FunctionName','Value':ref('Function')}], Statistic='Sum', Period=60, EvaluationPeriods=1, Threshold=1, ComparisonOperator='GreaterThanOrEqualToThreshold', TreatMissingData='notBreaching')
     for outcome in ['rejected', 'unavailable']:
@@ -73,9 +72,13 @@ def template():
     r['Gateway4xxAlarm'] = resource('CloudWatch::Alarm', Namespace='AWS/ApiGateway',MetricName='4xx',
         Dimensions=[{'Name':'ApiId','Value':ref('Api')},{'Name':'Stage','Value':'sandbox'}],
         Statistic='Sum',Period=60,EvaluationPeriods=1,Threshold=5,ComparisonOperator='GreaterThanOrEqualToThreshold',TreatMissingData='notBreaching')
-    return {'AWSTemplateFormatVersion':'2010-09-09','Description':'OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged registry is intentionally unconfigured.',
-            'Parameters':params,'Resources':r,'Outputs':{'SandboxApi':{'Description':'Proposed sandbox endpoint','Value':sub('https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/sandbox')},'AliasArn':{'Description':'Only intended invocation target','Value':ref('Alias')}}}
+    for key in ['ErrorsAlarm','ThrottleAlarm','RejectedAlarm','UnavailableAlarm','Gateway4xxAlarm']:
+        r[key]['Properties']['AlarmName']=sub('${AWS::StackName}-v6-'+key)
+    return apply({'AWSTemplateFormatVersion':'2010-09-09','Description':'OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged registry is intentionally unconfigured.',
+            'Parameters':params,'Resources':r,'Outputs':{'SandboxApi':{'Description':'Proposed sandbox endpoint','Value':sub('https://${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/sandbox')},'AliasArn':{'Description':'Only intended invocation target','Value':ref('Alias')}}})
 
 
 if __name__ == '__main__':
     Path(__file__).resolve().parents[1].joinpath('infra/template.json').write_text(json.dumps(template(),indent=2)+'\n')
+
+    Path(__file__).resolve().parents[1].joinpath('infra/bootstrap.json').write_text(json.dumps(bootstrap(),indent=2)+'\n')

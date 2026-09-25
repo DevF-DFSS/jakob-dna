@@ -1,16 +1,25 @@
 """Deliberately narrow offline allowlist; not IAM evaluation or cfn-lint."""
 import json
+from isolation_policy import imported
+from isolation_security import check_isolation
 
 
 def check(t):
+    check_isolation(t)
     r = t['Resources']
     allowed = {'DynamoDB::Table','Logs::LogGroup','Logs::MetricFilter','IAM::Role','ApiGatewayV2::Api','ApiGatewayV2::Authorizer',
                'Lambda::Function','Lambda::Version','Lambda::Alias','ApiGatewayV2::Integration','ApiGatewayV2::Route',
-               'ApiGatewayV2::Deployment','ApiGatewayV2::Stage','Lambda::Permission','CloudWatch::Alarm'}
+               'ApiGatewayV2::Deployment','ApiGatewayV2::Stage','Lambda::ResourcePolicy','IAM::ManagedPolicy','CloudWatch::Alarm'}
     assert all(x['Type'].removeprefix('AWS::') in allowed for x in r.values())
-    text = json.dumps(t)
+    def without_denies(x):
+        if isinstance(x,dict):
+            if x.get('Effect')=='Deny':return {}
+            return {k:without_denies(v) for k,v in x.items()}
+        if isinstance(x,list):return [without_denies(v) for v in x]
+        return x
+    text = json.dumps(without_denies(t))
     for forbidden in ['DFSS-ColdStart','us-os-brain','DFSS_SessionState','jakob-memory-store','jakob-identity-profiles',
-                      'us-os-memory','kirmld16gb','qjiuor3yak','p9qtqpd8mc','JakobLambdaExecutionRole','GEMINI_API_KEY','SECRET_HANDSHAKE_TOKEN','AWS::Lambda::Url','ManagedPolicyArns','ImportValue']:
+                      'us-os-memory','kirmld16gb','qjiuor3yak','p9qtqpd8mc','JakobLambdaExecutionRole','GEMINI_API_KEY','SECRET_HANDSHAKE_TOKEN','AWS::Lambda::Url','ManagedPolicyArns']:
         assert forbidden not in text, forbidden
     routes = [x['Properties'] for x in r.values() if x['Type']=='AWS::ApiGatewayV2::Route']
     assert {x['RouteKey'] for x in routes} == {'POST /v6/events','GET /v6/senders/{sender}/events/{event_id}'}
@@ -31,12 +40,12 @@ def check(t):
     assert r['Function']['Properties']['Handler']=='aws_v6.activation.handler'
     assert r['Function']['Properties']['Runtime']=='python3.13'
     assert r['Function']['Properties']['Environment']['Variables']=={
-        'V6_TABLE_NAME':{'Ref':'Events'},'EXPECTED_API_ID':{'Ref':'Api'},'EXPECTED_STAGE':'sandbox',
+        'V6_TABLE_NAME':{'Ref':'Events'},'EXPECTED_API_ID':imported('ApiId'),'EXPECTED_STAGE':'sandbox',
         'EXPECTED_ISSUER':{'Ref':'JwtIssuer'},'EXPECTED_AUDIENCE':{'Ref':'JwtAudience'},'EXPECTED_REGION':{'Ref':'AWS::Region'},
         'EXPECTED_CLIENT_IDS':{'Ref':'ClientIdsJson'},'BINDINGS_VERSION':{'Ref':'BindingsVersion'},
         'BINDINGS_SHA256':{'Ref':'BindingsSha256'},
         'EXPECTED_ALIAS_ARN':{'Fn::Sub':'arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-v6:sandbox'}}
-    assert set(t['Parameters'])=={'ClientIdsJson','BindingsVersion','BindingsSha256','JwtIssuer','JwtAudience','ArtifactBucket','ArtifactKey','ArtifactVersion','ArtifactCodeSha256'}
+    assert set(t['Parameters'])=={'ClientIdsJson','BindingsVersion','BindingsSha256','JwtIssuer','JwtAudience','BootstrapStackName','ArtifactKey','ArtifactVersion','ArtifactCodeSha256'}
     assert all('Default' not in p for p in t['Parameters'].values())
     assert r['Authorizer']['Properties']['JwtConfiguration']=={'Issuer':{'Ref':'JwtIssuer'},'Audience':[{'Ref':'JwtAudience'}]}
     assert r['Authorizer']['Properties']['IdentitySource']==['$request.header.Authorization']
@@ -49,23 +58,11 @@ def check(t):
     assert statements[0]=={'Effect':'Allow','Action':['dynamodb:PutItem','dynamodb:GetItem'],'Resource':{'Fn::GetAtt':['Events','Arn']}}
     assert statements[1]=={'Effect':'Allow','Action':['logs:CreateLogStream','logs:PutLogEvents'],
         'Resource':{'Fn::Sub':'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-v6:log-stream:*'}}
-    permissions = [x['Properties'] for x in r.values() if x['Type']=='AWS::Lambda::Permission']
-    assert len(permissions)==2
-    suffixes = {'POST/v6/events','GET/v6/senders/*/events/*'}
-    for permission in permissions:
-        assert set(permission)=={'Action','FunctionName','Principal','SourceAccount','SourceArn'}
-        assert permission['Action']=='lambda:InvokeFunction' and permission['FunctionName']=={'Ref':'Alias'}
-        assert permission['Principal']=='apigateway.amazonaws.com' and permission['SourceAccount']=={'Ref':'AWS::AccountId'}
-        prefix='arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/'
-        source=permission['SourceArn']['Fn::Sub']
-        assert source.startswith(prefix) and source[len(prefix):] in suffixes
-        suffixes.remove(source[len(prefix):])
-    assert not suffixes
     assert r['Events']['DeletionPolicy']==r['Events']['UpdateReplacePolicy']=='Retain'
     assert r['Events']['Properties']['KeySchema']==[{'AttributeName':'PK','KeyType':'HASH'},{'AttributeName':'SK','KeyType':'RANGE'}]
     # No additional resource with a second policy or invocation grant may bypass the checks.
-    assert set(r)=={'Events','FunctionLogs','ExecutionRole','Api','Authorizer','Function','CandidateVersion','Alias',
-                   'Integration','PostRoute','GetRoute','CandidateDeployment','Stage','PostPermission','GetPermission','ErrorsAlarm','ThrottleAlarm','RejectedMetric','UnavailableMetric','RejectedAlarm','UnavailableAlarm','Gateway4xxAlarm'}
+    assert set(r)=={'Events','FunctionLogs','ExecutionRole','FunctionResourcePolicy','Authorizer','Function','CandidateVersion','Alias',
+                   'Integration','PostRoute','GetRoute','CandidateDeployment','Stage','ErrorsAlarm','ThrottleAlarm','RejectedMetric','UnavailableMetric','RejectedAlarm','UnavailableAlarm','Gateway4xxAlarm'}
     for outcome in ['rejected','unavailable']:
         name=outcome.title()
         assert r[name+'Metric']['Properties']=={
