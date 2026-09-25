@@ -192,3 +192,8 @@ class ManifestTests(unittest.TestCase):
     def test_legacy_artifact_bucket_denied(self):
         self.m['artifact']['bucket']='jakob-asset-store'
         with self.assertRaises(ValueError):self.validate()
+
+    def test_failed_cloudformation_provenance_denied(self):
+        self.provenance['cloudformation']['passed']=False
+        self.provenance['diagnostic_only']=True
+        with self.assertRaises(ValueError):self.validate()

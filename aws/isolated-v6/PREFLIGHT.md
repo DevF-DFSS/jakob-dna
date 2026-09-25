@@ -32,7 +32,18 @@ region; service quotas/cost; live sandbox deployment; production migration.
       (rate 1, burst 2) are best effort per-route settings, not a capacity guarantee.
 - [ ] Independently approve/verify release manifest v1 and matching source, template,
       binding and artifact hashes; placeholder manifest and bindings must still deny.
-- [ ] Preserve PR #10 isolation assessment: do not assume a narrow V6 role stops
-      broad legacy roles. Prefer a separate approved account; no legacy IAM changes.
+- [ ] Review PR #12 same-account containment; no second account exists. Preserve
+      PR #10 evidence. New role boundaries do not change legacy privileges.
 - [ ] Prove actual provider projection: optional absent nbf does not settle aud,
       client_id, scope, token_use or array/string compatibility. No provider is live.
+
+- [ ] Resolve FunctionResourceArn/ResourceArn conflict using authoritative regional
+      schema evidence; current pinned lint failures are NOT a pass.
+- [ ] Approve bootstrap recovery role, effective permissions and creation windows;
+      restrict PassRole and existing-stack service-role reuse. No legacy actor may
+      replace policy/configuration through unsupported resource-policy actions.
+- [ ] Bind bootstrap RuntimeStackName to exact runtime stack name; verify exports,
+      both template hashes, immutable artifact version, boundaries and recovery.
+      Release manifest v1 alone does not approve this new bootstrap composition.
+- [ ] Prove management-plane fencing and action applicability independently from
+      invocation denial. Read isolation/DESIGN.md before any authorization request.

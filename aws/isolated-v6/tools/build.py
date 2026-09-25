@@ -13,7 +13,7 @@ import sys
 import zipfile
 
 
-def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=None):
+def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=None, diagnostic=False):
     if not re.fullmatch('[0-9a-f]{40}', source_commit):
         raise ValueError('full_source_commit_required')
     if sys.version_info[:2] != (3,13):
@@ -42,12 +42,16 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
                 if name in files: raise ValueError('package_collision')
                 files[name]=archive.read(name)
     tests={'passed':False,'status':'not_run'}
+    cloudformation={'passed':False,'status':'not_run'}
     if run_tests:
         completed=subprocess.run([sys.executable,'-B',str(candidate/'tools/run_checks.py'),'--core',str(core)],
             check=True, capture_output=True, text=True)
         tests=json.loads(completed.stdout)
         if not tests['passed']: raise RuntimeError('checks_failed')
-        subprocess.run([sys.executable,'-B',str(candidate/'tools/lint_offline.py'),'-t',str(candidate/'infra/template.json'),'-r','us-east-1'],check=True,capture_output=True,text=True)
+        from validate_offline import validate
+        cloudformation=validate(candidate)
+        if not cloudformation['passed'] and not diagnostic:
+            raise RuntimeError('cloudformation_validation_failed; diagnostic-only build requires explicit flag')
     output.mkdir(parents=True,exist_ok=True)
     artifact=output/'isolated-v6-candidate.zip'
     with zipfile.ZipFile(artifact,'w',compression=zipfile.ZIP_STORED) as archive:
@@ -60,7 +64,7 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
     evidence=[]
     for root,prefix in [(core,'reference/isolated-v6'),(candidate,'aws/isolated-v6')]:
         for path in sorted(root.rglob('*')):
-            allowed = {'isolated_v6','tests','README.md'} if root == core else {'aws_v6','tests','tools','infra','release','README.md','PREFLIGHT.md','dependencies.lock.json','requirements.lock','validation-toolchain.lock'}
+            allowed = {'isolated_v6','tests','README.md'} if root == core else {'aws_v6','tests','tools','infra','release','isolation','README.md','PREFLIGHT.md','dependencies.lock.json','requirements.lock','validation-toolchain.lock'}
             if (path.is_file() and path.relative_to(root).parts[0] in allowed and
                     path.suffix in ('.py','.json','.md','.lock') and '__pycache__' not in path.parts):
                 evidence.append({'path':prefix+'/'+str(path.relative_to(root)), 'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
@@ -71,7 +75,9 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
         'template_sha256':hashlib.sha256((candidate/'infra/template.json').read_bytes()).hexdigest(),
         'binding_sha256':hashlib.sha256((candidate/'aws_v6/bindings.json').read_bytes()).hexdigest(),
         'release_manifest':'UNAPPROVED; offline consistency is not deployment authorization',
-        'tests':tests,'cloudformation':{'tool':'cfn-lint','version':importlib.metadata.version('cfn-lint'),'region_schema':'us-east-1','passed':bool(run_tests),'network':'blocked'},'activation':'composition root wired; packaged bindings intentionally unconfigured; AWS trust unproven'}
+        'tests':tests,'cloudformation':cloudformation,
+        'diagnostic_only':bool(diagnostic),'deployment_authorized':False,
+        'bootstrap_sha256':hashlib.sha256((candidate/'infra/bootstrap.json').read_bytes()).hexdigest(),'activation':'composition root wired; packaged bindings intentionally unconfigured; AWS trust unproven'}
     (output/'provenance.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
     return manifest
 
@@ -82,8 +88,9 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--source-commit',required=True)
     parser.add_argument('--wheelhouse',type=Path)
+    parser.add_argument('--diagnostic-only',action='store_true',help='Retain failing lint diagnostics; artifact remains non-releaseable')
     args=parser.parse_args()
-    manifest=build(args.core.resolve(),Path(__file__).resolve().parents[1],args.output.resolve(),args.source_commit,wheelhouse=args.wheelhouse)
+    manifest=build(args.core.resolve(),Path(__file__).resolve().parents[1],args.output.resolve(),args.source_commit,wheelhouse=args.wheelhouse,diagnostic=args.diagnostic_only)
     print(json.dumps({'sha256':manifest['artifact_sha256'],'tests':manifest['tests']},sort_keys=True))
 
 if __name__=='__main__':
