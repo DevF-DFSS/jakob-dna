@@ -53,7 +53,7 @@ def validate(m, *, expected_source, template, artifact, bindings, provenance):
     if not re.fullmatch(r'[A-Za-z0-9_.-]{1,64}',m['binding_version']): fail()
     scopes=m['allowed_scopes']
     if (type(scopes) is not list or not scopes or any(type(s) is not str for s in scopes) or
-            len(scopes)!=len(set(scopes)) or not set(scopes)<={'jel-v6/read','jel-v6/write'}): fail()
+            len(scopes)!=len(set(scopes)) or set(scopes)!={'jel-v6/read','jel-v6/write'}): fail()
     a=m['artifact']
     if type(a) is not dict or set(a)!={'bucket','key','version'} or not all(text(v) for v in a.values()): fail()
     if not re.fullmatch(r'[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]',a['bucket']) or any(v.upper() in {'TODO','PLACEHOLDER','UNCONFIGURED','NULL'} for v in a.values()): fail()

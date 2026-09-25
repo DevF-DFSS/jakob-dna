@@ -52,3 +52,14 @@ activation and production migration. No semantic state model added.
 No AWS service calls/mutations, Lambda/API invocations, DynamoDB item access,
 credential discovery/rotation, secret reads, paid external agents, historical PR
 merges/closures/rebases/force pushes, deployment or production migration occurred.
+
+
+PR #11 independent review corrections (same branch, 2026-09-25): manifest v1
+now requires the exact implemented read/write scope set; missing, duplicate or
+extra scopes fail, order is irrelevant. No per-client policy feature introduced.
+HTTP 404 now emits only finite not_found outcome telemetry, excluded from the
+existing rejection/unavailable log filters. Gateway aggregate 4xx remains unchanged.
+A real in-memory receipt lookup test verifies the legitimate 404 response and
+sanitized record. New complete validation: 206/206 tests pass, cfn-lint 1.40.2
+zero findings. Template/bindings unchanged; new source/artifact and two-build
+provenance recorded in the updated PR. All existing live blockers remain.

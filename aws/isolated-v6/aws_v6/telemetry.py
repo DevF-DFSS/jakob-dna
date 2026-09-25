@@ -7,6 +7,8 @@ def emit_outcome(status):
         outcome = 'unavailable'
     elif 200 <= status < 300:
         outcome = 'accepted'
+    elif status == 404:
+        outcome = 'not_found'
     elif 400 <= status < 500:
         outcome = 'rejected'
     else:

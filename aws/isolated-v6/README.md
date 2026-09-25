@@ -135,8 +135,8 @@ the default cache. No install or download happens inside build/test tooling.
 
 ## Validation and artifact evidence
 
-203 offline tests pass: 86 unchanged core, 41 candidate, 50 prior activation/
-real-SDK cases, and 26 new remediation tests (with additional negative subcases).
+206 offline tests pass: 86 unchanged core, 41 candidate, 50 prior activation/
+real-SDK cases, and 29 new remediation tests (with additional negative subcases).
 PR #9 historical result was 177 tests; it is not the result for this candidate. Runner blocks socket creation, botocore HTTP send and credential
 resolver. Real Stubber validates operation shapes/typed errors; separate botocore
 serializer tests verify JSON AttributeValues. No actual service behavior is proven.
@@ -175,7 +175,7 @@ budget/capacity reservation. AWS throttling is best effort, not a hard cost ceil
 [HTTP API throttling](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-throttling.html).
 
 The activation handler emits only fixed kind=v6_outcome and one of accepted,
-rejected, unavailable. No event IDs, claims, headers, principal/binding identifiers,
+not_found (404), rejected (other 4xx), unavailable. No event IDs, claims, headers, principal/binding identifiers,
 payloads, SDK exceptions or environment values are logged. Two log metric filters
 and alarms capture rejection and unavailable/503 outcomes, including caught startup
 failures that Lambda Errors would miss. Existing Lambda Errors/Throttles remain;
@@ -200,7 +200,7 @@ No issuer/client/scopes/exp/iat/sender-binding relaxation is introduced.
 `release/manifest.unapproved.json` deliberately contains null placeholders and an
 UNAPPROVED declaration. `tools/release_manifest.py` defines the strict versioned
 schema and rejects missing/extra/duplicate members, wrong formats, unset approval,
-unknown scopes, legacy artifact buckets, mismatched source/hash/provenance and
+missing/duplicate/extra scopes, legacy artifact buckets, mismatched source/hash/provenance and
 invalid or empty runtime bindings. It verifies local template/artifact/binding
 bytes, template security checks and recorded test/lint success. It does not contact
 AWS, prove that a bucket exists, authenticate the reviewer or prove source lineage.
@@ -219,3 +219,10 @@ The shipped example must exit 1. Never fill it with inferred live identities;
 review actual approved values and rebuilt bindings/artifact first. Use a release
 record outside its own source tree to avoid a self-referential source-commit hash.
 All current runtime bindings remain UNCONFIGURED. No semantic state model added.
+
+PR #11 review correction: release schema jel-v6-release/1 requires exactly the
+read/write scope set implemented by both candidate routes, in either order. This
+is a runtime declaration, not per-client scope policy; such a capability needs a
+separately versioned design. HTTP 404 maps to sanitized not_found and does not
+match rejection/unavailable log metric filters. Existing Gateway 4xx monitoring
+still counts HTTP 404 as part of its aggregate; no not_found alarm was added.

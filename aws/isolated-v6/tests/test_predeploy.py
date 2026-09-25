@@ -41,6 +41,25 @@ class CognitoProjectedTests(unittest.TestCase):
         e=event();e['requestContext']['authorizer']['jwt']=copy.deepcopy(PROJECTED);return e
     def test_absent_nbf_accepts_and_persists(self):
         self.assertEqual(201,self.host(self.event(),CTX)['statusCode'])
+    def test_legitimate_receipt_not_found_signal(self):
+        e=self.event()
+        e.update(routeKey='GET /v6/senders/{sender}/events/{event_id}',
+                 rawPath='/v6/senders/sender/events/'+fixture()['event_id'],body='')
+        e['requestContext']['http']['method']='GET'
+        with patch.object(activation,'_host',self.host),redirect_stdout(io.StringIO()) as out:
+            response=activation.handler(e,CTX)
+        self.assertEqual(404,response['statusCode'])
+        self.assertEqual({'code':'receipt_not_found'},json.loads(response['body']))
+        self.assertEqual(['{"kind": "v6_outcome", "outcome": "not_found"}'],out.getvalue().splitlines())
+        record=json.loads(out.getvalue())
+        filters=[r['Properties']['FilterPattern'] for r in template()['Resources'].values()
+                 if r['Type']=='AWS::Logs::MetricFilter']
+        self.assertEqual({'{ $.kind = "v6_outcome" && $.outcome = "rejected" }',
+                          '{ $.kind = "v6_outcome" && $.outcome = "unavailable" }'},set(filters))
+        # Evaluate the exact equality conjunctions above; not an AWS execution test.
+        for expected in ['rejected','unavailable']:
+            self.assertFalse(record['kind']=='v6_outcome' and record['outcome']==expected)
+
     def test_present_nbf_at_now_accepts(self):
         e=self.event();e['requestContext']['authorizer']['jwt']['claims']['nbf']=str(NOW//1000)
         self.assertEqual(201,self.host(e,CTX)['statusCode'])
@@ -97,7 +116,7 @@ class SafetyTests(unittest.TestCase):
             t=template();t['Description']=name
             with self.subTest(name=name),self.assertRaises(AssertionError): check(t)
     def test_outcomes_are_finite_and_have_no_request_fields(self):
-        for status,outcome in [(201,'accepted'),(401,'rejected'),(403,'rejected'),(429,'rejected'),(503,'unavailable'),('payload','unavailable')]:
+        for status,outcome in [(201,'accepted'),(401,'rejected'),(403,'rejected'),(404,'not_found'),(429,'rejected'),(503,'unavailable'),('payload','unavailable')]:
             with redirect_stdout(io.StringIO()) as out: emit_outcome(status)
             self.assertEqual({'kind':'v6_outcome','outcome':outcome},json.loads(out.getvalue()))
     def test_handler_emits_one_sanitized_record(self):
@@ -134,6 +153,19 @@ class ManifestTests(unittest.TestCase):
         self.assertEqual(False,self.validate()['deployment_authorized'])
     def test_unapproved_placeholder_rejected(self):
         with self.assertRaises(ValueError):self.validate(read_json(ROOT/'release/manifest.unapproved.json'))
+    def test_read_only_manifest_denied_with_write_route(self):
+        t=json.loads(self.paths['template'].read_text())
+        self.assertEqual('POST /v6/events',t['Resources']['PostRoute']['Properties']['RouteKey'])
+        self.m['allowed_scopes']=['jel-v6/read']
+        with self.assertRaises(ValueError):self.validate()
+    def test_manifest_scopes_exact_set_order_independent(self):
+        self.m['allowed_scopes']=['jel-v6/write','jel-v6/read']
+        self.assertTrue(self.validate()['offline_manifest_consistent'])
+        for scopes in [[],['jel-v6/write'],['jel-v6/read','jel-v6/write','jel-v6/read'],
+                       ['jel-v6/read','jel-v6/write','openid']]:
+            self.m['allowed_scopes']=scopes
+            with self.subTest(scopes=scopes),self.assertRaises(ValueError):self.validate()
+
     def test_missing_and_unknown_fields(self):
         for k in self.m:
             m=copy.deepcopy(self.m);del m[k]
