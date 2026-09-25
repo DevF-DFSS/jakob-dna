@@ -25,12 +25,15 @@ def check(t):
     assert r['Integration']['Properties']['IntegrationUri']=={'Ref':'Alias'}
     assert r['Integration']['Properties']['PayloadFormatVersion']=='2.0'
     assert r['Function']['Properties']['Role']=={'Fn::GetAtt':['ExecutionRole','Arn']}
-    assert r['Function']['Properties']['Handler']=='aws_v6.host.handler'
+    assert r['Function']['Properties']['Handler']=='aws_v6.activation.handler'
     assert r['Function']['Properties']['Runtime']=='python3.13'
     assert r['Function']['Properties']['Environment']['Variables']=={
         'V6_TABLE_NAME':{'Ref':'Events'},'EXPECTED_API_ID':{'Ref':'Api'},'EXPECTED_STAGE':'sandbox',
-        'EXPECTED_ISSUER':{'Ref':'JwtIssuer'},'EXPECTED_AUDIENCE':{'Ref':'JwtAudience'},'EXPECTED_REGION':{'Ref':'AWS::Region'}}
-    assert set(t['Parameters'])=={'JwtIssuer','JwtAudience','ArtifactBucket','ArtifactKey','ArtifactVersion','ArtifactCodeSha256'}
+        'EXPECTED_ISSUER':{'Ref':'JwtIssuer'},'EXPECTED_AUDIENCE':{'Ref':'JwtAudience'},'EXPECTED_REGION':{'Ref':'AWS::Region'},
+        'EXPECTED_CLIENT_IDS':{'Ref':'ClientIdsJson'},'BINDINGS_VERSION':{'Ref':'BindingsVersion'},
+        'BINDINGS_SHA256':{'Ref':'BindingsSha256'},
+        'EXPECTED_ALIAS_ARN':{'Fn::Sub':'arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-v6:sandbox'}}
+    assert set(t['Parameters'])=={'ClientIdsJson','BindingsVersion','BindingsSha256','JwtIssuer','JwtAudience','ArtifactBucket','ArtifactKey','ArtifactVersion','ArtifactCodeSha256'}
     assert all('Default' not in p for p in t['Parameters'].values())
     assert r['Authorizer']['Properties']['JwtConfiguration']=={'Issuer':{'Ref':'JwtIssuer'},'Audience':[{'Ref':'JwtAudience'}]}
     assert r['Authorizer']['Properties']['IdentitySource']==['$request.header.Authorization']

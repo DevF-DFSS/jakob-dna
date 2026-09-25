@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged handler denies all traffic.",
+  "Description": "OFFLINE isolated V6 sandbox candidate. Not approved for deployment; packaged registry is intentionally unconfigured.",
   "Parameters": {
     "JwtIssuer": {
       "Type": "String",
@@ -10,6 +10,19 @@
     "JwtAudience": {
       "Type": "String",
       "MinLength": 1
+    },
+    "ClientIdsJson": {
+      "Type": "String",
+      "MinLength": 3,
+      "Description": "Approved nonempty JSON array of client IDs"
+    },
+    "BindingsVersion": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9_.-]{1,64}"
+    },
+    "BindingsSha256": {
+      "Type": "String",
+      "AllowedPattern": "[0-9a-f]{64}"
     },
     "ArtifactBucket": {
       "Type": "String",
@@ -32,6 +45,9 @@
     "Events": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
+        "TableName": {
+          "Fn::Sub": "jel-v6-${AWS::StackName}-events"
+        },
         "BillingMode": "PAY_PER_REQUEST",
         "AttributeDefinitions": [
           {
@@ -167,7 +183,7 @@
         "Architectures": [
           "x86_64"
         ],
-        "Handler": "aws_v6.host.handler",
+        "Handler": "aws_v6.activation.handler",
         "Role": {
           "Fn::GetAtt": [
             "ExecutionRole",
@@ -205,6 +221,18 @@
             },
             "EXPECTED_REGION": {
               "Ref": "AWS::Region"
+            },
+            "EXPECTED_CLIENT_IDS": {
+              "Ref": "ClientIdsJson"
+            },
+            "BINDINGS_VERSION": {
+              "Ref": "BindingsVersion"
+            },
+            "BINDINGS_SHA256": {
+              "Ref": "BindingsSha256"
+            },
+            "EXPECTED_ALIAS_ARN": {
+              "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-v6:sandbox"
             }
           }
         }
@@ -222,7 +250,7 @@
         "CodeSha256": {
           "Ref": "ArtifactCodeSha256"
         },
-        "Description": "Offline candidate; authentication not activated"
+        "Description": "Offline candidate; reviewed packaged registry required"
       }
     },
     "Alias": {
