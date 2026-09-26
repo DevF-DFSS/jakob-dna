@@ -212,5 +212,588 @@
       "retrieved_at": "2026-09-26",
       "body_sha256": "edc0aef52c7dcc46630a4025853d2a7cca9f81940eb5f3154123514142ceb064"
     }
+  ],
+  "recovery_verified_at": "2026-09-26T20:26:14Z",
+  "github_workflow_runs": [
+    {
+      "id": 36252559383,
+      "head_sha": "8be77e681ceff13ac8feb19139a358d644547ebc",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T15:37:04Z",
+      "retrieved_at": "2026-09-26T20:26:14Z",
+      "evidence_class": "GITHUB_CI_EXECUTION",
+      "status": "HISTORICAL_PR16_CHECKPOINT; stale final-head citation in PR16 body"
+    },
+    {
+      "id": 36252726480,
+      "head_sha": "dd0df665ea4bd7512e18597001def8bb798e83e5",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T15:39:59Z",
+      "retrieved_at": "2026-09-26T20:26:14Z",
+      "evidence_class": "GITHUB_CI_EXECUTION",
+      "status": "ACTUAL_FINAL_PR16_EXECUTION_EXISTS; metadata only, detailed logs not newly asserted"
+    }
+  ],
+  "evidence_families": [
+    {
+      "id": "caller",
+      "source": "aws-evidence.json, STS GetCallerIdentity",
+      "evidence_class": "AWS_LIVE_READ_ONLY",
+      "observed_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "commit_coordinate": "e12753aa5103c9020cdfa99be6b51c548faedfca",
+      "account": "083127296577",
+      "region": "global identity; request batch context us-east-1",
+      "last_verified_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "New session/identity/account or changed connector",
+      "refresh_requirement": "Immediately before every approved write phase; record actual acting session",
+      "limits": "Root was used only for reads; not an approved operator.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "legacy_user",
+      "source": "aws-evidence.json GetUser/ListAttachedUserPolicies/GetPolicy/GetPolicyVersion",
+      "evidence_class": "AWS_LIVE_READ_ONLY",
+      "observed_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "commit_coordinate": "e12753aa5103c9020cdfa99be6b51c548faedfca",
+      "account": "083127296577",
+      "region": "IAM global",
+      "last_verified_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Attachment/inline/boundary/trust/group/policy version or principal change",
+      "refresh_requirement": "Immediately before authority/bootstrap approval and after any policy change",
+      "limits": "Targeted user refresh only; three attachments/no boundary; broad inventory inherited, not refreshed.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "roles_boundaries",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "IAM global",
+      "last_verified_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "New role/user/service-linked role; trust/policy/boundary changes",
+      "refresh_requirement": "Current complete relevant principal/role-use graph before authority approval",
+      "limits": "Four service-linked roles are distinct; ordinary role counts are historical, not a guarantee against later actors.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "organizations_sessions",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:17:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "global organization context",
+      "last_verified_at": "2026-09-26T16:17:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Organization membership/SCP change, session policy or principal change",
+      "refresh_requirement": "Before authority approval; inspect applicable constraints and actual session provenance",
+      "limits": "AWSOrganizationsNotInUseException then; no present organization/SCP proof. Session policies not exhaustively established.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "simulation",
+      "source": "aws-evidence.json four SimulatePrincipalPolicy requests/results",
+      "evidence_class": "IAM_SIMULATION",
+      "observed_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "commit_coordinate": "e12753aa5103c9020cdfa99be6b51c548faedfca",
+      "account": "083127296577",
+      "region": "us-east-1 hypothetical resources; IAM global roles",
+      "last_verified_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Any input policy/ARN/action/context/trust/organization/session change",
+      "refresh_requirement": "Repeat exact actual candidate ARN/context simulations before applicable phase; supplement with separately authorized sandbox negatives",
+      "limits": "No future trust/resource policy/live call is tested. CF-context implicitDeny has MissingContextValues; Gateway POST simulation is not proof of API operation validity.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "gateway",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2",
+      "last_verified_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "API/route/authorizer/integration/stage/deployment or administrative-grant change",
+      "refresh_requirement": "Before bootstrap namespace selection, then after creation and immediately before test ingress",
+      "limits": "Three legacy HTTP APIs, no authorizers then; no V6 API. PR18 targeted admin simulation is separate from API inventory.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "lambda",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2",
+      "last_verified_at": "2026-09-26T16:14:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Function/alias/version/URL/role/config/policy change",
+      "refresh_requirement": "Before namespace approval and after each candidate lifecycle transition",
+      "limits": "No V6 function observed in sampled regions then; no global absence proof.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "provider",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md and CONTRACT.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2",
+      "last_verified_at": "2026-09-26T16:14:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "IdP/client/issuer/keys/scopes/subjects/flow or config change",
+      "refresh_requirement": "Provider selection/approval before real parameters or ingress; actual projection after controlled test authorization",
+      "limits": "No Cognito pools sampled; external providers not globally inventoried. No tokens generated; provider capability differs from configured behavior.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "registry",
+      "source": "../schema-research/registry.json and sources.json; ../describestacks-authority/EVIDENCE.md and sources.json",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T13:45:29.451620+00:00 (PR15 registry batch)",
+      "commit_coordinate": "a9de8ce6a646520ad1548b86bd97af9669c5ab27 / dd0df665ea4bd7512e18597001def8bb798e83e5",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2, eu-west-1 (PR15 sample)",
+      "last_verified_at": "2026-09-26T13:45:29.451620+00:00 (PR15 registry batch)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Regional type/default version/handler schema/catalog change",
+      "refresh_requirement": "Before selecting actual deployment region and approving template/lifecycle test",
+      "limits": "No new DescribeType in PR18. ResourceArn evidence does not prove delete-handler requests or permissions.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "recovery",
+      "source": "../authorization/recovery-operator.json + PR17 inventory",
+      "evidence_class": "LOCAL_STATIC_ANALYSIS",
+      "observed_at": "2026-09-26 review; absence inherited from PR17",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "proposed account/region unconfigured",
+      "last_verified_at": "2026-09-26 review; absence inherited from PR17",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Trust/operator/role/grants/session/stack association/emergency plan change",
+      "refresh_requirement": "Before bootstrap, before recovery and after temporary rights expire or are removed",
+      "limits": "JSON is unconfigured; no usable actor or recovery drill. Read-only connector root is not the recovery path.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "ci",
+      "source": "sources.json github_workflow_runs; final PR18 PR body/run object",
+      "evidence_class": "GITHUB_CI_EXECUTION",
+      "observed_at": "2026-09-26T20:26:14Z (PR16 metadata retrieval)",
+      "commit_coordinate": "Actual run head_sha, never PR-body prose",
+      "account": null,
+      "region": null,
+      "last_verified_at": "2026-09-26T20:26:14Z (PR16 metadata retrieval)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Source/dependency/workflow/runner changes or superseded run",
+      "refresh_requirement": "For every final release commit, compare actual run head_sha and check logs/source-input hashes",
+      "limits": "PR16 run36252726480 exists at final dd0df665; run36252559383 is historical. Failure remains failure. PR18 final evidence pending validation at this checkpoint.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "hashes",
+      "source": "Git tree + unchanged build.py source_inputs + final diagnostic provenance",
+      "evidence_class": "LOCAL_STATIC_ANALYSIS",
+      "observed_at": "Final validation pending at classification checkpoint",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": null,
+      "region": null,
+      "last_verified_at": "Final validation pending at classification checkpoint",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Any source/template/bootstrap/binding/dependency/selected artifact version/parameter change",
+      "refresh_requirement": "Recompute and verify against exact final Git tree; bind actual deployment parameters/exports separately",
+      "limits": "Hash identifies bytes, not authority; final PR18 result recorded after commit in validation logs and PR body to avoid a self-hash cycle.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "human_authorization",
+      "source": "../authorization/current.json; explicit DevF decision absent",
+      "evidence_class": "UNVERIFIED",
+      "observed_at": "2026-09-26 review",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": null,
+      "region": null,
+      "last_verified_at": "2026-09-26 review",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "No authority yet; future decision expires on changed scope/context or its stated end",
+      "refresh_requirement": "Require authenticated explicit phase-specific consent immediately before named mutation; stop on drift",
+      "limits": "deployment_authorized=false; tests/checkpoints/CI never supply consent.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "public_documentation",
+      "source": "sources.json sources; 19 hashed public sources",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "observed_at": "2026-09-26T16:59:42.749188+00:00\u201316:59:51.665931+00:00",
+      "commit_coordinate": null,
+      "account": null,
+      "region": null,
+      "last_verified_at": "2026-09-26T16:59:42.749188+00:00\u201316:59:51.665931+00:00",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "AWS docs/catalog/service behavior update",
+      "refresh_requirement": "Recheck substantive claims when choosing final design/provider/region or contrary evidence appears",
+      "limits": "Documentation is not observed service behavior. Raw downloads cached outside Git; hashes and URLs persist.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "quota_cost",
+      "source": "PR10 preflight and candidate throttling/log/retention configuration",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "Historical PR10 observation; not refreshed in PR18",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "candidate region not yet approved",
+      "last_verified_at": "Historical PR10 observation; not refreshed in PR18",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Quota/pricing/free-tier/account usage/retention/volume changes",
+      "refresh_requirement": "Before bounded experiment authorization; observe actual spend/volume during it",
+      "limits": "No $0 promise and no quota/billing calls in PR18.",
+      "reconstructed_at": "2026-09-26"
+    }
+  ],
+  "pr17_to_pr18_mapping": [
+    {
+      "pr17_row_ordinal": 1,
+      "pr17_control": "JWT signature and RSA JWKS",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 2,
+      "pr17_control": "issuer iss",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 3,
+      "pr17_control": "audience aud",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 4,
+      "pr17_control": "client_id",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 5,
+      "pr17_control": "subject sub",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18",
+        "P31"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 6,
+      "pr17_control": "access token use",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 7,
+      "pr17_control": "route scopes",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 8,
+      "pr17_control": "scope projection",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 9,
+      "pr17_control": "expiration exp",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 10,
+      "pr17_control": "issued-at iat",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 11,
+      "pr17_control": "not-before nbf",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 12,
+      "pr17_control": "JWT event claim shape",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P02",
+        "P17",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 13,
+      "pr17_control": "API ID",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P02",
+        "P08",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 14,
+      "pr17_control": "stage",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P23",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 15,
+      "pr17_control": "route/method/path",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P23",
+        "P31"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 16,
+      "pr17_control": "qualified alias",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P01",
+        "P02",
+        "P03",
+        "P23"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 17,
+      "pr17_control": "Gateway source account",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 18,
+      "pr17_control": "Gateway source ARN",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 19,
+      "pr17_control": "unqualified direct InvokeFunction",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P01"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 20,
+      "pr17_control": "published-version direct InvokeFunction",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P03"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 21,
+      "pr17_control": "alias direct InvokeFunction",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P02"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 22,
+      "pr17_control": "Function URL",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P04"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 23,
+      "pr17_control": "code/config mutation",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P06"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 24,
+      "pr17_control": "resource-policy mutation",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P05"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 25,
+      "pr17_control": "PassRole",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P07",
+        "P13"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 26,
+      "pr17_control": "deployment-role use",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P10",
+        "P11"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 27,
+      "pr17_control": "known legacy principal access",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P05",
+        "P07",
+        "P08",
+        "P26"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 28,
+      "pr17_control": "recovery path",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P11",
+        "P15",
+        "P16",
+        "P30"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 29,
+      "pr17_control": "tenant/sender/receiver binding",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P18",
+        "P19",
+        "P31"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 30,
+      "pr17_control": "root/administrator override",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P27"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 31,
+      "pr17_control": "deployment approval",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P20",
+        "P21",
+        "P22",
+        "P28",
+        "P32"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    }
   ]
 }

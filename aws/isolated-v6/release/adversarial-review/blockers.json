@@ -1,0 +1,559 @@
+{
+  "schema_version": "jel-v6-pr18-blockers/1",
+  "review_target": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+  "finalized_on": "2026-09-26",
+  "candidate_behavior_changed": false,
+  "deployment_authorized": false,
+  "unit": "15 issue groups; distinct from 32 attack paths and 31 PR17 enforcement rows",
+  "counts": {
+    "A_PRE_DEPLOYMENT_MUST_CLOSE": 3,
+    "B_SANDBOX_TEST_REQUIRED": 6,
+    "C_POST_SANDBOX_BEFORE_PRODUCTION": 3,
+    "D_INFORMATIONAL_OR_ACCEPTED_LIMITATION": 3
+  },
+  "prerequisite_gate_ids": [
+    "A1",
+    "A2",
+    "A3"
+  ],
+  "three_gate_hypothesis": "SURVIVED_WITH_PHASED_SCOPE; current candidate remains unauthorized",
+  "boolean_semantics": "blocks_ingress_activation means ordinary/non-test ingress. Narrow synthetic test ingress can be authorized to obtain B evidence only after A gates, explicit scope and safe hold/recovery; this file authorizes nothing.",
+  "issues": [
+    {
+      "id": "A1",
+      "description": "Control who can alter or reuse V6 authority",
+      "related_attack_path_ids": [
+        "P02",
+        "P04",
+        "P05",
+        "P06",
+        "P07",
+        "P08",
+        "P11",
+        "P14",
+        "P15"
+      ],
+      "evidence_classes": [
+        "AWS_LIVE_READ_ONLY",
+        "IAM_SIMULATION",
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "primary_bucket": "A_PRE_DEPLOYMENT_MUST_CLOSE",
+      "bucket_reason": "Waiting for protected resources to exist would expose role-use and policy-attachment windows. This is one upstream authority property, not separate blockers for each API operation.",
+      "closure_or_test": "Approve and independently evaluate a complete principal/action/resource/context graph, then separately authorize containment establishment and read-back before creating usable V6 roles/functions/data paths. Cover legacy management, PassRole/alternate Lambda, Gateway mutation, role/boundary replacement, stack operators and rollback windows. Generated API identifiers require an inert-create/inspect/fence hold before routes or traffic. No proposed control is installed in PR18.",
+      "blocks_first_sandbox_resource_creation": true,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Refresh caller, identity grants, boundaries, trust, relevant organization/session constraints and simulations immediately before authority/bootstrap authorization; invalidate on any authority change.",
+      "unresolved_assumptions": [
+        "Effective future policies are untested.",
+        "Known legacy list is not a complete guarantee against future principals.",
+        "API identifiers may not be known before creation; exact pre-use fencing sequence must be reviewed.",
+        "No present legacy UpdateStack grant is established."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "A2",
+      "description": "Establish bounded, usable non-root bootstrap/deployment/recovery authority",
+      "related_attack_path_ids": [
+        "P11",
+        "P12",
+        "P15",
+        "P30"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "HISTORICAL_LIVE_EVIDENCE",
+        "AWS_DOCUMENTATION"
+      ],
+      "primary_bucket": "A_PRE_DEPLOYMENT_MUST_CLOSE",
+      "bucket_reason": "Creating resources first and discovering nobody can contain or repair a failure is too late. A policy proposal is not an authenticated operator or usable recovery path.",
+      "closure_or_test": "Name independently approved non-root trust/assurance and session limits; render exact normal maximum permissions and PassRole/stack relationships; separately approve temporary bootstrap/publishing/emergency powers, removal/expiry and a fallback for failed-create/retained resources. Confirm the actor can assume the required role and review effective grants before first candidate creation. Initial authority-establishment writes themselves require a separate explicit human-approved operation; this review does not authorize them.",
+      "blocks_first_sandbox_resource_creation": true,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Recheck actual operator/session/role trust and effective grants immediately before each phase; emergency rights require a new approval and post-use removal evidence.",
+      "unresolved_assumptions": [
+        "No approved recovery actor/role exists in inherited inventory.",
+        "Current normal proposal lacks CreateStack, bootstrap IAM/policy repair and publisher AssumeRole.",
+        "ContinueUpdateRollback is not a generic remedy for every failed-create state."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "A3",
+      "description": "Freeze an exact phased release and authenticated evidence/approval procedure",
+      "related_attack_path_ids": [
+        "P20",
+        "P22",
+        "P28",
+        "P32"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST",
+        "GITHUB_CI_EXECUTION",
+        "INFERRED"
+      ],
+      "primary_bucket": "A_PRE_DEPLOYMENT_MUST_CLOSE",
+      "bucket_reason": "A generic PASS or manifest hash cannot safely authorize unspecified parameters, mutable exports, actors or later phases. The procedure and bounded failure plan must exist before the first write; future observations need not already exist.",
+      "closure_or_test": "Bind account/region, both template hashes, source/artifact/binding hashes, stack names/roles/parameters/exports, selected S3 version, tests and exact next allowed mutation set to independent review and explicit DevF consent. Define authenticated evidence acquisition, freshness/drift checks, cost/time/stop limits, lifecycle contingencies and expiry of approval. Formally resolve known validator findings without pretending lint passed. Approve provider/profile and binding before token-capable ingress, not before empty bootstrap. The current template does not itself implement all phase holds.",
+      "blocks_first_sandbox_resource_creation": true,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Refresh evidence and human approval immediately before its named phase; invalidate on changed bytes, parameters, identities, policies or execution context. CI evidence remains exact-commit only.",
+      "unresolved_assumptions": [
+        "No trusted evidence-verifier or executor exists; current gate always denies deployment.",
+        "Runtime template also creates deployment/stage; a future reviewed inert-start/activation mechanism is required for separate holds.",
+        "Unapproved provider/configuration cannot be replaced with invented placeholder live values."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "B1",
+      "description": "Real provider profile, JWT enforcement and claim projection",
+      "related_attack_path_ids": [
+        "P17",
+        "P18",
+        "P31"
+      ],
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST"
+      ],
+      "primary_bucket": "B_SANDBOX_TEST_REQUIRED",
+      "bucket_reason": "Signature rejection and Gateway projection require actual provider/Gateway execution. Demanding them before an empty API exists is circular. Provider selection/approval is an A3 pre-ingress requirement, not execution proof.",
+      "closure_or_test": "After A gates and explicit test authorization, use only approved synthetic sandbox identities to test RSA/JWKS rotation, aud AND client_id, sub, token_use=access, exact scope/scopes shapes, exp/iat/optional nbf, extra claims and binding mismatch. Hold general ingress until positive/negative evidence is reviewed.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Rerun on provider/client/flow/key, authorizer, adapter or binding changes; inspect configuration immediately before enabling test ingress.",
+      "unresolved_assumptions": [
+        "No provider approved; absence of sampled Cognito pools does not exclude external providers.",
+        "All-string claims and scalar aud are provider-selectable constraints, not universal OIDC guarantees."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "B2",
+      "description": "Effective invocation, data/resource fences and AWS service context",
+      "related_attack_path_ids": [
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P09",
+        "P10",
+        "P12",
+        "P13",
+        "P25",
+        "P26"
+      ],
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "IAM_SIMULATION",
+        "LOCAL_TEST"
+      ],
+      "primary_bucket": "B_SANDBOX_TEST_REQUIRED",
+      "bucket_reason": "Actual qualified-policy/source context and negative enforcement require real isolated resources. Safe tests depend on A1 independent authority containment and A2 recovery, not on prior proof of those exact future resource policies.",
+      "closure_or_test": "Under separate test authority, verify metadata and negative unqualified/version/alias/URL invocations, exact Gateway sources, legacy table/index denials, role-use restrictions and allowed service path on synthetic data. Do not treat IAM simulation as execution. No test principal receives standing broad access merely to conduct the test.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Repeat affected negatives after any role/trust/resource policy/boundary/route or principal inventory change; record exact qualifier and session.",
+      "unresolved_assumptions": [
+        "Policy attachment/effective IAM/SCP/session behavior unobserved.",
+        "Direct same-account access is not disproved by a narrow runtime role."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "B3",
+      "description": "Initial provider lifecycle and selected artifact retrieval",
+      "related_attack_path_ids": [
+        "P14",
+        "P29"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "UNVERIFIED"
+      ],
+      "primary_bucket": "B_SANDBOX_TEST_REQUIRED",
+      "bucket_reason": "Successful resource creation and service retrieval of the selected S3 version cannot be observed without a bounded create attempt. A1/A2 must already cover partial creation and failure.",
+      "closure_or_test": "During controlled creation, inspect ordering, resulting policies, service-role associations and exact object version/hash retrieval. If denied, preserve events, keep ingress closed and analyze actual principal/context before widening any permission.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Evidence applies only to exact template/parameters/role/bucket/version and current regional provider; repeat on relevant changes.",
+      "unresolved_assumptions": [
+        "S3 delivery service principal/context unknown.",
+        "Static schema validation is not a live provider trace."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "B4",
+      "description": "Rollback/delete/retention and ResourcePolicy DescribeStacks lifecycle",
+      "related_attack_path_ids": [
+        "P15",
+        "P16",
+        "P30"
+      ],
+      "evidence_classes": [
+        "HISTORICAL_LIVE_EVIDENCE",
+        "LOCAL_STATIC_ANALYSIS",
+        "INFERRED",
+        "UNVERIFIED"
+      ],
+      "primary_bucket": "B_SANDBOX_TEST_REQUIRED",
+      "bucket_reason": "Provider delete calls and recovery transitions need deployed resources. Requiring a successful delete before first create is circular. A2 still requires usable bounded contingency authority before attempting creation.",
+      "closure_or_test": "Authorize a synthetic lifecycle drill with stop/quarantine plan, inspect stack events and actual exercising principal/request where available, test retained resource access and temporary-right removal. Carry PR16 DescribeStacks target/principal/request ambiguity unchanged; no speculative grant.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Retest relevant lifecycle on provider version, template, service/recovery role or retention changes; refresh authority immediately before drill.",
+      "unresolved_assumptions": [
+        "Declared delete-handler permission is not observed invocation.",
+        "Actual delete target/principal and failure-state repair remain unknown.",
+        "Passing a drill is required before expanding sandbox use beyond the bounded experiment, even though not before first creation."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "B5",
+      "description": "Configuration snapshots and binding revocation transitions",
+      "related_attack_path_ids": [
+        "P19",
+        "P23"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "primary_bucket": "B_SANDBOX_TEST_REQUIRED",
+      "bucket_reason": "Static evidence already identifies fixed Version/Deployment properties. It is not an initial-create defect. Transition behavior must be corrected/tested before relying on an update or revocation, with ingress stopped if needed.",
+      "closure_or_test": "Separate remediation should bind published Lambda/API snapshots to all material configuration changes. Test alias/version/route rollout, warm-host bindings and a bounded stop method using synthetic identities before ordinary ingress or any claimed revocation guarantee.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Rerun on snapshot logic, route/configuration, registry or alias rollout changes.",
+      "unresolved_assumptions": [
+        "DependsOn is ordering, not snapshot republishing.",
+        "Packaged registry changes alter artifact hash but do not provide instantaneous distributed revocation."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "B6",
+      "description": "Tiny sandbox operation, concurrency and cost stop signals",
+      "related_attack_path_ids": [
+        "P31"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "HISTORICAL_LIVE_EVIDENCE",
+        "UNVERIFIED"
+      ],
+      "primary_bucket": "B_SANDBOX_TEST_REQUIRED",
+      "bucket_reason": "Actual latency, throttling, sanitized telemetry and spend depend on running the sandbox. A3 must already approve bounded volume/duration/stop rules; sustained production load proof is unnecessary for first creation.",
+      "closure_or_test": "At minimal authorized volume, verify shared concurrency, throttling/503/rejection/not-found signals, logs contain no payload/claims and costs remain within human-approved limits. Stop on unexpected exposure, logging or spend; do not promise zero cost.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": true,
+      "blocks_production": true,
+      "freshness_requirement": "Refresh regional quotas/pricing and human spend limit before experiment; observe actual signals during it.",
+      "unresolved_assumptions": [
+        "Quota/cost observations inherited from earlier preflight are not a present allowance.",
+        "No load or billing test occurred in PR18."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "C1",
+      "description": "Production capacity, durability, backup and service objectives",
+      "related_attack_path_ids": [
+        "P26",
+        "P31"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "UNVERIFIED"
+      ],
+      "primary_bucket": "C_POST_SANDBOX_BEFORE_PRODUCTION",
+      "bucket_reason": "A finite synthetic human sandbox can stop and retain evidence; production requires concurrency/durability/load/restore/SLO evidence beyond it.",
+      "closure_or_test": "Before production, define data retention/backup/restore, capacity and failure budgets, run meaningful load/concurrency/durability/restore tests and approve recurring cost/operational ownership.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": false,
+      "blocks_production": true,
+      "freshness_requirement": "Revalidate against approved production topology, data and workload.",
+      "unresolved_assumptions": [
+        "No production workload or SLO approved."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "C2",
+      "description": "Production revocation, key/identity lifecycle and incident governance",
+      "related_attack_path_ids": [
+        "P17",
+        "P18",
+        "P19"
+      ],
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "UNVERIFIED"
+      ],
+      "primary_bucket": "C_POST_SANDBOX_BEFORE_PRODUCTION",
+      "bucket_reason": "Sandbox can use a small synthetic identity set and a tested stop control; production needs defined distributed revocation/session/key compromise responses.",
+      "closure_or_test": "Define revocation delay/SLO, JWKS rotation overlap and compromise response, subject/client lifecycle, auditing and incident ownership; verify beyond isolated synthetic cases.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": false,
+      "blocks_production": true,
+      "freshness_requirement": "Refresh on identity/security policy or provider changes and according to approved operational schedule.",
+      "unresolved_assumptions": [
+        "No instantaneous revocation property is established."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "C3",
+      "description": "Production caller/data migration and administrative separation",
+      "related_attack_path_ids": [
+        "P27",
+        "P31"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "INFERRED",
+        "UNVERIFIED"
+      ],
+      "primary_bucket": "C_POST_SANDBOX_BEFORE_PRODUCTION",
+      "bucket_reason": "Legacy migration is explicitly outside the isolated sandbox; production needs separately approved callers, data classification and rollback/account governance.",
+      "closure_or_test": "Approve migration/data governance and stronger account/administrative separation as justified; preserve legacy evidence and obtain new production authorization.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": false,
+      "blocks_production": true,
+      "freshness_requirement": "Bind to separate production release and current caller/data inventory.",
+      "unresolved_assumptions": [
+        "No production migration authorized; second account not assumed."
+      ],
+      "status": "OPEN"
+    },
+    {
+      "id": "D1",
+      "description": "Root/admin and deliberately trusted release authority limits",
+      "related_attack_path_ids": [
+        "P11",
+        "P27"
+      ],
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "HISTORICAL_LIVE_EVIDENCE"
+      ],
+      "primary_bucket": "D_INFORMATIONAL_OR_ACCEPTED_LIMITATION",
+      "bucket_reason": "Same-account policy cannot constrain an administrator able to replace it. Accepting that declared threat-model limit is distinct from accepting ordinary legacy bypasses.",
+      "closure_or_test": "Keep explicit human governance and non-root normal workflow; assess stronger separation for production. Never treat this limit as permission for root writes or standing recovery admin.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": false,
+      "blocks_production": false,
+      "freshness_requirement": "Refresh trust assumptions if account governance or privileged operators change.",
+      "unresolved_assumptions": [
+        "Account-level administrator override remains possible."
+      ],
+      "status": "ACKNOWLEDGED_WITH_LIMITS"
+    },
+    {
+      "id": "D2",
+      "description": "Validator/catalog drift versus candidate validity",
+      "related_attack_path_ids": [
+        "P16"
+      ],
+      "evidence_classes": [
+        "HISTORICAL_LIVE_EVIDENCE",
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "primary_bucket": "D_INFORMATIONAL_OR_ACCEPTED_LIMITATION",
+      "bucket_reason": "PR15 sampled live ResourceArn schemas and supported policy APIs retire those as independently proven candidate syntax/action defects; pinned1.40.2 diagnostics remain real failed checks. This is not proof of deployment success.",
+      "closure_or_test": "Preserve failing pinned result and PR15 newer-validator comparison; future reviewed tool/disposition decision belongs to A3. No suppression, internal schema patch or dependency upgrade in PR18.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": false,
+      "blocks_production": false,
+      "freshness_requirement": "Refresh official registry/schema/catalog when selecting actual deployment region/provider and validating final release.",
+      "unresolved_assumptions": [
+        "Public HTML contradiction remains visible.",
+        "PR16 handler authority ambiguity is B4, not resolved by validator modernization."
+      ],
+      "status": "ACKNOWLEDGED_WITH_LIMITS"
+    },
+    {
+      "id": "D3",
+      "description": "Evidence lineage and controls that survive the isolated attack",
+      "related_attack_path_ids": [
+        "P09",
+        "P10",
+        "P12",
+        "P13",
+        "P20",
+        "P21",
+        "P24",
+        "P28",
+        "P31"
+      ],
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST",
+        "GITHUB_CI_EXECUTION"
+      ],
+      "primary_bucket": "D_INFORMATIONAL_OR_ACCEPTED_LIMITATION",
+      "bucket_reason": "Finite model controls and independent execution remain useful but limited. Correcting a stale CI citation does not establish an exploit or erase actual final-head execution.",
+      "closure_or_test": "Preserve distinct evidence classes; actual workflow head_sha prevails. PR16 final run36252726480 exists; run36252559383 is historical. Retain strict parser/binding, selected S3 version and maximum-boundary controls while testing AWS effects in B.",
+      "blocks_first_sandbox_resource_creation": false,
+      "blocks_ingress_activation": false,
+      "blocks_production": false,
+      "freshness_requirement": "Always reconcile exact final SHA/run/hashes; outputs transfer only when every relevant input and environment is identical and explicitly identified.",
+      "unresolved_assumptions": [
+        "Tests may omit attacks; hashes do not authenticate author or human consent."
+      ],
+      "status": "ACKNOWLEDGED_WITH_LIMITS"
+    }
+  ],
+  "phases": [
+    {
+      "id": 0,
+      "name": "Authorization/evidence preflight",
+      "prerequisites": "Approved account/region and exact phase scope; A1/A2 design; authentic DevF review",
+      "principal": "Independent reviewer + proposed non-root operator, read-only",
+      "mutation_category": "None",
+      "expected_evidence": "Current identity/policy/trust graph, exact source/templates/parameters, risk and stop plan",
+      "success": "Named next phase authorized for exact coordinate only",
+      "failure": "Missing/stale/contradictory evidence or approval: BLOCKED",
+      "rollback": "No mutation to roll back",
+      "next_gate": "Authority establishment approval",
+      "fresh_human_authorization": "Required before any subsequent write"
+    },
+    {
+      "id": 1,
+      "name": "Establish authority and minimum inert bootstrap",
+      "prerequisites": "A1/A2 closure for resources being created; A3 exact bootstrap operation; independent approved authority exists",
+      "principal": "Separately approved non-root bootstrap operator; no root normal workflow",
+      "mutation_category": "Future separately authorized narrow IAM/fence establishment and bootstrap CF creation only",
+      "expected_evidence": "Effective grants/trust/boundaries, API ID, bucket/versioning/policy and exported identities",
+      "success": "Only reviewed inert resources exist; no usable uncontained role/data/traffic path",
+      "failure": "Unexpected resource, overbroad authority or partial failure: STOP",
+      "rollback": "Preapproved quarantine/retention/repair path; do not automatically delete evidence",
+      "next_gate": "Read-back and generated-ID containment",
+      "fresh_human_authorization": "Required; not supplied by PR18"
+    },
+    {
+      "id": 2,
+      "name": "Inspect bootstrap and refresh exact-ID fences",
+      "prerequisites": "Phase1 complete or safely stopped; inert API; no sensitive artifacts or routes",
+      "principal": "Read-only reviewer; separately approved fence operator if a write is required",
+      "mutation_category": "Read-back; any exact-ID policy change needs explicit separate approval",
+      "expected_evidence": "Actual API/bucket/role/export identities and intended-vs-actual diff; no unwanted users of new roles",
+      "success": "A1 covers actual identities and independent creator/rollback windows",
+      "failure": "Unknown mutator/reuser or drift: keep ingress closed",
+      "rollback": "Keep inert; approved containment repair or retention",
+      "next_gate": "Artifact/proposed runtime approval",
+      "fresh_human_authorization": "Required for writes, not read-only inspection"
+    },
+    {
+      "id": 3,
+      "name": "Publish immutable sandbox artifact",
+      "prerequisites": "Approved source/build/version intent; private fenced bucket and narrowly usable publisher",
+      "principal": "Approved actor assuming publisher role for this artifact only",
+      "mutation_category": "Future S3 new object version, no overwrite/delete of selected evidence",
+      "expected_evidence": "Bucket/key/version + independently verified artifact hash and publisher session",
+      "success": "Selected immutable version bound to release record",
+      "failure": "Mismatch/retrieval failure: no runtime creation",
+      "rollback": "Retain unused version; do not select it",
+      "next_gate": "Runtime creation approval",
+      "fresh_human_authorization": "Required, exact artifact/version scope"
+    },
+    {
+      "id": 4,
+      "name": "Create bounded runtime with ingress held",
+      "prerequisites": "A1/A2 effective containment; approved regional schema/tool disposition; exact provider parameters if template requires them; reviewed enforceable hold",
+      "principal": "Approved stack operator passing exact CloudFormation deployment role",
+      "mutation_category": "Future isolated runtime CF create only",
+      "expected_evidence": "Actual roles/boundaries, function/version/alias/table/policies and service retrieval; stack events",
+      "success": "Runtime correct and ingress held; no legacy mutation",
+      "failure": "Unexpected grants, failed create or missing protection: STOP",
+      "rollback": "Preapproved quarantine/failed-create retention/repair, not assumed ContinueUpdateRollback",
+      "next_gate": "Configuration inspection",
+      "fresh_human_authorization": "Required; current template combines stage/runtime and needs reviewed phase-hold treatment first"
+    },
+    {
+      "id": 5,
+      "name": "Approve provider/profile and exact server binding",
+      "prerequisites": "Provider capability/flow and administrator approved; synthetic identities only; runtime remains held",
+      "principal": "Separately approved identity/configuration operator + reviewer",
+      "mutation_category": "Future explicit IdP/config/binding operations only, none authorized here",
+      "expected_evidence": "Issuer/audience/client/scopes, approved subjects/tenant mapping, registry version/hash and actual published config",
+      "success": "Approved values bind the immutable release; no invented live values",
+      "failure": "Shape mismatch or unsafe update snapshots: remain held",
+      "rollback": "Keep held; return to reviewed config/release",
+      "next_gate": "Limited test-ingress authorization",
+      "fresh_human_authorization": "Required; move this phase before4 if current template needs real provider values"
+    },
+    {
+      "id": 6,
+      "name": "Enable only controlled synthetic test ingress",
+      "prerequisites": "Configuration read-back; approved test plan; containment and recovery still current; B3 successful",
+      "principal": "Approved exact stack/stage operator",
+      "mutation_category": "Future bounded activation under explicit test authority",
+      "expected_evidence": "Correct stage/route/integration/auth/source/alias, fresh actor and approval",
+      "success": "Only intended test scope active for approved interval",
+      "failure": "Drift/exposure: immediately use approved stop control",
+      "rollback": "Close test ingress using reviewed bounded control",
+      "next_gate": "Authorized positive/negative tests",
+      "fresh_human_authorization": "Required; testing permission is not ordinary ingress permission"
+    },
+    {
+      "id": 7,
+      "name": "Run positive/negative sandbox tests",
+      "prerequisites": "Explicit invocation/synthetic data/test-principal authority; B1/B2/B5 test definitions",
+      "principal": "Approved test identities and constrained negative-test actor",
+      "mutation_category": "Future tightly scoped test invocations/synthetic items, prohibited in PR18",
+      "expected_evidence": "Real JWT/projection/source context/qualified-policy/role-use results, sanitized signals and hashes",
+      "success": "Expected allows/denies and no unexpected mutation/exposure",
+      "failure": "Any unsafe Allow, wrong claims/binding or leak: stop and retain evidence",
+      "rollback": "Close ingress; isolate synthetic state; independent remediation decision",
+      "next_gate": "Lifecycle drill review",
+      "fresh_human_authorization": "Required; no real credential/payload capture in evidence"
+    },
+    {
+      "id": 8,
+      "name": "Exercise rollback/recovery and remove elevation",
+      "prerequisites": "Separate approved destructive/lifecycle scope and retained-resource plan; bounded repair authority",
+      "principal": "Approved recovery operator; emergency elevation only if independently authorized",
+      "mutation_category": "Future sandbox lifecycle/rollback/repair actions, none now",
+      "expected_evidence": "Actual handler/principal/context where observable, retained access, recovery and removal/expiry record",
+      "success": "Known stop/recovery path works and temporary authority removed",
+      "failure": "Unknown failed state: quarantine, stop and request exact repair authority",
+      "rollback": "Use only preapproved contingency; no improvised wildcard grants",
+      "next_gate": "Human review of experiment",
+      "fresh_human_authorization": "Required separately from normal deployment"
+    },
+    {
+      "id": 9,
+      "name": "Authorize only the next named state",
+      "prerequisites": "B results reviewed; no unresolved safety failure; exact source/config still valid",
+      "principal": "DevF + independent reviewer",
+      "mutation_category": "None from this record; any next use/phase requires separate scope",
+      "expected_evidence": "Signed/authenticated decision and evidence references, current hashes and authority",
+      "success": "Bounded next state explicitly approved or remains blocked",
+      "failure": "Missing evidence/approval: no progression",
+      "rollback": "Keep/restore safe held state",
+      "next_gate": "Further sandbox or separate production program",
+      "fresh_human_authorization": "Always required; never inferred from green CI"
+    }
+  ]
+}

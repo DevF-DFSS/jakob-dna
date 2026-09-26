@@ -1,6 +1,6 @@
 # Attack-path review
 
-Review target PR17 `a272b929e16b1db3e92eee5c3a1fe66c30d86d91`; reviewed 2026-09-26. No path is labelled PROVEN_PATH because no exploit/service execution was attempted. STATICALLY_BLOCKED means the modeled unchanged code/policy blocks that isolated path, not proof of AWS effective enforcement. IAM_SIMULATION is never OBSERVED_LIVE_BEHAVIOR. Source IDs resolve in [sources.json](sources.json); exact live requests/results are in [aws-evidence.json](aws-evidence.json). A/B/C/D are primary buckets defined in [BLOCKER_CLASSIFICATION.md](BLOCKER_CLASSIFICATION.md). Multiple paths can share one blocker.
+Review target PR17 `a272b929e16b1db3e92eee5c3a1fe66c30d86d91`; reviewed 2026-09-26. No path is labelled PROVEN_PATH because no exploit/service execution was attempted. STATICALLY_BLOCKED means the modeled unchanged code/policy blocks that isolated path, not proof of AWS effective enforcement. IAM_SIMULATION is never OBSERVED_LIVE_BEHAVIOR. Source IDs resolve in [sources.json](sources.json); exact live requests/results are in [aws-evidence.json](aws-evidence.json). A/B/C/D are preserved path-level tags (13/10/0/9), distinct from the 15 final issue groups (3/6/3/3) defined in [BLOCKER_CLASSIFICATION.md](BLOCKER_CLASSIFICATION.md). Multiple paths can share one blocker.
 
 ## P01 — Direct unqualified / $LATEST invocation
 
@@ -280,7 +280,9 @@ GitHub run 36252559383 headSha is 8be77e681ceff13ac8feb19139a358d644547ebc, whil
 
 Limit: Metadata mismatch is verified, not an observed authorization bypass. New exact-commit PR18 execution supersedes inherited execution claims only for tested artifacts.
 
-Next design/test: Record discrepancy here, keep historical PR untouched, reconcile every new final head/run.
+Recovery correction: run **36252726480** has actual head_sha **dd0df665ea4bd7512e18597001def8bb798e83e5**, so final PR16 execution DOES exist. Both runs concluded failure. The defect is the PR16 body citation, not absence of final-head evidence. Metadata does not alone prove detailed test results.
+
+Next design/test: Keep historical PR untouched and reconcile every new final head/run.
 
 ## P29 — S3 service artifact retrieval blocked by bucket deny
 

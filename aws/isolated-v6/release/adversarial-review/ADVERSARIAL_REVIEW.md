@@ -15,7 +15,7 @@ The Git ancestry and current GitHub bodies were checked on 2026-09-26. Each list
 | [16](https://github.com/DevF-DFSS/jakob-dna/pull/16) `dd0df665ea4bd7512e18597001def8bb798e83e5` | Delete handler declares DescribeStacks; deployment boundary denies it; actual request/principal/StackName unobserved. | Conditional lifecycle risk, not a proven create failure. Recovery operator's own permission does not supply the CF service role's authority. Do not require a destructive test before authorizing a bounded lifecycle experiment. |
 | [17](https://github.com/DevF-DFSS/jakob-dna/pull/17) `a272b929e16b1db3e92eee5c3a1fe66c30d86d91` | Exact claims contract; dated metadata/simulations; no provider in sampled regions; legacy user can manage future Lambda policies. | Local projected-claim checking is not JWT verification. Alias identity Allow is not a successful invoke through the future Deny. Policy replacement was correctly retained as a gap; role reuse and Gateway management need equal attention. |
 
-## Initial review finding, pending full path classification
+## Preserved role-reuse finding, now mapped to gate A1
 
 The current runtime trust permits Lambda service assumption, and its data permissions/boundary permit V6 table GetItem/PutItem without a source-function condition. PR18's targeted IAM simulation supplies the missing `iam:PassedToService=lambda.amazonaws.com` context: the legacy user's PassRole to a hypothetical candidate execution role is **allowed**. A separate hypothetical function Create/UpdateConfiguration/Invoke is also allowed. The candidate table's known-legacy Deny tests the *acting role ARN*, not the human who passed the role. This supports a credible role-reuse path even if management of the V6 function itself were fenced. No role/function exists for these simulated ARNs; no role was passed or function invoked. See `aws-evidence.json` for requests/results and limits. This is a supported inference, not observed exploitation.
 
@@ -23,7 +23,7 @@ The current runtime trust permits Lambda service assumption, and its data permis
 
 The current candidate is **not ready for authorization**. The strongest new challenge is role reuse (P07): fencing the V6 function alone would leave a route to its table through the allowed execution role. This expands the existing authority blocker; it is not a request for broad new permissions. Gateway management (P08) must also be covered, not just Lambda invocation. Both paths are supported by targeted identity simulations, not observed exploits.
 
-The proposition that a finite set of gates can permit a controlled experiment survives only after narrowing the claim to **phased, non-sensitive sandbox work**. Requiring all real Gateway/IAM/delete behavior before any resource creation is circular. Conversely, postponing authority over policy replacement, role reuse and emergency recovery until after creation is unsafe. [BLOCKER_CLASSIFICATION.md](BLOCKER_CLASSIFICATION.md) reduces these concerns to three prerequisite gates and six classes of sandbox experiment. No deployment is authorized by this distinction.
+The proposition that a finite set of gates can permit a controlled experiment survives only after narrowing the claim to **phased, non-sensitive sandbox work**. Requiring all real Gateway/IAM/delete behavior before any resource creation is circular. Conversely, postponing authority over policy replacement, role reuse and emergency recovery until after creation is unsafe. [BLOCKER_CLASSIFICATION.md](BLOCKER_CLASSIFICATION.md) records the tested reduction: three prerequisite gates, six sandbox-test groups, three production groups and three accepted-limit/evidence groups. The 32 path tags (13/10/0/9) count different units. The current runtime template does not yet implement all proposed phase holds; the sequence is a future design requirement, not an executable or authorized procedure. No deployment is authorized by this distinction.
 
 ## Principals and replaceable controls
 
@@ -90,3 +90,7 @@ Sources: [CF rollback](https://docs.aws.amazon.com/AWSCloudFormation/latest/APIR
 - CI has no AWS credentials or write permission, checks exact source blobs, and correctly reports known lint failures. None of this proves AWS behavior.
 
 These survive the isolated attack, not arbitrary code/admin compromise. All 32 credible or rejected paths, their evidence classes and limits are in ATTACK_PATHS.md / attack_paths.json. No path is labelled an observed exploit.
+
+## Recovery/provenance reconciliation
+
+The missing blocker/freshness documents at e12753a were never created; prose had anticipated them. [INTERRUPTION_RECOVERY.md](INTERRUPTION_RECOVERY.md) records the seam and clean recovery. [EVIDENCE_FRESHNESS.md](EVIDENCE_FRESHNESS.md) distinguishes 31 PR17 enforcement rows from 32 PR18 paths and corrects the stale PR16 CI citation: run36252726480 matches final dd0df665; run36252559383 is historical at 8be77e6. Final PR16 CI evidence exists, with a failed workflow conclusion. No historical PR is rewritten.
