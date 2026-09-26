@@ -1,0 +1,22 @@
+{
+  "schema_version": "jel-v6-recovery-design/1",
+  "status": "PROPOSED_UNCONFIGURED",
+  "role_path": "/jel-v6-approved/",
+  "role_name": "JaKoBV6RecoveryOperator",
+  "trusted_federated_principal": null,
+  "approved_account": null,
+  "approved_region": null,
+  "normal_policy_template": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {"Effect":"Allow","Action":["cloudformation:DescribeStacks","cloudformation:DescribeStackEvents","cloudformation:DescribeStackResources","cloudformation:GetTemplate"],"Resource":["${BootstrapStackArn}","${RuntimeStackArn}"]},
+      {"Effect":"Allow","Action":["cloudformation:UpdateStack","cloudformation:ContinueUpdateRollback"],"Resource":"${RuntimeStackArn}","Condition":{"ArnEquals":{"cloudformation:RoleArn":"${DeploymentRoleArn}"}}},
+      {"Effect":"Allow","Action":"iam:PassRole","Resource":"${DeploymentRoleArn}","Condition":{"StringEquals":{"iam:PassedToService":"cloudformation.amazonaws.com"}}},
+      {"Effect":"Deny","Action":["lambda:InvokeFunction","lambda:InvokeFunctionUrl"],"Resource":"*"}
+    ]
+  },
+  "trust_requirement": "Exact independently approved non-root federated principal, MFA/IdP assurance and session duration enforcement; no account-root trust and no existing legacy principal. Trust policy cannot be rendered until that principal is approved.",
+  "boundary_requirement": "Rendered allow set must also be the maximum boundary; explicitly deny non-approved actions/resources and privilege escalation. Current file is a policy template, not an attached/effectively evaluated boundary.",
+  "emergency_authority": "NOT GRANTED. Bootstrap IAM/bucket-policy repair requires separately reviewed time-limited exact-resource authority, two-person review, rollback plan and fresh DevF authorization; never an automatic gate bypass.",
+  "deployment_authorized": false
+}

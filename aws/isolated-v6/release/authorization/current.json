@@ -1,0 +1,6 @@
+{
+  "schema_version": "jel-v6-authorization/1",
+  "context": null,
+  "blockers": ["Approved account/region/operator/recovery authority absent", "Current authenticated live evidence absent", "DevF deployment authorization absent", "PR12 schema and effective-policy gates unresolved"],
+  "evidence": []
+}
