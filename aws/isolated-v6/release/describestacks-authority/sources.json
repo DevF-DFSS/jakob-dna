@@ -1,0 +1,41 @@
+{
+  "evidence_class": "PUBLIC_DOCUMENTATION_RETRIEVAL",
+  "authenticated_aws_api_calls": 0,
+  "sources": [
+    {
+      "id": "describe_stacks_api",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_DescribeStacks.html",
+      "retrieved_at_utc": "2026-09-26T15:39:30.800546+00:00",
+      "http_download_exit_code": 0,
+      "sha256": "d57258215f47ae01dc1998a874c4d54969fcf13c10f1b02a56c7251195fbb3e7"
+    },
+    {
+      "id": "cloudformation_service_role",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-servicerole.html",
+      "retrieved_at_utc": "2026-09-26T15:39:31.296401+00:00",
+      "http_download_exit_code": 0,
+      "sha256": "5b3c608b927cf57949b926e77125628a42fd06c446315ce689d0016af1b7d510"
+    },
+    {
+      "id": "provider_schema",
+      "url": "https://raw.githubusercontent.com/aws-cloudformation/cloudformation-resource-schema/master/README.md",
+      "retrieved_at_utc": "2026-09-26T15:39:32.396319+00:00",
+      "http_download_exit_code": 0,
+      "sha256": "ed465f4e0ac935f4f0296815e85db97a1e1211147bc202f4948702608814d7f9"
+    },
+    {
+      "id": "provider_development",
+      "url": "https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/resource-type-develop.html",
+      "retrieved_at_utc": "2026-09-26T15:39:32.839501+00:00",
+      "http_download_exit_code": 0,
+      "sha256": "c34fd71c10c0516f76130c83715a6a193e785a036c110f827d2f7fca56c33824"
+    },
+    {
+      "id": "cloud_control_guide",
+      "url": "https://docs.aws.amazon.com/pdfs/cloudcontrolapi/latest/userguide/cloudapi-service.pdf",
+      "retrieved_at_utc": "2026-09-26T15:39:35.921490+00:00",
+      "http_download_exit_code": 0,
+      "sha256": "05f57775ca711cf5e255c4f7fd7e0e4ddd2819ef6e00920d81e8fae724030cdd"
+    }
+  ]
+}
