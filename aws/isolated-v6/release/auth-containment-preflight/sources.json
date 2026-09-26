@@ -1,0 +1,62 @@
+{
+  "evidence_class": "AWS_DOCUMENTATION_PUBLIC_HTTPS",
+  "authenticated_aws_api_calls": 0,
+  "sources": [
+    {
+      "id": "api_gateway_jwt",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html",
+      "retrieved_at_utc": "2026-09-26T16:21:02.280004+00:00",
+      "exit_code": 0,
+      "sha256": "5cf6e014bbec73581abec8a1eedb3359f8f1f1c70c684fa30556597c0b641e6d"
+    },
+    {
+      "id": "http_api_lambda_v2",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html",
+      "retrieved_at_utc": "2026-09-26T16:21:02.769172+00:00",
+      "exit_code": 0,
+      "sha256": "f1485efd335a65441a2ddd009fbb8409cfe8763f58bf54da7959f386c48efe5d"
+    },
+    {
+      "id": "lambda_full_resource_policy",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html",
+      "retrieved_at_utc": "2026-09-26T16:21:04.678753+00:00",
+      "exit_code": 0,
+      "sha256": "f0752a4c70a4860e35720e02456b5d170578f137db0261d39e63b2f79c051257"
+    },
+    {
+      "id": "iam_ifexists",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html",
+      "retrieved_at_utc": "2026-09-26T16:21:05.282409+00:00",
+      "exit_code": 0,
+      "sha256": "da23823b2c426b6722139342e3784cb5dcddff51321a79e7c0f85b8b42495671"
+    },
+    {
+      "id": "iam_principal_service_name",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html",
+      "retrieved_at_utc": "2026-09-26T16:21:06.320210+00:00",
+      "exit_code": 0,
+      "sha256": "2991e60a1aa076000645baba098043d752d1d333cc16cd922ef732f2083c90ea"
+    },
+    {
+      "id": "cognito_access_token",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html",
+      "retrieved_at_utc": "2026-09-26T16:21:06.844916+00:00",
+      "exit_code": 0,
+      "sha256": "ab4294f1f8cee20d6ae711f59149a64c902846fa44141e958e2da5b70e235ae6"
+    },
+    {
+      "id": "cognito_resource_binding",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html",
+      "retrieved_at_utc": "2026-09-26T16:21:07.323395+00:00",
+      "exit_code": 0,
+      "sha256": "cb0dfc9d258595cfb8225b6f48ca5cb4f05fa67a09e483f1d6d3ad9bbf7f5633"
+    },
+    {
+      "id": "cognito_scope_format",
+      "url": "https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateResourceServer.html",
+      "retrieved_at_utc": "2026-09-26T16:21:07.843115+00:00",
+      "exit_code": 0,
+      "sha256": "fa9af97291a1f00fdff0a4cc1d53babba60812aa05c61b0916d7e196cf50e0b9"
+    }
+  ]
+}
