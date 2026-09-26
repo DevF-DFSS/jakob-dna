@@ -1,0 +1,799 @@
+{
+  "schema_version": "jel-v6-pr18-sources/1",
+  "review_target": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+  "public_requests_are_authenticated_aws_calls": false,
+  "prior_public_retrieval_failure": {
+    "attempts": 19,
+    "tool": "Python urllib",
+    "error": "CERTIFICATE_VERIFY_FAILED: local issuer unavailable",
+    "aws_api_calls": 0,
+    "disposition": "Used system curl with normal TLS validation; no certificate bypass"
+  },
+  "sources": [
+    {
+      "id": "passrole",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:42.749188+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "724b3bf00c72335860c9f20dd6bd7da41a917d08c77fcf6897a0bd06aaea7634"
+    },
+    {
+      "id": "boundaries",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:43.300750+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "6881a9145fcf3dfd54d566aef9943ccfeae0afabf0ed074043048ada6995ee3c"
+    },
+    {
+      "id": "lambda_roles",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/concepts-basics.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:43.842894+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "d4558655fc1e8071213e38d0a8b57ade7b7176d7d231f255ecab027958b81138"
+    },
+    {
+      "id": "source_function",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/permissions-source-function-arn.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:44.351930+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "54ced76ce37f52f7865e0a2d2b6567433fdef085c0cb18da81c2aeaeee38ea54"
+    },
+    {
+      "id": "lambda_resource_policy",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:44.862071+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "f0752a4c70a4860e35720e02456b5d170578f137db0261d39e63b2f79c051257"
+    },
+    {
+      "id": "lambda_context",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/python-context.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:45.364744+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "18a84ad6ae47e168117f719d7f17a9f0d51adaae230bbddaa37237957f2f3eee"
+    },
+    {
+      "id": "lambda_version",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:45.879692+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "b1e167ddbd1a221ba11bb2240de7fb5ebb65c7638c03990aae52f045912aa57c"
+    },
+    {
+      "id": "cfn_version",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-version.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:46.396465+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "332599287d8b4accc3b4c1c736ed4a4024d9aa6249776be238b78bd06458d3aa"
+    },
+    {
+      "id": "cfn_service_role",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-servicerole.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:46.944738+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "5b3c608b927cf57949b926e77125628a42fd06c446315ce689d0016af1b7d510"
+    },
+    {
+      "id": "continue_rollback",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_ContinueUpdateRollback.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:47.392979+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "989214ccc50c42b58e1b9dc8c6054b20d4557704673151e889497ffb2a4c7a6e"
+    },
+    {
+      "id": "retain",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-attribute-deletionpolicy.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:47.838105+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "40272596cd3a7dcfb94961de26bb9a00d30bad64b426eca2a054a7dba259de55"
+    },
+    {
+      "id": "gateway_jwt",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:48.263082+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "5cf6e014bbec73581abec8a1eedb3359f8f1f1c70c684fa30556597c0b641e6d"
+    },
+    {
+      "id": "gateway_payload",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:48.786235+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "f1485efd335a65441a2ddd009fbb8409cfe8763f58bf54da7959f386c48efe5d"
+    },
+    {
+      "id": "gateway_stages",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-stages.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:49.127958+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "c51954f4825ca80418470a8a981cbac99a42bcea3189e92ee6180ad2f62bf54b"
+    },
+    {
+      "id": "cfn_deployment",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-deployment.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:49.587197+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "468e42ca7c8af0efd1e48062c2d209b8b6ebef9a5382ac2cfdb430917ab79e1e"
+    },
+    {
+      "id": "cognito_access",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:50.090259+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "ab4294f1f8cee20d6ae711f59149a64c902846fa44141e958e2da5b70e235ae6"
+    },
+    {
+      "id": "cognito_binding",
+      "url": "https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-pools-define-resource-servers.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:50.589835+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "cb0dfc9d258595cfb8225b6f48ca5cb4f05fa67a09e483f1d6d3ad9bbf7f5633"
+    },
+    {
+      "id": "simulation_limits",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:51.165101+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "3d7d09f59529ef3a79b24cbc41b71ff4a12a85c34146a9dc31bc8569eaf46acb"
+    },
+    {
+      "id": "cfn_catalog",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/cloudformation/cloudformation.json",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "retrieved_at": "2026-09-26T16:59:51.665931+00:00",
+      "retrieval_tool": "system curl; TLS verification enabled",
+      "sha256": "5f5214d42df63c5d04964ae9086788bc060bd09d52c92a75ba51f6914385e83c"
+    }
+  ],
+  "github_prs": [
+    {
+      "number": 12,
+      "url": "https://github.com/DevF-DFSS/jakob-dna/pull/12",
+      "head": "1eac1a9b88a53128d52bba11170cb6f6d764905d",
+      "base_branch": "codex/isolated-v6-predeploy-remediation-2026-09-25",
+      "retrieved_at": "2026-09-26",
+      "body_sha256": "82340adf05fd7475d7ae932e46541ee372279f2e8a541fbb915d8bf83c67256a"
+    },
+    {
+      "number": 13,
+      "url": "https://github.com/DevF-DFSS/jakob-dna/pull/13",
+      "head": "41cb420520d14f437f0b8e79ab920912464c50c4",
+      "base_branch": "codex/isolated-v6-same-account-isolation-2026-09-25",
+      "retrieved_at": "2026-09-26",
+      "body_sha256": "9fcccf07d6b865e612ed45359a8a234d2e90abd9a9defabce2e3c3047ce4dc47"
+    },
+    {
+      "number": 14,
+      "url": "https://github.com/DevF-DFSS/jakob-dna/pull/14",
+      "head": "7589d51fd528486533293bd9ba357a220ff28954",
+      "base_branch": "codex/v6-authorization-gates-pr13",
+      "retrieved_at": "2026-09-26",
+      "body_sha256": "03e0573ec1866f8fbce80a636dc64af5b0a6027c55103c05fda720a4ce1bffc8"
+    },
+    {
+      "number": 15,
+      "url": "https://github.com/DevF-DFSS/jakob-dna/pull/15",
+      "head": "a9de8ce6a646520ad1548b86bd97af9669c5ab27",
+      "base_branch": "codex/v6-independent-ci-pr14",
+      "retrieved_at": "2026-09-26",
+      "body_sha256": "3cc9c4f3cbb8f3671584ee7e9a60c6098ccf2fa7e6a23960830d34b08658b23d"
+    },
+    {
+      "number": 16,
+      "url": "https://github.com/DevF-DFSS/jakob-dna/pull/16",
+      "head": "dd0df665ea4bd7512e18597001def8bb798e83e5",
+      "base_branch": "codex/v6-schema-convergence-pr15",
+      "retrieved_at": "2026-09-26",
+      "body_sha256": "b203f3d2835e0817cc9e71d3534c6617c278b7da3c26717701867f10640e8c6f"
+    },
+    {
+      "number": 17,
+      "url": "https://github.com/DevF-DFSS/jakob-dna/pull/17",
+      "head": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "base_branch": "codex/v6-describestacks-authority-pr16",
+      "retrieved_at": "2026-09-26",
+      "body_sha256": "edc0aef52c7dcc46630a4025853d2a7cca9f81940eb5f3154123514142ceb064"
+    }
+  ],
+  "recovery_verified_at": "2026-09-26T20:26:14Z",
+  "github_workflow_runs": [
+    {
+      "id": 36252559383,
+      "head_sha": "8be77e681ceff13ac8feb19139a358d644547ebc",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T15:37:04Z",
+      "retrieved_at": "2026-09-26T20:26:14Z",
+      "evidence_class": "GITHUB_CI_EXECUTION",
+      "status": "HISTORICAL_PR16_CHECKPOINT; stale final-head citation in PR16 body"
+    },
+    {
+      "id": 36252726480,
+      "head_sha": "dd0df665ea4bd7512e18597001def8bb798e83e5",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T15:39:59Z",
+      "retrieved_at": "2026-09-26T20:26:14Z",
+      "evidence_class": "GITHUB_CI_EXECUTION",
+      "status": "ACTUAL_FINAL_PR16_EXECUTION_EXISTS; metadata only, detailed logs not newly asserted"
+    }
+  ],
+  "evidence_families": [
+    {
+      "id": "caller",
+      "source": "aws-evidence.json, STS GetCallerIdentity",
+      "evidence_class": "AWS_LIVE_READ_ONLY",
+      "observed_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "commit_coordinate": "e12753aa5103c9020cdfa99be6b51c548faedfca",
+      "account": "083127296577",
+      "region": "global identity; request batch context us-east-1",
+      "last_verified_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "New session/identity/account or changed connector",
+      "refresh_requirement": "Immediately before every approved write phase; record actual acting session",
+      "limits": "Root was used only for reads; not an approved operator.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "legacy_user",
+      "source": "aws-evidence.json GetUser/ListAttachedUserPolicies/GetPolicy/GetPolicyVersion",
+      "evidence_class": "AWS_LIVE_READ_ONLY",
+      "observed_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "commit_coordinate": "e12753aa5103c9020cdfa99be6b51c548faedfca",
+      "account": "083127296577",
+      "region": "IAM global",
+      "last_verified_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Attachment/inline/boundary/trust/group/policy version or principal change",
+      "refresh_requirement": "Immediately before authority/bootstrap approval and after any policy change",
+      "limits": "Targeted user refresh only; three attachments/no boundary; broad inventory inherited, not refreshed.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "roles_boundaries",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "IAM global",
+      "last_verified_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "New role/user/service-linked role; trust/policy/boundary changes",
+      "refresh_requirement": "Current complete relevant principal/role-use graph before authority approval",
+      "limits": "Four service-linked roles are distinct; ordinary role counts are historical, not a guarantee against later actors.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "organizations_sessions",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:17:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "global organization context",
+      "last_verified_at": "2026-09-26T16:17:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Organization membership/SCP change, session policy or principal change",
+      "refresh_requirement": "Before authority approval; inspect applicable constraints and actual session provenance",
+      "limits": "AWSOrganizationsNotInUseException then; no present organization/SCP proof. Session policies not exhaustively established.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "simulation",
+      "source": "aws-evidence.json four SimulatePrincipalPolicy requests/results",
+      "evidence_class": "IAM_SIMULATION",
+      "observed_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "commit_coordinate": "e12753aa5103c9020cdfa99be6b51c548faedfca",
+      "account": "083127296577",
+      "region": "us-east-1 hypothetical resources; IAM global roles",
+      "last_verified_at": "2026-09-26T16:54:35.854752+00:00 (batch start)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Any input policy/ARN/action/context/trust/organization/session change",
+      "refresh_requirement": "Repeat exact actual candidate ARN/context simulations before applicable phase; supplement with separately authorized sandbox negatives",
+      "limits": "No future trust/resource policy/live call is tested. CF-context implicitDeny has MissingContextValues; Gateway POST simulation is not proof of API operation validity.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "gateway",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2",
+      "last_verified_at": "2026-09-26T16:14:39Z\u201316:15:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "API/route/authorizer/integration/stage/deployment or administrative-grant change",
+      "refresh_requirement": "Before bootstrap namespace selection, then after creation and immediately before test ingress",
+      "limits": "Three legacy HTTP APIs, no authorizers then; no V6 API. PR18 targeted admin simulation is separate from API inventory.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "lambda",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2",
+      "last_verified_at": "2026-09-26T16:14:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Function/alias/version/URL/role/config/policy change",
+      "refresh_requirement": "Before namespace approval and after each candidate lifecycle transition",
+      "limits": "No V6 function observed in sampled regions then; no global absence proof.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "provider",
+      "source": "../auth-containment-preflight/LIVE_EVIDENCE.md and CONTRACT.md",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T16:14:39Z",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2",
+      "last_verified_at": "2026-09-26T16:14:39Z",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "IdP/client/issuer/keys/scopes/subjects/flow or config change",
+      "refresh_requirement": "Provider selection/approval before real parameters or ingress; actual projection after controlled test authorization",
+      "limits": "No Cognito pools sampled; external providers not globally inventoried. No tokens generated; provider capability differs from configured behavior.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "registry",
+      "source": "../schema-research/registry.json and sources.json; ../describestacks-authority/EVIDENCE.md and sources.json",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "2026-09-26T13:45:29.451620+00:00 (PR15 registry batch)",
+      "commit_coordinate": "a9de8ce6a646520ad1548b86bd97af9669c5ab27 / dd0df665ea4bd7512e18597001def8bb798e83e5",
+      "account": "083127296577",
+      "region": "us-east-1, us-east-2, eu-west-1 (PR15 sample)",
+      "last_verified_at": "2026-09-26T13:45:29.451620+00:00 (PR15 registry batch)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Regional type/default version/handler schema/catalog change",
+      "refresh_requirement": "Before selecting actual deployment region and approving template/lifecycle test",
+      "limits": "No new DescribeType in PR18. ResourceArn evidence does not prove delete-handler requests or permissions.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "recovery",
+      "source": "../authorization/recovery-operator.json + PR17 inventory",
+      "evidence_class": "LOCAL_STATIC_ANALYSIS",
+      "observed_at": "2026-09-26 review; absence inherited from PR17",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "proposed account/region unconfigured",
+      "last_verified_at": "2026-09-26 review; absence inherited from PR17",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Trust/operator/role/grants/session/stack association/emergency plan change",
+      "refresh_requirement": "Before bootstrap, before recovery and after temporary rights expire or are removed",
+      "limits": "JSON is unconfigured; no usable actor or recovery drill. Read-only connector root is not the recovery path.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "ci",
+      "source": "sources.json github_workflow_runs; final PR18 PR body/run object",
+      "evidence_class": "GITHUB_CI_EXECUTION",
+      "observed_at": "2026-09-26T20:26:14Z (PR16 metadata retrieval)",
+      "commit_coordinate": "Actual run head_sha, never PR-body prose",
+      "account": null,
+      "region": null,
+      "last_verified_at": "2026-09-26T20:26:14Z (PR16 metadata retrieval)",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Source/dependency/workflow/runner changes or superseded run",
+      "refresh_requirement": "For every final release commit, compare actual run head_sha and check logs/source-input hashes",
+      "limits": "PR16 run36252726480 exists at final dd0df665; run36252559383 is historical. Failure remains failure. PR18 final evidence pending validation at this checkpoint.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "hashes",
+      "source": "Git tree + unchanged build.py source_inputs + final diagnostic provenance",
+      "evidence_class": "LOCAL_STATIC_ANALYSIS",
+      "observed_at": "Final validation pending at classification checkpoint",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": null,
+      "region": null,
+      "last_verified_at": "Final validation pending at classification checkpoint",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Any source/template/bootstrap/binding/dependency/selected artifact version/parameter change",
+      "refresh_requirement": "Recompute and verify against exact final Git tree; bind actual deployment parameters/exports separately",
+      "limits": "Hash identifies bytes, not authority; final PR18 result recorded after commit in validation logs and PR body to avoid a self-hash cycle.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "human_authorization",
+      "source": "../authorization/current.json; explicit DevF decision absent",
+      "evidence_class": "UNVERIFIED",
+      "observed_at": "2026-09-26 review",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": null,
+      "region": null,
+      "last_verified_at": "2026-09-26 review",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "No authority yet; future decision expires on changed scope/context or its stated end",
+      "refresh_requirement": "Require authenticated explicit phase-specific consent immediately before named mutation; stop on drift",
+      "limits": "deployment_authorized=false; tests/checkpoints/CI never supply consent.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "public_documentation",
+      "source": "sources.json sources; 19 hashed public sources",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "observed_at": "2026-09-26T16:59:42.749188+00:00\u201316:59:51.665931+00:00",
+      "commit_coordinate": null,
+      "account": null,
+      "region": null,
+      "last_verified_at": "2026-09-26T16:59:42.749188+00:00\u201316:59:51.665931+00:00",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "AWS docs/catalog/service behavior update",
+      "refresh_requirement": "Recheck substantive claims when choosing final design/provider/region or contrary evidence appears",
+      "limits": "Documentation is not observed service behavior. Raw downloads cached outside Git; hashes and URLs persist.",
+      "reconstructed_at": "2026-09-26"
+    },
+    {
+      "id": "quota_cost",
+      "source": "PR10 preflight and candidate throttling/log/retention configuration",
+      "evidence_class": "HISTORICAL_LIVE_EVIDENCE",
+      "observed_at": "Historical PR10 observation; not refreshed in PR18",
+      "commit_coordinate": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "account": "083127296577",
+      "region": "candidate region not yet approved",
+      "last_verified_at": "Historical PR10 observation; not refreshed in PR18",
+      "valid_at": "Observation/context only; not an authority lease",
+      "expected_until": null,
+      "invalidated_by": "Quota/pricing/free-tier/account usage/retention/volume changes",
+      "refresh_requirement": "Before bounded experiment authorization; observe actual spend/volume during it",
+      "limits": "No $0 promise and no quota/billing calls in PR18.",
+      "reconstructed_at": "2026-09-26"
+    }
+  ],
+  "pr17_to_pr18_mapping": [
+    {
+      "pr17_row_ordinal": 1,
+      "pr17_control": "JWT signature and RSA JWKS",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 2,
+      "pr17_control": "issuer iss",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 3,
+      "pr17_control": "audience aud",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 4,
+      "pr17_control": "client_id",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 5,
+      "pr17_control": "subject sub",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18",
+        "P31"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 6,
+      "pr17_control": "access token use",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 7,
+      "pr17_control": "route scopes",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 8,
+      "pr17_control": "scope projection",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 9,
+      "pr17_control": "expiration exp",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 10,
+      "pr17_control": "issued-at iat",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 11,
+      "pr17_control": "not-before nbf",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P17",
+        "P18"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 12,
+      "pr17_control": "JWT event claim shape",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P02",
+        "P17",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 13,
+      "pr17_control": "API ID",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P02",
+        "P08",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 14,
+      "pr17_control": "stage",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P23",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 15,
+      "pr17_control": "route/method/path",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P23",
+        "P31"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 16,
+      "pr17_control": "qualified alias",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P01",
+        "P02",
+        "P03",
+        "P23"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 17,
+      "pr17_control": "Gateway source account",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 18,
+      "pr17_control": "Gateway source ARN",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P08",
+        "P25"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 19,
+      "pr17_control": "unqualified direct InvokeFunction",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P01"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 20,
+      "pr17_control": "published-version direct InvokeFunction",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P03"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 21,
+      "pr17_control": "alias direct InvokeFunction",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P02"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 22,
+      "pr17_control": "Function URL",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P04"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 23,
+      "pr17_control": "code/config mutation",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P06"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 24,
+      "pr17_control": "resource-policy mutation",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P05"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 25,
+      "pr17_control": "PassRole",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P07",
+        "P13"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 26,
+      "pr17_control": "deployment-role use",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P10",
+        "P11"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 27,
+      "pr17_control": "known legacy principal access",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P05",
+        "P07",
+        "P08",
+        "P26"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 28,
+      "pr17_control": "recovery path",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P11",
+        "P15",
+        "P16",
+        "P30"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 29,
+      "pr17_control": "tenant/sender/receiver binding",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P18",
+        "P19",
+        "P31"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 30,
+      "pr17_control": "root/administrator override",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P27"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    },
+    {
+      "pr17_row_ordinal": 31,
+      "pr17_control": "deployment approval",
+      "pr17_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+      "related_pr18_paths": [
+        "P20",
+        "P21",
+        "P22",
+        "P28",
+        "P32"
+      ],
+      "mapping_kind": "Analytical relationship, not one-to-one equivalence"
+    }
+  ]
+}
