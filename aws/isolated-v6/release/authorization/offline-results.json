@@ -1,0 +1,521 @@
+{
+  "aws_calls": 0,
+  "cloudformation": {
+    "deployment_authorized": false,
+    "network": "socket and credential discovery blocked",
+    "passed": false,
+    "runs": [
+      {
+        "exit_code": 6,
+        "findings": [
+          {
+            "Filename": "bootstrap.json",
+            "Id": "f786922f-eafe-8c5e-d6fd-b1291ab14d1c",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 23,
+                "LineNumber": 149
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 149
+              }
+            },
+            "Message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "405a0e0f-34f9-994f-9944-72b3079fc13e",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 23,
+                "LineNumber": 149
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 149
+              }
+            },
+            "Message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "491f395e-10ca-feb8-ad8e-6c2551c74e47",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 26,
+                "LineNumber": 354
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                12,
+                "NotAction"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 354
+              }
+            },
+            "Message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "70e2347b-ce1b-2aa7-be95-5f2eb47d746a",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 26,
+                "LineNumber": 354
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                12,
+                "NotAction"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 354
+              }
+            },
+            "Message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "fcef48b7-4f3a-08e1-cd81-d0fc2845553b",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 27,
+                "LineNumber": 471
+              },
+              "Path": [
+                "Resources",
+                "DeploymentRole",
+                "Properties",
+                "Policies",
+                0,
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 19,
+                "LineNumber": 471
+              }
+            },
+            "Message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "e974343e-443f-2b7e-57e6-c4a0063427ab",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 27,
+                "LineNumber": 471
+              },
+              "Path": [
+                "Resources",
+                "DeploymentRole",
+                "Properties",
+                "Policies",
+                0,
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 19,
+                "LineNumber": 471
+              }
+            },
+            "Message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "template.json",
+            "Id": "5e61cf43-a2e8-82fc-e358-bf6890bb4d4f",
+            "Level": "Error",
+            "Location": {
+              "End": {
+                "ColumnNumber": 13,
+                "LineNumber": 568
+              },
+              "Path": [
+                "Resources",
+                "FunctionResourcePolicy",
+                "Type"
+              ],
+              "Start": {
+                "ColumnNumber": 7,
+                "LineNumber": 568
+              }
+            },
+            "Message": "Resource type 'AWS::Lambda::ResourcePolicy' does not exist in 'us-east-1'",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Resource types are validated against the spec accounting for regions",
+              "Id": "E3006",
+              "ShortDescription": "Validate the CloudFormation resource type",
+              "Source": "https://github.com/aws-cloudformation/cfn-lint"
+            }
+          },
+          {
+            "Filename": "template.json",
+            "Id": "0643dd4b-4477-560c-e91a-f67388d5ae32",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 32,
+                "LineNumber": 824
+              },
+              "Path": [
+                "Outputs",
+                "SandboxApi",
+                "Value",
+                "Fn::Sub",
+                1,
+                "Api",
+                "Fn::ImportValue"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 824
+              }
+            },
+            "Message": "The output value {'Fn::ImportValue': {'Fn::Sub': '${BootstrapStackName}-ApiId'}} is an import from another output",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check if the Output value is set using ImportValue, so creating an Output of an Output",
+              "Id": "W6001",
+              "ShortDescription": "Check Outputs using ImportValue",
+              "Source": "https://github.com/aws-cloudformation/cfn-lint"
+            }
+          }
+        ],
+        "region_schema": "us-east-1"
+      },
+      {
+        "exit_code": 4,
+        "findings": [
+          {
+            "Filename": "bootstrap.json",
+            "Id": "f786922f-eafe-8c5e-d6fd-b1291ab14d1c",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 23,
+                "LineNumber": 149
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 149
+              }
+            },
+            "Message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "405a0e0f-34f9-994f-9944-72b3079fc13e",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 23,
+                "LineNumber": 149
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 149
+              }
+            },
+            "Message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "491f395e-10ca-feb8-ad8e-6c2551c74e47",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 26,
+                "LineNumber": 354
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                12,
+                "NotAction"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 354
+              }
+            },
+            "Message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "70e2347b-ce1b-2aa7-be95-5f2eb47d746a",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 26,
+                "LineNumber": 354
+              },
+              "Path": [
+                "Resources",
+                "DeploymentBoundary",
+                "Properties",
+                "PolicyDocument",
+                "Statement",
+                12,
+                "NotAction"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 354
+              }
+            },
+            "Message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "fcef48b7-4f3a-08e1-cd81-d0fc2845553b",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 27,
+                "LineNumber": 471
+              },
+              "Path": [
+                "Resources",
+                "DeploymentRole",
+                "Properties",
+                "Policies",
+                0,
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 19,
+                "LineNumber": 471
+              }
+            },
+            "Message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "bootstrap.json",
+            "Id": "e974343e-443f-2b7e-57e6-c4a0063427ab",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 27,
+                "LineNumber": 471
+              },
+              "Path": [
+                "Resources",
+                "DeploymentRole",
+                "Properties",
+                "Policies",
+                0,
+                "PolicyDocument",
+                "Statement",
+                0,
+                "Action"
+              ],
+              "Start": {
+                "ColumnNumber": 19,
+                "LineNumber": 471
+              }
+            },
+            "Message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check for valid IAM Permissions",
+              "Id": "W3037",
+              "ShortDescription": "Check IAM Permission configuration",
+              "Source": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_action.html"
+            }
+          },
+          {
+            "Filename": "template.json",
+            "Id": "0643dd4b-4477-560c-e91a-f67388d5ae32",
+            "Level": "Warning",
+            "Location": {
+              "End": {
+                "ColumnNumber": 32,
+                "LineNumber": 824
+              },
+              "Path": [
+                "Outputs",
+                "SandboxApi",
+                "Value",
+                "Fn::Sub",
+                1,
+                "Api",
+                "Fn::ImportValue"
+              ],
+              "Start": {
+                "ColumnNumber": 15,
+                "LineNumber": 824
+              }
+            },
+            "Message": "The output value {'Fn::ImportValue': {'Fn::Sub': '${BootstrapStackName}-ApiId'}} is an import from another output",
+            "ParentId": null,
+            "Rule": {
+              "Description": "Check if the Output value is set using ImportValue, so creating an Output of an Output",
+              "Id": "W6001",
+              "ShortDescription": "Check Outputs using ImportValue",
+              "Source": "https://github.com/aws-cloudformation/cfn-lint"
+            }
+          }
+        ],
+        "region_schema": "eu-west-1"
+      }
+    ],
+    "schema_discrepancy": "UNRESOLVED: FunctionResourceArn reference vs ResourceArn examples/CDK/local schema",
+    "static_security": "passed",
+    "tool": "cfn-lint",
+    "version": "1.40.2"
+  },
+  "deployment_authorized": false,
+  "note": "Fresh execution, not inherited PR12 results; no live schema/effective IAM proof. Initial missing wheel cache resolved from preserved pinned cache.",
+  "parent_commit": "1eac1a9b88a53128d52bba11170cb6f6d764905d",
+  "source_class": "WORK_LOCAL_EXECUTION",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests_run": 249
+  }
+}

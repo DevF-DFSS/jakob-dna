@@ -47,3 +47,10 @@ region; service quotas/cost; live sandbox deployment; production migration.
       Release manifest v1 alone does not approve this new bootstrap composition.
 - [ ] Prove management-plane fencing and action applicability independently from
       invocation denial. Read isolation/DESIGN.md before any authorization request.
+
+- [ ] PR13: evaluate the separate authorization contract with independently
+      authenticated, fresh evidence for the exact candidate/context. Read
+      release/authorization/README.md. Logical completeness is not execution
+      authority; current.json and every offline result remain unauthorized.
+- [ ] Approve non-root operator trust and separate temporary bootstrap/recovery
+      privileges. Do not attach the unconfigured policy template.
