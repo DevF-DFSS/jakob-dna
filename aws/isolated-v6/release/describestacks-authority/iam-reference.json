@@ -1,0 +1,38 @@
+{
+  "action": {
+    "Annotations": {
+      "Properties": {
+        "IsList": true,
+        "IsPermissionManagement": false,
+        "IsTaggingOnly": false,
+        "IsWrite": false
+      }
+    },
+    "Name": "DescribeStacks",
+    "Resources": [
+      {
+        "Name": "stack"
+      }
+    ],
+    "SupportedBy": {
+      "IAM Access Analyzer Policy Generation": true,
+      "IAM Action Last Accessed": true
+    }
+  },
+  "catalog_sha256": "5f5214d42df63c5d04964ae9086788bc060bd09d52c92a75ba51f6914385e83c",
+  "catalog_version": "v1.4",
+  "deployment_authorized": false,
+  "evidence_class": "PUBLIC_AWS_SERVICE_AUTHORIZATION_CATALOG",
+  "not_an_authenticated_aws_api_call": true,
+  "retrieved_at_utc": "2026-09-26T15:33:40.866013+00:00",
+  "source": "https://servicereference.us-east-1.amazonaws.com/v1/cloudformation/cloudformation.json",
+  "stack_resource_type": {
+    "ARNFormats": [
+      "arn:${Partition}:cloudformation:${Region}:${Account}:stack/${StackName}/${Id}"
+    ],
+    "ConditionKeys": [
+      "aws:ResourceTag/${TagKey}"
+    ],
+    "Name": "stack"
+  }
+}

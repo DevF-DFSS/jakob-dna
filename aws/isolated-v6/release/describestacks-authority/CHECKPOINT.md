@@ -40,3 +40,7 @@ State: **RECOVERY COMPLETE; RESEARCH NOT YET COMPLETE**.
 First verify this committed checkpoint and push this branch when GitHub connectivity is available. Then inspect authoritative provider documentation/source and CloudFormation/IAM reference for the delete-handler dependency, recording source retrieval times and evidence class. Use read-only AWS calls only if they resolve a specific remaining question; record every attempt. Do not add permission before principal, action context and resource scope are supported by evidence.
 
 **Candidate behavior changed: NO. `deployment_authorized=false`.**
+
+## Evidence collection transition — 2026-09-26
+
+Checkpoint commit before research: `8bc9c50f4a03777a9be83a03644a665ea8848d96`, pushed to origin. Subsequent public-source/static research is recorded in `EVIDENCE.md` and `iam-reference.json`. No new authenticated AWS API calls were made. The registry's delete-only declaration and the candidate's explicit boundary deny are verified at their respective evidence levels. The provider's actual request, principal and target stack remain unverified. Decision: **no permission change**. Next: commit/push this evidence transition; run the existing offline suite/build/validator checks; open draft PR16 stacked on PR15 when coherent. Candidate behavior changed: NO; `deployment_authorized=false`.
