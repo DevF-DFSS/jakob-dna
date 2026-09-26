@@ -1,0 +1,362 @@
+{
+  "parent": "7589d51fd528486533293bd9ba357a220ff28954",
+  "scope": "Every original PR14 finding reproduced with untouched templates and cfn-lint 1.40.2",
+  "findings": [
+    {
+      "region": "us-east-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        12,
+        "NotAction"
+      ],
+      "message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        12,
+        "NotAction"
+      ],
+      "message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentRole",
+        "Properties",
+        "Policies",
+        0,
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentRole",
+        "Properties",
+        "Policies",
+        0,
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "E3006",
+      "file": "template.json",
+      "path": [
+        "Resources",
+        "FunctionResourcePolicy",
+        "Type"
+      ],
+      "message": "Resource type 'AWS::Lambda::ResourcePolicy' does not exist in 'us-east-1'",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "registry.json",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "us-east-1",
+      "rule": "W6001",
+      "file": "template.json",
+      "path": [
+        "Outputs",
+        "SandboxApi",
+        "Value",
+        "Fn::Sub",
+        1,
+        "Api",
+        "Fn::ImportValue"
+      ],
+      "message": "The output value {'Fn::ImportValue': {'Fn::Sub': '${BootstrapStackName}-ApiId'}} is an import from another output",
+      "classification": "STYLE_WARNING",
+      "evidence": [
+        "sources.json#validator_output",
+        "sources.json#cfn_import",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        12,
+        "NotAction"
+      ],
+      "message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentBoundary",
+        "Properties",
+        "PolicyDocument",
+        "Statement",
+        12,
+        "NotAction"
+      ],
+      "message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentRole",
+        "Properties",
+        "Policies",
+        0,
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'putresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W3037",
+      "file": "bootstrap.json",
+      "path": [
+        "Resources",
+        "DeploymentRole",
+        "Properties",
+        "Policies",
+        0,
+        "PolicyDocument",
+        "Statement",
+        0,
+        "Action"
+      ],
+      "message": "'deleteresourcepolicy' is not one of ['addlayerversionpermission', 'addpermission', 'createalias', 'createcodesigningconfig', 'createeventsourcemapping', 'createfunction', 'createfunctionurlconfig', 'deletealias', 'deletecodesigningconfig', 'deleteeventsourcemapping', 'deletefunction', 'deletefunctioncodesigningconfig', 'deletefunctionconcurrency', 'deletefunctioneventinvokeconfig', 'deletefunctionurlconfig', 'deletelayerversion', 'deleteprovisionedconcurrencyconfig', 'disablereplication', 'enablereplication', 'getaccountsettings', 'getalias', 'getcodesigningconfig', 'geteventsourcemapping', 'getfunction', 'getfunctioncodesigningconfig', 'getfunctionconcurrency', 'getfunctionconfiguration', 'getfunctioneventinvokeconfig', 'getfunctionrecursionconfig', 'getfunctionurlconfig', 'getlayerversion', 'getlayerversionpolicy', 'getpolicy', 'getprovisionedconcurrencyconfig', 'getruntimemanagementconfig', 'invokeasync', 'invokefunction', 'invokefunctionurl', 'listaliases', 'listcodesigningconfigs', 'listeventsourcemappings', 'listfunctioneventinvokeconfigs', 'listfunctions', 'listfunctionsbycodesigningconfig', 'listfunctionurlconfigs', 'listlayers', 'listlayerversions', 'listprovisionedconcurrencyconfigs', 'listtags', 'listversionsbyfunction', 'publishlayerversion', 'publishversion', 'putfunctioncodesigningconfig', 'putfunctionconcurrency', 'putfunctioneventinvokeconfig', 'putfunctionrecursionconfig', 'putprovisionedconcurrencyconfig', 'putruntimemanagementconfig', 'removelayerversionpermission', 'removepermission', 'tagresource', 'untagresource', 'updatealias', 'updatecodesigningconfig', 'updateeventsourcemapping', 'updatefunctioncode', 'updatefunctioncodesigningconfig', 'updatefunctionconfiguration', 'updatefunctioneventinvokeconfig', 'updatefunctionurlconfig']",
+      "classification": "TOOLING_LAG",
+      "evidence": [
+        "iam-catalog.json",
+        "registry.json",
+        "sources.json#lambda_guide",
+        "sources.json#validator_iam",
+        "validator-comparison.json",
+        "newer-lint.json"
+      ]
+    },
+    {
+      "region": "eu-west-1",
+      "rule": "W6001",
+      "file": "template.json",
+      "path": [
+        "Outputs",
+        "SandboxApi",
+        "Value",
+        "Fn::Sub",
+        1,
+        "Api",
+        "Fn::ImportValue"
+      ],
+      "message": "The output value {'Fn::ImportValue': {'Fn::Sub': '${BootstrapStackName}-ApiId'}} is an import from another output",
+      "classification": "STYLE_WARNING",
+      "evidence": [
+        "sources.json#validator_output",
+        "sources.json#cfn_import",
+        "newer-lint.json"
+      ]
+    }
+  ],
+  "deployment_authorized": false
+}

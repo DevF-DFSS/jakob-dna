@@ -1,0 +1,75 @@
+{
+  "evidence_class": "PUBLIC_DOCUMENTATION_AND_VALIDATOR_SOURCE",
+  "sources": [
+    {
+      "id": "cfn_reference",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-lambda-resourcepolicy.html",
+      "retrieved_at": "2026-09-26T13:53:41.442427+00:00",
+      "exit_code": 0,
+      "sha256": "a53d23d08c1e68241602f336e9255a2f03ed55920e53948d18ccdee2502cc66c"
+    },
+    {
+      "id": "put_api",
+      "url": "https://docs.aws.amazon.com/lambda/latest/api/API_PutResourcePolicy.html",
+      "retrieved_at": "2026-09-26T13:53:41.965404+00:00",
+      "exit_code": 0,
+      "sha256": "76e53262f052f75d3bfebe97e91925b73fa9631eea456bc8bc2500ce3d00545a"
+    },
+    {
+      "id": "get_api",
+      "url": "https://docs.aws.amazon.com/lambda/latest/api/API_GetResourcePolicy.html",
+      "retrieved_at": "2026-09-26T13:53:42.489240+00:00",
+      "exit_code": 0,
+      "sha256": "a39d0fb41f58a61164dfa4c7839c6f8df1edb49d813767afcd80e2b9701f8f85"
+    },
+    {
+      "id": "delete_api",
+      "url": "https://docs.aws.amazon.com/lambda/latest/api/API_DeleteResourcePolicy.html",
+      "retrieved_at": "2026-09-26T13:53:43.014070+00:00",
+      "exit_code": 0,
+      "sha256": "b789b1c608d7200f2bfd3d0f60ae9b141cc00c4d9f0a416bb1b169d077db321d"
+    },
+    {
+      "id": "lambda_guide",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html",
+      "retrieved_at": "2026-09-26T13:53:43.572965+00:00",
+      "exit_code": 0,
+      "sha256": "f0752a4c70a4860e35720e02456b5d170578f137db0261d39e63b2f79c051257"
+    },
+    {
+      "id": "cfn_import",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/intrinsic-function-reference-importvalue.html",
+      "retrieved_at": "2026-09-26T13:53:44.064120+00:00",
+      "exit_code": 0,
+      "sha256": "a2f5786923835e5c79a5f3627f040c323caebec7f660addd138decabbfd7b9a4"
+    },
+    {
+      "id": "validator_iam",
+      "url": "https://raw.githubusercontent.com/aws-cloudformation/cfn-lint/v1.40.2/src/cfnlint/rules/resources/iam/Permissions.py",
+      "retrieved_at": "2026-09-26T13:53:44.586761+00:00",
+      "exit_code": 0,
+      "sha256": "9c0faf38fc43e0d31947ff7922e5aa60d6f51f41f7dde151a18c2bc311ddfb72"
+    },
+    {
+      "id": "validator_update",
+      "url": "https://raw.githubusercontent.com/aws-cloudformation/cfn-lint/v1.40.2/src/cfnlint/maintenance.py",
+      "retrieved_at": "2026-09-26T13:53:45.110442+00:00",
+      "exit_code": 0,
+      "sha256": "576a642124260ed100e510b55e84c7fc8c4b1ca5f8d0a4c83d19b1691ace80e4"
+    },
+    {
+      "id": "validator_schema",
+      "url": "https://raw.githubusercontent.com/aws-cloudformation/cfn-lint/v1.40.2/src/cfnlint/schema/manager.py",
+      "retrieved_at": "2026-09-26T13:53:45.469643+00:00",
+      "exit_code": 0,
+      "sha256": "c59863ad9f995febe56bf311f1cad5f577cb05d81081651ac66bd71f98d3d1ea"
+    },
+    {
+      "id": "validator_output",
+      "url": "https://raw.githubusercontent.com/aws-cloudformation/cfn-lint/v1.40.2/src/cfnlint/rules/outputs/ImportValue.py",
+      "retrieved_at": "2026-09-26T13:53:45.862011+00:00",
+      "exit_code": 0,
+      "sha256": "65f843fefbdd2cbf448c4c7c2fefeb4df60e30b43c24341c5a7c65f5eb487f81"
+    }
+  ]
+}
