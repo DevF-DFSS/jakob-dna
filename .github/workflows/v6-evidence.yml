@@ -1,0 +1,70 @@
+{
+  "name": "V6 independent offline evidence",
+  "on": {
+    "pull_request": {
+      "paths": [
+        "aws/isolated-v6/**",
+        "reference/isolated-v6/**",
+        ".github/workflows/v6-evidence.yml"
+      ]
+    },
+    "workflow_dispatch": {}
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "offline": {
+      "if": "github.event.repository.private == false",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 20,
+      "env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "AWS_EC2_METADATA_DISABLED": "true",
+        "AWS_CONFIG_FILE": "/dev/null",
+        "AWS_SHARED_CREDENTIALS_FILE": "/dev/null"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "with": {
+            "ref": "${{ github.event.pull_request.head.sha || github.sha }}",
+            "persist-credentials": false
+          }
+        },
+        {
+          "uses": "actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "with": {
+            "python-version": "3.13.7"
+          }
+        },
+        {
+          "name": "Record exact checkout and Python",
+          "run": "git rev-parse HEAD\npython --version\ngit status --porcelain"
+        },
+        {
+          "name": "PR13 authorization tests (stdlib only)",
+          "env": {
+            "PYTHONPATH": "aws/isolated-v6/tools:aws/isolated-v6:reference/isolated-v6"
+          },
+          "run": "python -B -m unittest discover -s aws/isolated-v6/tests -p test_authorization_gate.py -v"
+        },
+        {
+          "name": "Acquire exact pinned dependencies",
+          "id": "dependencies",
+          "run": "python -m pip download --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r aws/isolated-v6/requirements.lock -d aws/isolated-v6/wheelhouse\npython -m pip install --no-index --find-links aws/isolated-v6/wheelhouse --require-hashes --no-deps -r aws/isolated-v6/requirements.lock\npython -m pip download --index-url https://pypi.org/simple --only-binary=:all: --no-deps --require-hashes -r aws/isolated-v6/release/ci/linux-toolchain.lock -d \"$RUNNER_TEMP/validation-wheels\"\nsha256sum \"$RUNNER_TEMP\"/validation-wheels/*\npython -m pip install --no-index --find-links \"$RUNNER_TEMP/validation-wheels\" --no-deps --require-hashes -r aws/isolated-v6/release/ci/linux-toolchain.lock\npython -m pip check\npython -m pip freeze"
+        },
+        {
+          "name": "Existing tests, static lint, diagnostic builds and Git input verification",
+          "if": "always() && steps.dependencies.outcome == 'success'",
+          "run": "python -B aws/isolated-v6/tools/ci_evidence.py \"$RUNNER_TEMP/v6-evidence\""
+        },
+        {
+          "name": "Report acquisition boundary",
+          "if": "always() && steps.dependencies.outcome != 'success'",
+          "run": "echo 'Dependency acquisition failed or skipped: full suite/lint/build evidence UNKNOWN; deployment_authorized=false. No substituted pins.' >> \"$GITHUB_STEP_SUMMARY\""
+        }
+      ]
+    }
+  }
+}
