@@ -1,0 +1,76 @@
+{
+  "retrieved_at": "2026-09-26T13:52:55.966319+00:00",
+  "evidence_class": "PUBLIC_AWS_CATALOG",
+  "url": "https://servicereference.us-east-1.amazonaws.com/v1/lambda/lambda.json",
+  "catalog_version": "v1.4",
+  "catalog_sha256": "6b753c08ed6917084a9cacfa67b624fd93b062a37dd3639477fc10b8254fde80",
+  "actions": [
+    {
+      "Name": "DeleteResourcePolicy",
+      "ActionConditionKeys": [
+        "lambda:Principal"
+      ],
+      "Annotations": {
+        "Properties": {
+          "IsList": false,
+          "IsPermissionManagement": true,
+          "IsTaggingOnly": false,
+          "IsWrite": true
+        }
+      },
+      "Resources": [
+        {
+          "Name": "function"
+        }
+      ],
+      "SupportedBy": {
+        "IAM Access Analyzer Policy Generation": false,
+        "IAM Action Last Accessed": false
+      }
+    },
+    {
+      "Name": "GetResourcePolicy",
+      "Annotations": {
+        "Properties": {
+          "IsList": false,
+          "IsPermissionManagement": false,
+          "IsTaggingOnly": false,
+          "IsWrite": false
+        }
+      },
+      "Resources": [
+        {
+          "Name": "function"
+        }
+      ],
+      "SupportedBy": {
+        "IAM Access Analyzer Policy Generation": false,
+        "IAM Action Last Accessed": false
+      }
+    },
+    {
+      "Name": "PutResourcePolicy",
+      "ActionConditionKeys": [
+        "lambda:Principal"
+      ],
+      "Annotations": {
+        "Properties": {
+          "IsList": false,
+          "IsPermissionManagement": true,
+          "IsTaggingOnly": false,
+          "IsWrite": true
+        }
+      },
+      "Resources": [
+        {
+          "Name": "function"
+        }
+      ],
+      "SupportedBy": {
+        "IAM Access Analyzer Policy Generation": false,
+        "IAM Action Last Accessed": false
+      }
+    }
+  ],
+  "deployment_authorized": false
+}

@@ -1,0 +1,297 @@
+{
+  "evidence_class": "AWS_LIVE_READ_ONLY",
+  "retrieved_at": "2026-09-26T13:45:29.451620+00:00",
+  "observations": [
+    {
+      "region": "us-east-1",
+      "metadata": {
+        "TypeName": "AWS::Lambda::ResourcePolicy",
+        "Arn": "arn:aws:cloudformation:us-east-1::type/resource/AWS-Lambda-ResourcePolicy",
+        "IsDefaultVersion": true,
+        "ProvisioningType": "FULLY_MUTABLE",
+        "DeprecatedStatus": "LIVE",
+        "Visibility": "PUBLIC",
+        "TimeCreated": "2024-06-15T17:43:39.508000+00:00"
+      },
+      "properties": {
+        "ResourceArn": {
+          "minLength": 12,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FunctionResourceArn"
+            }
+          ],
+          "type": "string",
+          "maxLength": 1024
+        },
+        "PolicyDocument": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "ResourceArn",
+        "PolicyDocument"
+      ],
+      "definitions": {
+        "FunctionResourceArn": {
+          "pattern": "^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}((-gov)|(-iso([a-z]?)))?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST(\\.PUBLISHED)?|[a-zA-Z0-9-_]+))?$",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "primaryIdentifier": [
+        "/properties/ResourceArn"
+      ],
+      "createOnlyProperties": [
+        "/properties/ResourceArn"
+      ],
+      "handlers": {
+        "read": {
+          "permissions": [
+            "lambda:GetResourcePolicy",
+            "lambda:GetPolicy"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:DeleteResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy",
+            "cloudformation:DescribeStacks"
+          ]
+        }
+      }
+    },
+    {
+      "region": "us-east-2",
+      "metadata": {
+        "TypeName": "AWS::Lambda::ResourcePolicy",
+        "Arn": "arn:aws:cloudformation:us-east-2::type/resource/AWS-Lambda-ResourcePolicy",
+        "IsDefaultVersion": true,
+        "ProvisioningType": "FULLY_MUTABLE",
+        "DeprecatedStatus": "LIVE",
+        "Visibility": "PUBLIC",
+        "TimeCreated": "2024-06-15T17:55:17.066000+00:00"
+      },
+      "properties": {
+        "ResourceArn": {
+          "minLength": 12,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FunctionResourceArn"
+            }
+          ],
+          "type": "string",
+          "maxLength": 1024
+        },
+        "PolicyDocument": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "ResourceArn",
+        "PolicyDocument"
+      ],
+      "definitions": {
+        "FunctionResourceArn": {
+          "pattern": "^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}((-gov)|(-iso([a-z]?)))?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST(\\.PUBLISHED)?|[a-zA-Z0-9-_]+))?$",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "primaryIdentifier": [
+        "/properties/ResourceArn"
+      ],
+      "createOnlyProperties": [
+        "/properties/ResourceArn"
+      ],
+      "handlers": {
+        "read": {
+          "permissions": [
+            "lambda:GetResourcePolicy",
+            "lambda:GetPolicy"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:DeleteResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy",
+            "cloudformation:DescribeStacks"
+          ]
+        }
+      }
+    },
+    {
+      "region": "eu-west-1",
+      "metadata": {
+        "TypeName": "AWS::Lambda::ResourcePolicy",
+        "Arn": "arn:aws:cloudformation:eu-west-1::type/resource/AWS-Lambda-ResourcePolicy",
+        "IsDefaultVersion": true,
+        "ProvisioningType": "FULLY_MUTABLE",
+        "DeprecatedStatus": "LIVE",
+        "Visibility": "PUBLIC",
+        "TimeCreated": "2024-06-15T17:52:29.962000+00:00"
+      },
+      "properties": {
+        "ResourceArn": {
+          "minLength": 12,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FunctionResourceArn"
+            }
+          ],
+          "type": "string",
+          "maxLength": 1024
+        },
+        "PolicyDocument": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "ResourceArn",
+        "PolicyDocument"
+      ],
+      "definitions": {
+        "FunctionResourceArn": {
+          "pattern": "^(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}((-gov)|(-iso([a-z]?)))?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST(\\.PUBLISHED)?|[a-zA-Z0-9-_]+))?$",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "primaryIdentifier": [
+        "/properties/ResourceArn"
+      ],
+      "createOnlyProperties": [
+        "/properties/ResourceArn"
+      ],
+      "handlers": {
+        "read": {
+          "permissions": [
+            "lambda:GetResourcePolicy",
+            "lambda:GetPolicy"
+          ]
+        },
+        "create": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy"
+          ]
+        },
+        "update": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy"
+          ]
+        },
+        "delete": {
+          "permissions": [
+            "lambda:PutResourcePolicy",
+            "lambda:DeleteResourcePolicy",
+            "lambda:GetResourcePolicy",
+            "lambda:AddPermission",
+            "lambda:RemovePermission",
+            "lambda:GetPolicy",
+            "cloudformation:DescribeStacks"
+          ]
+        }
+      }
+    }
+  ],
+  "api_calls": [
+    {
+      "service": "cloudformation",
+      "operation": "DescribeType",
+      "status": "success",
+      "region": "us-east-1",
+      "parameters": {
+        "Type": "RESOURCE",
+        "TypeName": "AWS::Lambda::ResourcePolicy"
+      }
+    },
+    {
+      "service": "cloudformation",
+      "operation": "DescribeType",
+      "status": "success",
+      "region": "us-east-2",
+      "parameters": {
+        "Type": "RESOURCE",
+        "TypeName": "AWS::Lambda::ResourcePolicy"
+      }
+    },
+    {
+      "service": "cloudformation",
+      "operation": "DescribeType",
+      "status": "success",
+      "region": "eu-west-1",
+      "parameters": {
+        "Type": "RESOURCE",
+        "TypeName": "AWS::Lambda::ResourcePolicy"
+      }
+    }
+  ],
+  "ledger": {
+    "successful_aws_reads": 3,
+    "operation_dispatch_errors": 3,
+    "dispatch_error": "describe_type rejected with OperationNotFoundError; corrected operation name DescribeType succeeded. Dispatch errors are not evidence of unavailable regional types.",
+    "pre_dispatch_events": [
+      "Connector authentication request accepted by host; no AWS API ledger returned",
+      "Script validation rejected __name__; no AWS API executed"
+    ],
+    "mutations": 0,
+    "dispatch_error_regions": [
+      "us-east-1",
+      "us-east-2",
+      "eu-west-1"
+    ]
+  },
+  "deployment_authorized": false
+}

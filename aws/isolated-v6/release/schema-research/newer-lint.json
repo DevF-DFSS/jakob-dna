@@ -1,0 +1,87 @@
+{
+  "deployment_authorized": false,
+  "network": "socket and credential discovery blocked",
+  "passed": false,
+  "runs": [
+    {
+      "exit_code": 4,
+      "findings": [
+        {
+          "Filename": "template.json",
+          "Id": "7e0b2cd7-6ef4-a070-1a9e-8bd41c152b13",
+          "Level": "Warning",
+          "Location": {
+            "End": {
+              "ColumnNumber": 32,
+              "LineNumber": 824
+            },
+            "Path": [
+              "Outputs",
+              "SandboxApi",
+              "Value",
+              "Fn::Sub",
+              1,
+              "Api",
+              "Fn::ImportValue"
+            ],
+            "Start": {
+              "ColumnNumber": 15,
+              "LineNumber": 824
+            }
+          },
+          "Message": "The output value {'Fn::ImportValue': {'Fn::Sub': '${BootstrapStackName}-ApiId'}} is an import from another output",
+          "ParentId": null,
+          "Rule": {
+            "Description": "Check if the Output value is set using ImportValue, so creating an Output of an Output",
+            "Id": "W6001",
+            "ShortDescription": "Check Outputs using ImportValue",
+            "Source": "https://github.com/aws-cloudformation/cfn-lint"
+          }
+        }
+      ],
+      "region_schema": "us-east-1"
+    },
+    {
+      "exit_code": 4,
+      "findings": [
+        {
+          "Filename": "template.json",
+          "Id": "7e0b2cd7-6ef4-a070-1a9e-8bd41c152b13",
+          "Level": "Warning",
+          "Location": {
+            "End": {
+              "ColumnNumber": 32,
+              "LineNumber": 824
+            },
+            "Path": [
+              "Outputs",
+              "SandboxApi",
+              "Value",
+              "Fn::Sub",
+              1,
+              "Api",
+              "Fn::ImportValue"
+            ],
+            "Start": {
+              "ColumnNumber": 15,
+              "LineNumber": 824
+            }
+          },
+          "Message": "The output value {'Fn::ImportValue': {'Fn::Sub': '${BootstrapStackName}-ApiId'}} is an import from another output",
+          "ParentId": null,
+          "Rule": {
+            "Description": "Check if the Output value is set using ImportValue, so creating an Output of an Output",
+            "Id": "W6001",
+            "ShortDescription": "Check Outputs using ImportValue",
+            "Source": "https://github.com/aws-cloudformation/cfn-lint"
+          }
+        }
+      ],
+      "region_schema": "eu-west-1"
+    }
+  ],
+  "schema_discrepancy": "UNRESOLVED: FunctionResourceArn reference vs ResourceArn examples/CDK/local schema",
+  "static_security": "passed",
+  "tool": "cfn-lint",
+  "version": "1.57.0"
+}
