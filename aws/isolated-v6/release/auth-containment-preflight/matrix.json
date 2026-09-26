@@ -1,0 +1,351 @@
+{
+  "schema_version": "jel-v6-enforcement-preflight/1",
+  "parent_commit": "dd0df665ea4bd7512e18597001def8bb798e83e5",
+  "observed_utc_date": "2026-09-26",
+  "candidate_behavior_changed": false,
+  "deployment_authorized": false,
+  "rows": [
+    {
+      "control": "JWT signature and RSA JWKS",
+      "intended_enforcing_layer": "API Gateway",
+      "candidate_mechanism": "HTTP JWT authorizer on Authorization header; issuer JWKS kid",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SUPPORTED_WITH_CONFIGURATION; no provider configured",
+      "remaining_proof": "Approve RSA-signing OIDC provider, JWKS/key-rotation profile, negative signature sandbox tests"
+    },
+    {
+      "control": "issuer iss",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "JwtIssuer; projected iss exact equality",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SUPPORTED_WITH_CONFIGURATION; value unapproved",
+      "remaining_proof": "Live provider iss and Gateway reject/accept evidence"
+    },
+    {
+      "control": "audience aud",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "One configured audience; local single-string aud exact equality",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "REQUIRES_PROVIDER_DECISION; Gateway may fallback to client_id, Lambda will not",
+      "remaining_proof": "Actual access token aud and Gateway projection; single string"
+    },
+    {
+      "control": "client_id",
+      "intended_enforcing_layer": "Lambda",
+      "candidate_mechanism": "Approved client set; projected exact client_id",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "current_result": "REQUIRES_LOCAL_VALIDATION; client IDs unconfigured",
+      "remaining_proof": "Provider token, approved client list, projected value"
+    },
+    {
+      "control": "subject sub",
+      "intended_enforcing_layer": "Lambda + registry",
+      "candidate_mechanism": "Nonempty projected sub in (iss,sub,client_id) binding key",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "REQUIRES_LOCAL_VALIDATION; binding empty",
+      "remaining_proof": "Provider subject stability and approved registry entry"
+    },
+    {
+      "control": "access token use",
+      "intended_enforcing_layer": "Lambda",
+      "candidate_mechanism": "Literal token_use=access",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "REQUIRES_LOCAL_VALIDATION; Gateway has no token-use setting",
+      "remaining_proof": "Provider token_use claim and ID-token negative test"
+    },
+    {
+      "control": "route scopes",
+      "intended_enforcing_layer": "Gateway + ingress",
+      "candidate_mechanism": "POST jel-v6/write; GET jel-v6/read",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SUPPORTED_WITH_CONFIGURATION; no provider grants configured",
+      "remaining_proof": "Live wrong-scope negative test on each route"
+    },
+    {
+      "control": "scope projection",
+      "intended_enforcing_layer": "Lambda",
+      "candidate_mechanism": "jwt.scopes list equals claims.scope space-delimited set; only two scopes",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "CLAIM_SHAPE_MISMATCH risk for scp-only or differently projected provider",
+      "remaining_proof": "Actual integration event for approved provider, exact list/string test"
+    },
+    {
+      "control": "expiration exp",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "Gateway exp validity; Lambda decimal-string exp>now",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SUPPORTED_WITH_CONFIGURATION; projected type untested",
+      "remaining_proof": "Expired-token rejection and projected type from live sandbox"
+    },
+    {
+      "control": "issued-at iat",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "Gateway iat validity; Lambda decimal-string iat<=now<exp",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SUPPORTED_WITH_CONFIGURATION; projected type untested",
+      "remaining_proof": "Future-issued negative and boundary test"
+    },
+    {
+      "control": "not-before nbf",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "Gateway validates when present; Lambda optional but strict decimal and nbf<=now<exp",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SUPPORTED_WITH_CONFIGURATION; optional claim",
+      "remaining_proof": "Absent and present-invalid provider/sandbox tests"
+    },
+    {
+      "control": "JWT event claim shape",
+      "intended_enforcing_layer": "Gateway projection + Lambda",
+      "candidate_mechanism": "requestContext.authorizer.jwt claims object + scopes list, payload v2",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "DOCUMENTED_SHAPE; provider-specific values unverified",
+      "remaining_proof": "Capture sanitized representative event in authorized sandbox"
+    },
+    {
+      "control": "API ID",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "Bootstrap API import, local requestContext.apiId equality",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "STATIC_DESIGN_CONSISTENT; no V6 API exists",
+      "remaining_proof": "Actual API ID and direct-invocation negative test"
+    },
+    {
+      "control": "stage",
+      "intended_enforcing_layer": "Gateway + Lambda",
+      "candidate_mechanism": "Explicit sandbox Stage, local stage equality",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "STATIC_DESIGN_CONSISTENT; no V6 stage exists",
+      "remaining_proof": "Live stage/route deployment metadata and wrong-stage test"
+    },
+    {
+      "control": "route/method/path",
+      "intended_enforcing_layer": "Gateway + core parser",
+      "candidate_mechanism": "Exact POST and GET JWT routes; strict core HTTP parser",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST"
+      ],
+      "current_result": "STATIC_DESIGN_CONSISTENT; no live V6 routes",
+      "remaining_proof": "Live route configuration and rejected default/ANY route checks"
+    },
+    {
+      "control": "qualified alias",
+      "intended_enforcing_layer": "Gateway integration + Lambda context",
+      "candidate_mechanism": "Integration URI Ref Alias sandbox; invoked_function_arn must equal alias ARN",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "STATIC_DESIGN_CONSISTENT; context can be forged by direct invoker",
+      "remaining_proof": "Live integration target and alias-only invocation test"
+    },
+    {
+      "control": "Gateway source account",
+      "intended_enforcing_layer": "Lambda resource policy",
+      "candidate_mechanism": "Service principal allow with exact SourceAccount; wrong account deny",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "EFFECTIVE_POLICY_UNRESOLVED",
+      "remaining_proof": "Live resource policy and Gateway service-context evaluation"
+    },
+    {
+      "control": "Gateway source ARN",
+      "intended_enforcing_layer": "Lambda resource policy",
+      "candidate_mechanism": "Only sandbox API POST/GET execute-api SourceArns allowed",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "EFFECTIVE_POLICY_UNRESOLVED",
+      "remaining_proof": "Live service SourceArn on both routes and wrong-source negative test"
+    },
+    {
+      "control": "unqualified direct InvokeFunction",
+      "intended_enforcing_layer": "Lambda resource policy + IAM",
+      "candidate_mechanism": "Deny non-Gateway InvokeFunction on function and qualified resources",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "IAM_SIMULATION"
+      ],
+      "current_result": "IDENTITY_ALLOW_EXISTS; future explicit deny untested",
+      "remaining_proof": "Effective policy evaluation and authorized negative test"
+    },
+    {
+      "control": "published-version direct InvokeFunction",
+      "intended_enforcing_layer": "Lambda resource policy + IAM",
+      "candidate_mechanism": "Resource function ARN plus :*; generic multi-resource simulation",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "IAM_SIMULATION"
+      ],
+      "current_result": "EFFECTIVE_POLICY_UNRESOLVED; simulator generic-resource limit",
+      "remaining_proof": "Version-specific effective deny and negative test"
+    },
+    {
+      "control": "alias direct InvokeFunction",
+      "intended_enforcing_layer": "Lambda resource policy + IAM",
+      "candidate_mechanism": "Qualified :sandbox covered by candidate deny; user identity simulation allowed",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS",
+        "IAM_SIMULATION"
+      ],
+      "current_result": "IDENTITY_ALLOW_EXISTS; no live deny",
+      "remaining_proof": "Alias-specific effective deny and negative test"
+    },
+    {
+      "control": "Function URL",
+      "intended_enforcing_layer": "CloudFormation absence + Lambda policy",
+      "candidate_mechanism": "No URL resource; candidate denies InvokeFunctionUrl for non-Gateway",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "IAM_SIMULATION"
+      ],
+      "current_result": "NO_URL_OBSERVED; existing user may CreateFunctionUrlConfig",
+      "remaining_proof": "Live GetFunctionUrlConfig absence and management-path fence"
+    },
+    {
+      "control": "code/config mutation",
+      "intended_enforcing_layer": "IAM identity/boundary + resource policy only where supported",
+      "candidate_mechanism": "Legacy user AWSLambda_FullAccess v7 lambda:*; candidate DenyKnownLegacy covers UpdateFunctionCode but not UpdateFunctionConfiguration",
+      "evidence_classes": [
+        "AWS_LIVE_READ_ONLY",
+        "LOCAL_STATIC_ANALYSIS",
+        "IAM_SIMULATION"
+      ],
+      "current_result": "KNOWN_MANAGEMENT_GAP",
+      "remaining_proof": "Identity-side fence or separate account; live effective evaluation"
+    },
+    {
+      "control": "resource-policy mutation",
+      "intended_enforcing_layer": "IAM identity/boundary",
+      "candidate_mechanism": "Legacy user lambda:* includes Put/DeleteResourcePolicy and Add/RemovePermission; full resource policy cannot deny unsupported actions",
+      "evidence_classes": [
+        "AWS_DOCUMENTATION",
+        "AWS_LIVE_READ_ONLY",
+        "IAM_SIMULATION"
+      ],
+      "current_result": "KNOWN_BYPASS_PATH if future policy can be replaced",
+      "remaining_proof": "Explicit identity-side deny/account isolation before activation; negative management tests"
+    },
+    {
+      "control": "PassRole",
+      "intended_enforcing_layer": "IAM identity conditions + role trust",
+      "candidate_mechanism": "User managed policy grants PassRole to lambda.amazonaws.com only; candidate role name/path not deployed",
+      "evidence_classes": [
+        "AWS_LIVE_READ_ONLY",
+        "IAM_SIMULATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "SIMULATION_WITHOUT_CONTEXT implicit deny to CloudFormation role; lambda service path allowed by policy",
+      "remaining_proof": "Evaluate exact future role, iam:PassedToService context, trust and escalation paths"
+    },
+    {
+      "control": "deployment-role use",
+      "intended_enforcing_layer": "IAM trust + CloudFormation service role",
+      "candidate_mechanism": "Proposed CloudFormation-only DeploymentRole in bootstrap",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "UNCONFIGURED; no role exists",
+      "remaining_proof": "Approved non-root operator, PassRole/effective trust and stack-role association"
+    },
+    {
+      "control": "known legacy principal access",
+      "intended_enforcing_layer": "Lambda resource policy + legacy identity policies",
+      "candidate_mechanism": "Four named legacy ARN denies where action supported; one user has lambda:*",
+      "evidence_classes": [
+        "HISTORICAL_LIVE_EVIDENCE",
+        "AWS_LIVE_READ_ONLY",
+        "IAM_SIMULATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "LEGACY_AUTHORITY_RISK; list not complete guarantee",
+      "remaining_proof": "Current all-principal audit, creation window and effective deny proof"
+    },
+    {
+      "control": "recovery path",
+      "intended_enforcing_layer": "Approved non-root role and human gate",
+      "candidate_mechanism": "Recovery operator template unconfigured; no role observed",
+      "evidence_classes": [
+        "AWS_LIVE_READ_ONLY",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "UNCONFIGURED/BLOCKED",
+      "remaining_proof": "Approve/create later under separate authorization; effective-role recovery drill"
+    },
+    {
+      "control": "tenant/sender/receiver binding",
+      "intended_enforcing_layer": "Lambda registry",
+      "candidate_mechanism": "Server-owned version/hash registry keyed by issuer/subject/client; packaged bindings empty",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST"
+      ],
+      "current_result": "FAIL_CLOSED; no approved identity binding",
+      "remaining_proof": "Versioned approved registry and isolation tests against live identity"
+    },
+    {
+      "control": "root/administrator override",
+      "intended_enforcing_layer": "Account governance",
+      "candidate_mechanism": "Same-account resource policies cannot contain root/admin with policy replacement rights",
+      "evidence_classes": [
+        "AWS_LIVE_READ_ONLY",
+        "AWS_DOCUMENTATION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "UNCONTAINED_BY_SANDBOX_POLICY",
+      "remaining_proof": "Separate account or explicit risk acceptance and human authority"
+    },
+    {
+      "control": "deployment approval",
+      "intended_enforcing_layer": "PR13 gate + DevF",
+      "candidate_mechanism": "current authorization context null, blockers nonempty",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "current_result": "BLOCKED; deployment_authorized=false",
+      "remaining_proof": "Fresh authenticated evidence + explicit DevF authorization"
+    }
+  ]
+}
