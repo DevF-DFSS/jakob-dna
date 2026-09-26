@@ -1,0 +1,503 @@
+{
+  "schema_version": "jel-v6-pr18-attack-paths/1",
+  "review_target": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+  "candidate_behavior_changed": false,
+  "deployment_authorized": false,
+  "no_observed_exploits": true,
+  "paths": [
+    {
+      "id": "P01",
+      "path": "Direct unqualified / $LATEST invocation",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "claims.py requires actual invoked_function_arn equal to sandbox alias; FunctionResourcePolicy also denies non-Gateway InvokeFunction across function and :*. AWS Lambda supplies context (source lambda_context).",
+      "limits": "This rejects in the unchanged handler even if IAM admitted the call. It does not stop code/config/policy replacement, and AWS policy enforcement is not observed. Current empty registry fails startup earlier.",
+      "remediation_family": "Retain alias check; negative invoke test only after separate authorization.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P02",
+      "path": "Direct sandbox alias with forged Gateway-shaped event",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "IAM_SIMULATION",
+        "AWS_LIVE_READ_ONLY"
+      ],
+      "evidence": "PR17 identity simulation allows alias invoke; payload authorizer/apiId/stage can be fabricated. Invoking the real alias naturally gives the correct AWS-created context ARN. Full policy intends an explicit Deny.",
+      "limits": "No live bypass. Needs missing/removed/mis-evaluated policy; attacker cannot set the actual Lambda context object merely via Invoke payload.",
+      "remediation_family": "Close management and creation-window paths; then test alias negative invocation.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P03",
+      "path": "Direct published version invocation",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "Actual version ARN differs from configured alias; same local check plus full-policy :* Deny.",
+      "limits": "Version-specific AWS evaluation still requires a sandbox. PR17 multi-resource simulation was not per-version proof.",
+      "remediation_family": "Retain checks and test numeric version separately.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P04",
+      "path": "Create/use Function URL",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "IAM_SIMULATION",
+        "AWS_LIVE_READ_ONLY"
+      ],
+      "evidence": "No URL in candidate; current legacy lambda:* includes URL management. Non-Gateway InvokeFunctionUrl Deny intends to block use.",
+      "limits": "Creating a URL alone does not defeat the local JWT/alias checks or explicit invoke Deny. It is a control-plane/exposure path combined with policy/code changes, not standalone proven auth bypass.",
+      "remediation_family": "Cover URL management in pre-existing namespace containment; test absence/negative access later.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P05",
+      "path": "Put/DeleteResourcePolicy or AddPermission/RemovePermission",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "IAM_SIMULATION",
+        "AWS_LIVE_READ_ONLY"
+      ],
+      "evidence": "Current AWSLambda_FullAccess v7 lambda:*; PR17 simulations and AWS Lambda supported resource-policy list exclude protection of these management actions.",
+      "limits": "No future policy exists; Add/RemovePermission alone are not claimed to remove all Deny statements. Put/Delete provide the credible replacement/removal path.",
+      "remediation_family": "Separately approved identity-side management fence; do not rely only on Lambda resource policy.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P06",
+      "path": "Code / configuration replacement",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "IAM_SIMULATION",
+        "AWS_LIVE_READ_ONLY"
+      ],
+      "evidence": "UpdateFunctionConfiguration is outside the documented Lambda resource-policy list. UpdateFunctionCode/PublishVersion/alias changes are within it, but P05 can remove that protection.",
+      "limits": "Configuration changes normally affect $LATEST, not an already published immutable alias target. Config-only mutation is not claimed to rewrite the existing version.",
+      "remediation_family": "Review full chained control-plane authority, including layers/handlers and code publication.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P07",
+      "path": "Pass V6 runtime role to an attacker-controlled different Lambda",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "IAM_SIMULATION",
+        "AWS_LIVE_READ_ONLY"
+      ],
+      "evidence": "PR18 simulation with iam:PassedToService=lambda.amazonaws.com allows PassRole to hypothetical V6 execution-role ARN; CreateFunction/UpdateConfiguration/Invoke on a different hypothetical function allowed. ExecutionRole trusts Lambda service. RuntimeBoundary and table allow that role GetItem/PutItem without source-function binding; legacy Deny sees role ARN, not originating user.",
+      "limits": "New role/function do not exist. No role was passed, no token/credential obtained, no invocation/data read occurred. Simulation does not evaluate future role trust or table policy. Supported chain inference, not observed exploitation.",
+      "remediation_family": "Next authority-remediation PR must address passing/attaching V6 roles outside their intended function, not just deny actions on the V6 function ARN. Evaluate exact PassRole denial and documented source-function identity restriction; no policy change here.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P08",
+      "path": "Gateway route/authorizer/integration replacement",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "IAM_SIMULATION",
+        "AWS_LIVE_READ_ONLY"
+      ],
+      "evidence": "Current AmazonAPIGatewayAdministrator attachment and PR18 hypothetical route PATCH/POST identity simulations allow management. Lambda SourceArn constrains API/stage/path, not authorizer settings or integration integrity.",
+      "limits": "Setting auth NONE alone removes claims and V6 fails closed. Redirecting to attacker integration could intercept bearer/payload traffic or deny service; composite compromise is plausible, not exercised. POST simulation is identity evidence, not proof that every modeled resource supports that API operation.",
+      "remediation_family": "Fence candidate API control-plane authority and verify post-deploy route/integration metadata before any real token.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P09",
+      "path": "Runtime role edits IAM/policies/boundaries or legacy resources",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "RuntimeBoundary explicit NotAction and NotResource Denies; runtime identity only GetItem/PutItem and logs; tests cover broader synthetic session Allow.",
+      "limits": "Boundary does not restrict allowed table calls to conditional PutItem or this particular function. P07 remains. AWS effective policy untested.",
+      "remediation_family": "Retain boundary; do not call it a role-use restriction.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P10",
+      "path": "Deployment role changes bootstrap boundaries or legacy resources",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "DeploymentBoundary explicit outside-action/resource Denies exclude boundary mutation, STS assume, legacy function/table/API ARNs and PassRole to other roles/services.",
+      "limits": "Depends on attached boundary remaining in place; root/bootstrap authority can replace it. IAM provider lifecycle dependencies are not all exercised.",
+      "remediation_family": "Review resulting policies and lifecycle behavior in sandbox; no broad permission expansion now.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P11",
+      "path": "Recovery/stack operator reuses CloudFormation service role to change protections",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "recovery-operator.json grants runtime UpdateStack and ContinueUpdateRollback with exact RoleArn; DeploymentRole can replace V6 code/resource policy and execution-role inline policy. AWS documents reuse of associated service role by other stack operators even without PassRole.",
+      "limits": "No role or stack exists. No evidence that the present legacy user has UpdateStack. A future approved recovery session is deliberately privileged, not cryptographically bound to a reviewed template by IAM.",
+      "remediation_family": "Restrict all stack mutators, authenticate phase-scoped human approval and exact template/parameter set; two-person temporary emergency authority.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P12",
+      "path": "Publisher becomes deployment/recovery principal",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "PublisherBoundary explicitly denies actions outside four S3 actions and other resources; deployment trust is CloudFormation-only.",
+      "limits": "Recovery must separately be granted sts:AssumeRole to publish; normal recovery proposal lacks it. Publisher trust alone does not grant that path through its proposed maximum boundary.",
+      "remediation_family": "Specify narrow temporary publishing/bootstrap authority before use; no standing escalation.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P13",
+      "path": "Legacy user directly assumes proposed service roles",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "ExecutionRole and DeploymentRole trust only lambda.amazonaws.com and cloudformation.amazonaws.com respectively. Ordinary user AssumeRole does not satisfy those trusts.",
+      "limits": "Does not block passing the execution role to Lambda (P07) or operating a CF stack (P11). Trust and IAM identity grants are distinct.",
+      "remediation_family": "Retain service trust; inspect role-use paths separately.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P14",
+      "path": "Function/bucket creation before resource-policy attachment",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "FunctionResourcePolicy depends on Function/Alias; Stage depends on policy. Bucket precedes BucketPolicy. No atomic attachment guarantee; existing identity grants may act in the interval.",
+      "limits": "Stage ordering blocks premature Gateway exposure, not IAM access. Empty bindings block current ingest but are not a durable fence once configured.",
+      "remediation_family": "Install independently enforced legacy/role-use containment before creation; keep initial experiment non-sensitive and ingress closed.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P15",
+      "path": "Rollback/delete removes policy while protected resource remains",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "Function policy has no Retain; function deletion is separate. Stage dependency helps reverse-order removal but cannot prove no partial failure. Bucket/policy/table retention preserves resources, not complete operability.",
+      "limits": "No rollback run; retained policies and resources may outlive roles/stacks. CF automatic rollback is not a complete recovery procedure.",
+      "remediation_family": "Preapprove bounded quarantine/repair/retention path independent of vulnerable policy; exercise rollback only in authorized sandbox.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P16",
+      "path": "ResourcePolicy delete-handler DescribeStacks failure",
+      "classification": "UNVERIFIED",
+      "evidence_classes": [
+        "HISTORICAL_LIVE_EVIDENCE",
+        "LOCAL_STATIC_ANALYSIS",
+        "INFERRED"
+      ],
+      "evidence": "PR15 registry delete permissions and PR16 analysis: DeploymentRole boundary denies DescribeStacks; actual provider call/target/context unknown.",
+      "limits": "Not a proven creation failure or universal delete failure. Requiring an observed delete before initial creation would be circular.",
+      "remediation_family": "Carry unchanged PR16 question into bounded lifecycle test with trace and approved contingency; no speculative grant.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P17",
+      "path": "Provider claim profile/projection does not fit V6",
+      "classification": "REQUIRES_LIVE_SANDBOX_TEST",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "Gateway supports aud-or-client_id and scope-or-scp; claims.py requires aud AND client_id, token_use=access, only string-valued claims, scope string matching scopes list, numeric-string times. No provider chosen.",
+      "limits": "Failures normally deny access, not grant it. Default Cognito access tokens may lack aud; resource binding and custom scopes require provider/flow decisions. No promise that optional arrays/objects or default extra scopes fit.",
+      "remediation_family": "Choose explicit provider profile and test projection/negative cases before opening ingress. Bootstrap alone needs no IdP.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P18",
+      "path": "Valid signature but wrong issuer/audience/client/subject/token-use/scope/time",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "LOCAL_TEST"
+      ],
+      "evidence": "Gateway configured checks plus local exact comparisons, exp/iat and present nbf checks, operation scope and Registry authorize. Existing offline tests cover negative claims/bindings.",
+      "limits": "Local test fixtures assume trustworthy projected strings and IAM origin. No local JWT signature verifier. Real cryptography/key rotation is B.",
+      "remediation_family": "Preserve strict rejection; provider compatibility must be explicit.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P19",
+      "path": "Revoked/stale binding remains in warm host or old alias version",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "activation._host caches fixed packaged registry; Registry.revoke exists only as local method and no deployed revocation endpoint; published configuration/code immutable until new version.",
+      "limits": "No claim of distributed immediate revocation exists. Unexpired tokens and already-authorized operations may outlive a human revocation decision.",
+      "remediation_family": "Sandbox test registry/version rollout and documented stop method; production revocation SLO/session policy is separate.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P20",
+      "path": "Synthetic evidence or approval string grants deployment",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST"
+      ],
+      "evidence": "authorization_gate requires externally trusted verified_digests; CLI never has verifier and always exits 1; every output deployment_authorized=false.",
+      "limits": "A library caller can supply digests; this is an explicit trust assumption, not evidence authentication. No executor exists. Current design cannot authorize itself and must not be bypassed informally.",
+      "remediation_family": "Design phase-specific authenticated review procedure before execution, without treating generic CI green as authority.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P21",
+      "path": "CI green / local tests promoted into AWS proof",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "GITHUB_CI_EXECUTION"
+      ],
+      "evidence": "ci_evidence outputs deployment_authorized=false; workflow has contents:read, no AWS secrets/OIDC, pinned exact head/actions/dependencies.",
+      "limits": "Runner executes candidate-controlled tests, so independent execution is not independent security verification. PR13 gate accepts LOCAL_EXECUTION, not GitHub directly.",
+      "remediation_family": "Keep source classes; independent reviewer evaluates findings.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P22",
+      "path": "Release passes hashes but deployment parameters/exports differ",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "evidence": "release_manifest v1 lacks bootstrap parameter/export/role mapping; PR13 context hashes bootstrap but does not validate actual stack parameters, role associations or S3/version linkage. PR12 already calls this incomplete.",
+      "limits": "No executor or current approved record exists, so no current release bypass. A future manual deploy treating manifest as sufficient could target mismatched stack/context.",
+      "remediation_family": "Versioned phase release record binds both templates, roles, stack names, parameters, exports and artifact version; exact drift check.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P23",
+      "path": "Config/route update leaves old Lambda version or API deployment active",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "CandidateVersion uses code hash and fixed description; changing only issuer/client environment changes no Version property. CandidateDeployment has fixed ApiId/Description and AutoDeploy=false. AWS defines immutable version and deployment snapshot.",
+      "limits": "Initial-create failure is not implied. Current resources do not exist. Code-hash changes can replace Version; DependsOn is ordering, not an automatic deployment revision.",
+      "remediation_family": "Future update/revocation PR must bind snapshots to all relevant config; test transitions with synthetic identities before opening ingress.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P24",
+      "path": "Publisher overwrites an already selected artifact version",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "S3 versioning; runtime pins S3ObjectVersion and Version.CodeSha256; publisher boundary denies delete and bucket-policy change.",
+      "limits": "Publisher can add malicious new versions. Approved deployer selecting a new version is trusted release authority; bytes are not independently signed by current tooling.",
+      "remediation_family": "Bind exact version/hash to phase authorization; verify service retrieval in sandbox.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P25",
+      "path": "Forged event/header sets AWS service principal or SourceArn",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "IAM service principal/SourceArn come from AWS request context, not event JSON. Candidate denies non-Gateway context and limits exact source account/API/stage/routes.",
+      "limits": "An attacker with allowed alias invoke can forge authorizer event values (P02); they need not forge IAM context if policy is absent. Actual Gateway service context remains untested.",
+      "remediation_family": "Test actual source-context propagation without conflating IAM context and event fields.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P26",
+      "path": "Legacy direct table/index access despite resource-policy Deny",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "LOCAL_TEST"
+      ],
+      "evidence": "Table policy explicit dynamodb:* Deny for known legacy role/user ARNs; finite tests include table/index. Explicit Deny overrides broad identity Allow when valid and applicable.",
+      "limits": "Blacklist does not cover unrelated/future roles; P07 uses an allowed role. No actual table/enforcement exists.",
+      "remediation_family": "Refresh principal/role-use graph and test real negative access on synthetic sandbox data after authorization.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P27",
+      "path": "Root/admin replaces controls",
+      "classification": "OUT_OF_SCOPE_ADMIN_OVERRIDE",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION",
+        "HISTORICAL_LIVE_EVIDENCE"
+      ],
+      "evidence": "Same-account threat model explicitly excludes root or sufficient administrators. Connector caller is root for read-only metadata.",
+      "limits": "This is a stated trust limit, not a deployable normal operator path. Acknowledgment does not approve root writes.",
+      "remediation_family": "Approve human governance and non-root ordinary path; separate account may later reduce blast radius.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P28",
+      "path": "PR16 cited run silently treated as final-head evidence",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "GITHUB_CI_EXECUTION",
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "evidence": "GitHub run 36252559383 headSha is 8be77e681ceff13ac8feb19139a358d644547ebc, while PR16 body calls it final dd0df665... evidence; explains 64 versus 65 inputs. PR17 run 36255623584 matches final a272b929... and 72 inputs.",
+      "limits": "Metadata mismatch is verified, not an observed authorization bypass. New exact-commit PR18 execution supersedes inherited execution claims only for tested artifacts.",
+      "remediation_family": "Record discrepancy here, keep historical PR untouched, reconcile every new final head/run.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P29",
+      "path": "S3 service artifact retrieval blocked by bucket deny",
+      "classification": "UNVERIFIED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "AWS_DOCUMENTATION"
+      ],
+      "evidence": "DenyOtherPrincipals only excepts approved recovery/publisher/deployment role ARNs; service delivery may have different principal context. CF deployment role GetObjectVersion is modeled.",
+      "limits": "No current AWS retrieval trace. Neither success nor certain failure is established. Current bucket is absent.",
+      "remediation_family": "Test versioned artifact retrieval in first controlled lifecycle; inspect context before any policy widening.",
+      "primary_bucket": "B",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P30",
+      "path": "Recovery role trust/bootstrap/emergency authority absent or overbroad",
+      "classification": "UNVERIFIED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "HISTORICAL_LIVE_EVIDENCE"
+      ],
+      "evidence": "recovery-operator.json trusted_federated_principal/account/region null; normal policy lacks initial CreateStack/bootstrap IAM/S3 repair. Boundary described but not rendered. No role in PR17 inventory.",
+      "limits": "Naming a recovery role does not make it usable. Temporary authority cannot be assumed. Creating an initial non-root authority requires separate human authorization.",
+      "remediation_family": "Define and independently authorize exact temporary bootstrap/publish/repair path, trust, max boundary, duration and removal; no standing admin grant.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P31",
+      "path": "Receipt/default-route parsing or sender spoofing bypass",
+      "classification": "STATICALLY_BLOCKED",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS",
+        "LOCAL_TEST"
+      ],
+      "evidence": "Two JWT routes, strict HTTP parser and per-operation scope, server-owned principal binding; no default/ANY. Hash integrity remains distinct from identity auth.",
+      "limits": "Synthetic tests prove local behavior only. SHA-256 is unkeyed consistency, not proof of sender identity; authorized compromised principals remain within their granted bindings.",
+      "remediation_family": "Retain local boundaries; real gateway tests remain B, production abuse controls C.",
+      "primary_bucket": "D",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    },
+    {
+      "id": "P32",
+      "path": "24-hour evidence label outlives a policy/context change",
+      "classification": "PLAUSIBLE_PATH",
+      "evidence_classes": [
+        "LOCAL_STATIC_ANALYSIS"
+      ],
+      "evidence": "PR13 checks age/context equality but cannot detect external policy changes; policy hashes are not context fields and trusted verified_digests are external.",
+      "limits": "Freshness is not guaranteed for 24 hours; the clock limit is a rejection cap, not a lease.",
+      "remediation_family": "Immediate pre-operation reread/diff and invalidate on trust/policy/role/artifact change as part of phase authorization.",
+      "primary_bucket": "A",
+      "observed_at": "2026-09-26",
+      "candidate_commit": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91"
+    }
+  ]
+}
