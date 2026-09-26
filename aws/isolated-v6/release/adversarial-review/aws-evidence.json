@@ -1,0 +1,541 @@
+{
+  "schema_version": "jel-v6-pr18-live-review/1",
+  "review_parent": "a272b929e16b1db3e92eee5c3a1fe66c30d86d91",
+  "evidence_classes": [
+    "AWS_LIVE_READ_ONLY",
+    "IAM_SIMULATION"
+  ],
+  "status": "success",
+  "stdout": "",
+  "stderr": null,
+  "return_value": {
+    "observed_at": "2026-09-26T16:54:35.854752+00:00",
+    "caller": {
+      "Account": "083127296577",
+      "Arn": "arn:aws:iam::083127296577:root"
+    },
+    "user": {
+      "Arn": "arn:aws:iam::083127296577:user/us-os-gateway",
+      "PermissionsBoundary": null
+    },
+    "attached_policies": [
+      {
+        "PolicyName": "AmazonAPIGatewayAdministrator",
+        "PolicyArn": "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
+      },
+      {
+        "PolicyName": "AmazonDynamoDBFullAccess",
+        "PolicyArn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+      },
+      {
+        "PolicyName": "AWSLambda_FullAccess",
+        "PolicyArn": "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+      }
+    ],
+    "managed_policy": {
+      "arn": "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+      "version": "v7",
+      "document": {
+        "Version": "2012-10-17",
+        "Statement": [
+          {
+            "Effect": "Allow",
+            "Action": [
+              "cloudformation:DescribeStacks",
+              "cloudformation:ListStackResources",
+              "cloudwatch:ListMetrics",
+              "cloudwatch:GetMetricData",
+              "ec2:DescribeSecurityGroups",
+              "ec2:DescribeSubnets",
+              "ec2:DescribeVpcs",
+              "kms:DescribeKey",
+              "kms:ListAliases",
+              "iam:GetPolicy",
+              "iam:GetPolicyVersion",
+              "iam:GetRole",
+              "iam:GetRolePolicy",
+              "iam:ListAttachedRolePolicies",
+              "iam:ListRolePolicies",
+              "iam:ListRoles",
+              "lambda:*",
+              "logs:DescribeLogGroups",
+              "states:DescribeStateMachine",
+              "states:ListStateMachines",
+              "tag:GetResources",
+              "xray:GetTraceSummaries",
+              "xray:BatchGetTraces"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": "*",
+            "Condition": {
+              "StringEquals": {
+                "iam:PassedToService": "lambda.amazonaws.com"
+              }
+            }
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "logs:DescribeLogStreams",
+              "logs:GetLogEvents",
+              "logs:FilterLogEvents",
+              "logs:StartLiveTail",
+              "logs:StopLiveTail"
+            ],
+            "Resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": "iam:CreateServiceLinkedRole",
+            "Resource": "arn:aws:iam::*:role/aws-service-role/lambda.amazonaws.com/AWSServiceRoleForLambda",
+            "Condition": {
+              "StringEquals": {
+                "iam:AWSServiceName": "lambda.amazonaws.com"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "simulations": [
+      {
+        "request": {
+          "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+          "ActionNames": [
+            "iam:PassRole"
+          ],
+          "ResourceArns": [
+            "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-pr18review-v6-execution"
+          ],
+          "ContextEntries": [
+            {
+              "ContextKeyName": "iam:PassedToService",
+              "ContextKeyValues": [
+                "lambda.amazonaws.com"
+              ],
+              "ContextKeyType": "string"
+            }
+          ]
+        },
+        "result": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "iam:PassRole",
+              "EvalResourceName": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-pr18review-v6-execution",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "AWSLambda_FullAccess",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 32,
+                    "Column": 4
+                  },
+                  "EndPosition": {
+                    "Line": 42,
+                    "Column": 4
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-pr18review-v6-execution",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "AWSLambda_FullAccess",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 32,
+                        "Column": 4
+                      },
+                      "EndPosition": {
+                        "Line": 42,
+                        "Column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "request": {
+          "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+          "ActionNames": [
+            "iam:PassRole"
+          ],
+          "ResourceArns": [
+            "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-pr18review-v6-execution"
+          ],
+          "ContextEntries": [
+            {
+              "ContextKeyName": "iam:PassedToService",
+              "ContextKeyValues": [
+                "cloudformation.amazonaws.com"
+              ],
+              "ContextKeyType": "string"
+            }
+          ]
+        },
+        "result": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "iam:PassRole",
+              "EvalResourceName": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-pr18review-v6-execution",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [
+                "iam:AWSServiceName"
+              ],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-pr18review-v6-execution",
+                  "EvalResourceDecision": "implicitDeny",
+                  "MissingContextValues": [
+                    "iam:AWSServiceName"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "request": {
+          "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+          "ActionNames": [
+            "lambda:CreateFunction",
+            "lambda:UpdateFunctionConfiguration",
+            "lambda:InvokeFunction"
+          ],
+          "ResourceArns": [
+            "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function"
+          ]
+        },
+        "result": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "lambda:CreateFunction",
+              "EvalResourceName": "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "AWSLambda_FullAccess",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 3,
+                    "Column": 16
+                  },
+                  "EndPosition": {
+                    "Line": 32,
+                    "Column": 4
+                  }
+                },
+                {
+                  "SourcePolicyId": "AmazonDynamoDBFullAccess",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 3,
+                    "Column": 17
+                  },
+                  "EndPosition": {
+                    "Line": 67,
+                    "Column": 6
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "AWSLambda_FullAccess",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 3,
+                        "Column": 16
+                      },
+                      "EndPosition": {
+                        "Line": 32,
+                        "Column": 4
+                      }
+                    },
+                    {
+                      "SourcePolicyId": "AmazonDynamoDBFullAccess",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 3,
+                        "Column": 17
+                      },
+                      "EndPosition": {
+                        "Line": 67,
+                        "Column": 6
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "EvalActionName": "lambda:UpdateFunctionConfiguration",
+              "EvalResourceName": "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "AWSLambda_FullAccess",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 3,
+                    "Column": 16
+                  },
+                  "EndPosition": {
+                    "Line": 32,
+                    "Column": 4
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "AWSLambda_FullAccess",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 3,
+                        "Column": 16
+                      },
+                      "EndPosition": {
+                        "Line": 32,
+                        "Column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "EvalActionName": "lambda:InvokeFunction",
+              "EvalResourceName": "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "AWSLambda_FullAccess",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 3,
+                    "Column": 16
+                  },
+                  "EndPosition": {
+                    "Line": 32,
+                    "Column": 4
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:lambda:us-east-1:083127296577:function:pr18-hypothetical-other-function",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "AWSLambda_FullAccess",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 3,
+                        "Column": 16
+                      },
+                      "EndPosition": {
+                        "Line": 32,
+                        "Column": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "request": {
+          "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+          "ActionNames": [
+            "apigateway:PATCH",
+            "apigateway:POST"
+          ],
+          "ResourceArns": [
+            "arn:aws:apigateway:us-east-1::/apis/pr18hypothetical/routes/route1"
+          ]
+        },
+        "result": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "apigateway:PATCH",
+              "EvalResourceName": "arn:aws:apigateway:us-east-1::/apis/pr18hypothetical/routes/route1",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "AmazonAPIGatewayAdministrator",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 3,
+                    "Column": 17
+                  },
+                  "EndPosition": {
+                    "Line": 10,
+                    "Column": 6
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:apigateway:us-east-1::/apis/pr18hypothetical/routes/route1",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "AmazonAPIGatewayAdministrator",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 3,
+                        "Column": 17
+                      },
+                      "EndPosition": {
+                        "Line": 10,
+                        "Column": 6
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "EvalActionName": "apigateway:POST",
+              "EvalResourceName": "arn:aws:apigateway:us-east-1::/apis/pr18hypothetical/routes/route1",
+              "EvalDecision": "allowed",
+              "MatchedStatements": [
+                {
+                  "SourcePolicyId": "AmazonAPIGatewayAdministrator",
+                  "SourcePolicyType": "IAM Policy",
+                  "StartPosition": {
+                    "Line": 3,
+                    "Column": 17
+                  },
+                  "EndPosition": {
+                    "Line": 10,
+                    "Column": 6
+                  }
+                }
+              ],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:apigateway:us-east-1::/apis/pr18hypothetical/routes/route1",
+                  "EvalResourceDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "AmazonAPIGatewayAdministrator",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 3,
+                        "Column": 17
+                      },
+                      "EndPosition": {
+                        "Line": 10,
+                        "Column": 6
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "limits": "Hypothetical future role/function/API; identity-policy simulation only. No future role trust, target resource policy or live execution is proved."
+  },
+  "warning": null,
+  "api_calls": [
+    {
+      "service": "sts",
+      "operation": "GetCallerIdentity",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetUser",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "ListAttachedUserPolicies",
+      "status": "success",
+      "n_items": {
+        "AttachedPolicies": 3
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicy",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "GetPolicyVersion",
+      "status": "success"
+    },
+    {
+      "service": "iam",
+      "operation": "SimulatePrincipalPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulatePrincipalPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 1
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulatePrincipalPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 3
+      }
+    },
+    {
+      "service": "iam",
+      "operation": "SimulatePrincipalPolicy",
+      "status": "success",
+      "n_items": {
+        "EvaluationResults": 2
+      }
+    }
+  ]
+}

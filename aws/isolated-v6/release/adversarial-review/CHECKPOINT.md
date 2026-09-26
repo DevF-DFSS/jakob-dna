@@ -13,3 +13,7 @@
 - AWS calls in PR18: **0 attempted / 0 successful / 0 failed**. No substantive review yet.
 - Next safe action: commit and push this coordinate checkpoint, then read actual PR12–PR17 bodies/diffs/source and reconstruct the security argument.
 - Candidate behavior changed: **NO**. `deployment_authorized=false`.
+
+## Security argument reconstructed — 2026-09-26
+
+Coordinate checkpoint `90a72a1` was pushed. PR12–17 actual bodies/heads and relevant source/diffs were inspected; reconstruction is in ADVERSARIAL_REVIEW.md. No candidate behavior changed. A narrow live refresh plus four simulations tested the newly identified role-reuse/Gateway-management question: **9 AWS API calls attempted, 9 successful, 0 failed** at 16:54:35 UTC (batch start). Exact inputs/results in aws-evidence.json. `iam:PassRole` to a hypothetical V6 runtime role is allowed with Lambda service context, whereas the CloudFormation context returned implicitDeny; no execution proof. Next: finish attack paths, verify substantive AWS semantics against public documentation, and classify minimum non-circular gates. No further broad inventory is needed. `deployment_authorized=false`.
