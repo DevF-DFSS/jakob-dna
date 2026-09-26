@@ -1,0 +1,22 @@
+# Reconstructed PR17 V6 security contract — 2026-09-26
+
+Evidence class: LOCAL_STATIC_ANALYSIS of exact PR16 parent `dd0df665ea4bd7512e18597001def8bb798e83e5`. This is architecture intent and testable local behavior, not deployed AWS enforcement. See `aws_v6/claims.py`, `config.py`, `activation.py`, `bindings.json`, `infra/template.json`, `infra/bootstrap.json`, `reference/isolated-v6/isolated_v6/{auth,http,service}.py` and PR12/13 isolation/authorization documents.
+
+| Field | Exact candidate behavior | Layer / state |
+|---|---|---|
+| Issuer | HTTPS configured `JwtIssuer`; template passes to Gateway authorizer and `EXPECTED_ISSUER`. Lambda requires projected `iss` exact string equality. | Gateway configured JWT validation; Lambda compares projected claim. No issuer value approved. |
+| Audience | One `JwtAudience` template value in Gateway Audience list; Lambda requires projected `aud` to be **exactly one string** equal to `EXPECTED_AUDIENCE` (no array, azp, or client-id fallback). | Gateway checks its configured audience; Lambda stricter projected-claim shape. Value unapproved. |
+| Client | Lambda requires `client_id` string in configured `EXPECTED_CLIENT_IDS` JSON list; principal key includes it. | Gateway has no separate candidate client-ID configuration. Lambda local check; unconfigured. |
+| Subject | Nonempty, trimmed, control-free projected `sub`; binding key `(iss,sub,client_id)`. | Lambda local check and server-owned binding; packaged registry `UNCONFIGURED`, empty. |
+| Token type | Projected `token_use` must equal literal `access`. | Lambda local check, not Gateway JWT authorizer configuration. |
+| Scopes | Gateway protected POST requires `jel-v6/write`; protected GET requires `jel-v6/read`. Lambda requires nonempty `jwt.scopes` list matching space-delimited `claims.scope`, unique and subset of those exact two; provider-neutral ingress demands route scope. | Gateway authorization scopes plus Lambda consistency check. Identity provider currently unchosen. |
+| Time | `exp` and `iat` required projected decimal strings (1–12 digits); `nbf` optional, but decimal string and enforced if present. Reject expired, future-issued, `iat>=exp`, future/not-before after expiry. | Lambda local check. Gateway may perform its own documented validation; no claim of Lambda cryptographic JWT verification. |
+| Event shape | payload version `2.0`; `requestContext.authorizer` exact `jwt` object with exact `claims` and `scopes` keys; claim object max 64 entries, string keys/values with lengths bounded. | Lambda host adapter. A direct invoker can forge event and context structure. |
+| API and stage | Imported bootstrap HTTP API ID and literal `sandbox`; host compares `requestContext.apiId` and `stage`; template stage `AutoDeploy=false`, deployment depends on two protected routes, throttle rate 1/burst 2. | Static Gateway route config; local consistency checks. No live API. |
+| Routes | `POST /v6/events`; `GET /v6/senders/{sender}/events/{event_id}`. Both `AuthorizationType=JWT`, same authorizer, integration `AWS_PROXY` payload v2 to qualified alias. | Gateway route auth and provider-neutral strict parser. |
+| Alias | Published version behind `sandbox` alias; integration URI is alias Ref. Lambda context ARN must equal configured qualified alias ARN. | Template routing plus local consistency check. Forged Lambda Context/direct invocation remains a separate IAM question. |
+| Source | One Lambda full ResourcePolicy attached to unqualified function; Gateway allows scoped to source account plus two sandbox route SourceArns; generic non-Gateway invoke deny, wrong Gateway account/path deny; known legacy ARN denies function and `:*` qualified resources. No Function URL resource. | Candidate resource policy only; effective real IAM/service context unproven. |
+| Binding | Version/hash checked from fixed packaged `bindings.json`; binds principal to tenant/sender/receiver/instruction; exact package is empty and startup fails closed. | Server authorization, separate from authentication/integrity/freshness/idempotency. |
+| Approval | Release manifest unapproved; PR13 current authorization context null, blockers present. | Explicit DevF approval absent. `deployment_authorized=false`. |
+
+The Gateway's cryptographic verification, the trustworthiness of its event projection, and direct-invocation containment require external evidence. Local claim-shape validation is not signature verification.

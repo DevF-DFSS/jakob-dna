@@ -10,3 +10,7 @@
 - AWS service API calls in PR17 so far: **zero attempts, zero successes, zero failures**. Remote Git checks were not AWS API calls. No substantive PR17 security research has started.
 - Next safe action: reconstruct exact candidate contract from the PR12–16 source; checkpoint it before narrow public documentation/live read-only research. No deployment, Lambda/API invocation or identity/policy mutation.
 - Candidate behavior changed: **NO**. `deployment_authorized=false`.
+
+## Security-contract reconstruction checkpoint — 2026-09-26
+
+Checkpoint commit `d8f5e58ac6e245751341203ab9bbd03c62e9efbd` was pushed. Exact static contract is recorded in `CONTRACT.md`. No AWS API calls have been attempted. Confirmed from source: Gateway JWT routes/scopes and alias integration are modeled; Lambda compares projected issuer/audience/client/subject/token-use/scopes/time/API/stage/alias, then server-owned binding; packaged bindings and release approval are unconfigured. Local checks do not verify JWT cryptography and forged direct invocation remains possible unless AWS authority prevents it. Next: commit/push this reconstruction, then compare current official Gateway/Lambda semantics and perform only targeted read-only AWS metadata calls. Candidate behavior changed: NO; `deployment_authorized=false`.
