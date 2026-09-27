@@ -1,0 +1,46 @@
+{
+  "source": "https://servicereference.us-east-1.amazonaws.com/v1/dynamodb/dynamodb.json",
+  "retrieved_at": "2026-09-26T21:13:30.861986+00:00",
+  "operations": [
+    {
+      "Name": "GetItem",
+      "AuthorizedActions": [
+        {
+          "Name": "GetItem",
+          "Service": "dynamodb"
+        },
+        {
+          "Name": "ReadDataForReplication",
+          "Service": "dynamodb"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "dynamodb",
+          "Method": "get_item",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "PutItem",
+      "AuthorizedActions": [
+        {
+          "Name": "PutItem",
+          "Service": "dynamodb"
+        },
+        {
+          "Name": "WriteDataForReplication",
+          "Service": "dynamodb"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "dynamodb",
+          "Method": "put_item",
+          "Package": "Boto3"
+        }
+      ]
+    }
+  ]
+}

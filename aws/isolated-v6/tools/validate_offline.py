@@ -6,11 +6,13 @@ import subprocess
 import sys
 from isolation_security import check_bootstrap
 from security import check
+from phase_security import check_phases
 
 
 def validate(candidate):
     check(json.loads((candidate/'infra/template.json').read_text()))
     check_bootstrap(json.loads((candidate/'infra/bootstrap.json').read_text()))
+    phase_security=check_phases(candidate)
     runs=[]
     for region in ['us-east-1','eu-west-1']:
         proc=subprocess.run([sys.executable,'-B',str(candidate/'tools/lint_offline.py'),'-t',
@@ -20,7 +22,13 @@ def validate(candidate):
         for finding in findings:
             finding['Filename']=Path(finding['Filename']).name
         runs.append({'region_schema':region,'exit_code':proc.returncode,'findings':findings})
-    return {'tool':'cfn-lint','version':importlib.metadata.version('cfn-lint'),
+    for region in ['us-east-1','eu-west-1']:
+        proc=subprocess.run([sys.executable,'-B',str(candidate/'tools/lint_offline.py'),'-t',*[str(p) for p in sorted((candidate/'infra/phases').glob('*.json'))],'-r',region,'-f','json'],capture_output=True,text=True)
+        findings=json.loads(proc.stdout or '[]')
+        if proc.stderr:raise RuntimeError('unexpected_linter_stderr')
+        for finding in findings:finding['Filename']='phases/'+Path(finding['Filename']).name
+        runs.append({'composition':'phased','region_schema':region,'exit_code':proc.returncode,'findings':findings})
+    return {'phase_security':phase_security,'tool':'cfn-lint','version':importlib.metadata.version('cfn-lint'),
         'passed':all(r['exit_code']==0 for r in runs),'runs':runs,'static_security':'passed',
         'network':'socket and credential discovery blocked',
         'deployment_authorized':False,'schema_discrepancy':'UNRESOLVED: FunctionResourceArn reference vs ResourceArn examples/CDK/local schema'}

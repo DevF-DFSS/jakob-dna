@@ -36,7 +36,7 @@ def main():
         for e in m['source_inputs']:
             b=subprocess.check_output(['git','show',sha+':'+e['path']],cwd=root)
             assert hashlib.sha256(b).hexdigest()==e['sha256'];verified+=1
-        hashes={k:m[k] for k in ['artifact_sha256','template_sha256','bootstrap_sha256','binding_sha256']}
+        hashes={k:m[k] for k in ['artifact_sha256','template_sha256','bootstrap_sha256','binding_sha256','capability_sha256','phase_templates_sha256']}
         hashes['provenance_sha256']=hashlib.sha256((output/'a/provenance.json').read_bytes()).hexdigest()
     except (OSError,ValueError,KeyError,AssertionError,subprocess.CalledProcessError):
         identical=False;codes['source_or_build_verification']=1

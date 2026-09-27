@@ -25,6 +25,7 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
             files[name+'/'+path.name]=path.read_bytes()
     if not files: raise ValueError('empty_package')
     files['aws_v6/bindings.json']=(candidate/'aws_v6/bindings.json').read_bytes()
+    files['aws_v6/capability.json']=(candidate/'aws_v6/capability.json').read_bytes()
     dependencies=json.loads((candidate/'dependencies.lock.json').read_text())
     wheelhouse=Path(wheelhouse) if wheelhouse else candidate/'wheelhouse'
     for dependency in dependencies:
@@ -73,11 +74,14 @@ def build(core, candidate, output, source_commit, run_tests=True, wheelhouse=Non
         'dependencies':{'third_party':{d['name']:d['version'] for d in dependencies},'wheels':dependencies},
         'included_files':included,'source_inputs':evidence,'artifact_sha256':hashlib.sha256(artifact.read_bytes()).hexdigest(),
         'template_sha256':hashlib.sha256((candidate/'infra/template.json').read_bytes()).hexdigest(),
+        'phase_templates_sha256':{p.stem:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((candidate/'infra/phases').glob('*.json'))},
+        'capability_sha256':hashlib.sha256((candidate/'aws_v6/capability.json').read_bytes()).hexdigest(),
+        'primary_composition':'infra/phases; combined template/bootstrap hashes below are historical comparison fixtures',
         'binding_sha256':hashlib.sha256((candidate/'aws_v6/bindings.json').read_bytes()).hexdigest(),
         'release_manifest':'UNAPPROVED; offline consistency is not deployment authorization',
         'tests':tests,'cloudformation':cloudformation,
         'diagnostic_only':bool(diagnostic),'deployment_authorized':False,
-        'bootstrap_sha256':hashlib.sha256((candidate/'infra/bootstrap.json').read_bytes()).hexdigest(),'activation':'composition root wired; packaged bindings intentionally unconfigured; AWS trust unproven'}
+        'bootstrap_sha256':hashlib.sha256((candidate/'infra/bootstrap.json').read_bytes()).hexdigest(),'activation':'phase_host CLOSED; bindings unconfigured; approval absent; diagnostic artifact only'}
     (output/'provenance.json').write_text(json.dumps(manifest,indent=2,sort_keys=True)+'\n')
     return manifest
 

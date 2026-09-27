@@ -1,0 +1,97 @@
+{
+  "source": "https://servicereference.us-east-1.amazonaws.com/v1/cloudformation/cloudformation.json",
+  "retrieved_at": "2026-09-26T21:13:32.980230+00:00",
+  "operations": [
+    {
+      "Name": "ContinueUpdateRollback",
+      "AuthorizedActions": [
+        {
+          "Name": "ContinueUpdateRollback",
+          "Service": "cloudformation"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "cloudformation.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "cloudformation",
+          "Method": "continue_update_rollback",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "CreateStack",
+      "AuthorizedActions": [
+        {
+          "Name": "CreateStack",
+          "Service": "cloudformation"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "cloudformation.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        },
+        {
+          "Name": "TagResource",
+          "Service": "cloudformation"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "cloudformation",
+          "Method": "create_stack",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "UpdateStack",
+      "AuthorizedActions": [
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "cloudformation.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        },
+        {
+          "Name": "SetStackPolicy",
+          "Service": "cloudformation"
+        },
+        {
+          "Name": "TagResource",
+          "Service": "cloudformation"
+        },
+        {
+          "Name": "UntagResource",
+          "Service": "cloudformation"
+        },
+        {
+          "Name": "UpdateStack",
+          "Service": "cloudformation"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "cloudformation",
+          "Method": "update_stack",
+          "Package": "Boto3"
+        }
+      ]
+    }
+  ]
+}

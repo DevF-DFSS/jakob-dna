@@ -1,0 +1,743 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PR19 contained runtime: no API management resources; closed packaged capability by default.",
+  "Parameters": {
+    "JwtIssuer": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Unconfigured only valid with CLOSED packaged capability"
+    },
+    "JwtAudience": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Unconfigured only valid with CLOSED packaged capability"
+    },
+    "ClientIdsJson": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Unconfigured only valid with CLOSED packaged capability"
+    },
+    "BindingsVersion": {
+      "Type": "String",
+      "Default": "",
+      "Description": "Unconfigured only valid with CLOSED packaged capability"
+    },
+    "BindingsSha256": {
+      "Type": "String",
+      "AllowedPattern": "[0-9a-f]{64}",
+      "Default": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "ArtifactKey": {
+      "Type": "String",
+      "MinLength": 1
+    },
+    "ArtifactVersion": {
+      "Type": "String",
+      "MinLength": 1
+    },
+    "ArtifactCodeSha256": {
+      "Type": "String",
+      "AllowedPattern": "[A-Za-z0-9+/]{43}="
+    },
+    "BootstrapStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-bootstrap-[a-z0-9-]{1,32}"
+    },
+    "AuthorityStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-authority-[a-z0-9-]{1,24}"
+    },
+    "CapabilitySha256": {
+      "Type": "String",
+      "AllowedPattern": "[0-9a-f]{64}"
+    }
+  },
+  "Resources": {
+    "Events": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": {
+          "Fn::Sub": "jel-v6-${AWS::StackName}-events"
+        },
+        "BillingMode": "PAY_PER_REQUEST",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "PointInTimeRecoverySpecification": {
+          "PointInTimeRecoveryEnabled": true
+        },
+        "SSESpecification": {
+          "SSEEnabled": true
+        },
+        "DeletionProtectionEnabled": true,
+        "ResourcePolicy": {
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "DenyKnownLegacy",
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": "dynamodb:*",
+                "Resource": [
+                  {
+                    "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${AWS::StackName}-events"
+                  },
+                  {
+                    "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${AWS::StackName}-events/index/*"
+                  }
+                ],
+                "Condition": {
+                  "ArnLike": {
+                    "aws:PrincipalArn": [
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:user/us-os-gateway"
+                      },
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:user/*/us-os-gateway"
+                      },
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/DFSS-ColdStart-role-io8kh35x"
+                      },
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/us-os-brain-role-c7v6jeb1"
+                      },
+                      {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/JakobLambdaExecutionRole"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "FunctionLogs": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${AWS::StackName}-v6"
+        },
+        "RetentionInDays": 30
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "ExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "IsolatedEventsAndLogs",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:GetItem",
+                    "dynamodb:PutItem"
+                  ],
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "Events",
+                      "Arn"
+                    ]
+                  },
+                  "Condition": {
+                    "ArnEquals": {
+                      "lambda:SourceFunctionArn": {
+                        "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-v6"
+                      }
+                    }
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AWS::StackName}-v6:log-stream:*"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "RoleName": {
+          "Fn::Sub": "${AWS::StackName}-v6-execution"
+        },
+        "Path": "/jel-v6/",
+        "PermissionsBoundary": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${AuthorityStackName}-RuntimeBoundaryArn"
+          }
+        }
+      }
+    },
+    "Function": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": {
+          "Fn::Sub": "${AWS::StackName}-v6"
+        },
+        "Runtime": "python3.13",
+        "Architectures": [
+          "x86_64"
+        ],
+        "Handler": "aws_v6.phase_host.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "ExecutionRole",
+            "Arn"
+          ]
+        },
+        "Timeout": 10,
+        "MemorySize": 256,
+        "Code": {
+          "S3Bucket": {
+            "Fn::ImportValue": {
+              "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+            }
+          },
+          "S3Key": {
+            "Ref": "ArtifactKey"
+          },
+          "S3ObjectVersion": {
+            "Ref": "ArtifactVersion"
+          }
+        },
+        "Environment": {
+          "Variables": {
+            "V6_TABLE_NAME": {
+              "Ref": "Events"
+            },
+            "EXPECTED_API_ID": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${BootstrapStackName}-ApiId"
+              }
+            },
+            "EXPECTED_STAGE": "sandbox",
+            "EXPECTED_ISSUER": {
+              "Ref": "JwtIssuer"
+            },
+            "EXPECTED_AUDIENCE": {
+              "Ref": "JwtAudience"
+            },
+            "EXPECTED_REGION": {
+              "Ref": "AWS::Region"
+            },
+            "EXPECTED_CLIENT_IDS": {
+              "Ref": "ClientIdsJson"
+            },
+            "BINDINGS_VERSION": {
+              "Ref": "BindingsVersion"
+            },
+            "BINDINGS_SHA256": {
+              "Ref": "BindingsSha256"
+            },
+            "EXPECTED_ALIAS_ARN": {
+              "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${AWS::StackName}-v6:sandbox"
+            },
+            "CAPABILITY_SHA256": {
+              "Ref": "CapabilitySha256"
+            }
+          }
+        }
+      },
+      "DependsOn": [
+        "FunctionLogs"
+      ]
+    },
+    "Alias": {
+      "Type": "AWS::Lambda::Alias",
+      "Properties": {
+        "Name": "sandbox",
+        "FunctionName": {
+          "Ref": "Function"
+        },
+        "FunctionVersion": {
+          "Fn::GetAtt": [
+            "CandidateVersion78b4cbf215675931",
+            "Version"
+          ]
+        }
+      }
+    },
+    "ErrorsAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmDescription": "Sandbox invocation failures; action destination requires owner approval",
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Errors",
+        "Dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": {
+              "Ref": "Function"
+            }
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-v6-ErrorsAlarm"
+        }
+      }
+    },
+    "ThrottleAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Throttles",
+        "Dimensions": [
+          {
+            "Name": "FunctionName",
+            "Value": {
+              "Ref": "Function"
+            }
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-v6-ThrottleAlarm"
+        }
+      }
+    },
+    "RejectedMetric": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "FunctionLogs"
+        },
+        "FilterPattern": "{ $.kind = \"v6_outcome\" && $.outcome = \"rejected\" }",
+        "MetricTransformations": [
+          {
+            "MetricNamespace": "JELV6/Sandbox",
+            "MetricName": {
+              "Fn::Sub": "${AWS::StackName}-rejected"
+            },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+    "RejectedAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "JELV6/Sandbox",
+        "MetricName": {
+          "Fn::Sub": "${AWS::StackName}-rejected"
+        },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-v6-RejectedAlarm"
+        }
+      }
+    },
+    "UnavailableMetric": {
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "LogGroupName": {
+          "Ref": "FunctionLogs"
+        },
+        "FilterPattern": "{ $.kind = \"v6_outcome\" && $.outcome = \"unavailable\" }",
+        "MetricTransformations": [
+          {
+            "MetricNamespace": "JELV6/Sandbox",
+            "MetricName": {
+              "Fn::Sub": "${AWS::StackName}-unavailable"
+            },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+    "UnavailableAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "JELV6/Sandbox",
+        "MetricName": {
+          "Fn::Sub": "${AWS::StackName}-unavailable"
+        },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 1,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-v6-UnavailableAlarm"
+        }
+      }
+    },
+    "Gateway4xxAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "4xx",
+        "Dimensions": [
+          {
+            "Name": "ApiId",
+            "Value": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${BootstrapStackName}-ApiId"
+              }
+            }
+          },
+          {
+            "Name": "Stage",
+            "Value": "sandbox"
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 5,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-v6-Gateway4xxAlarm"
+        }
+      }
+    },
+    "FunctionResourcePolicy": {
+      "Type": "AWS::Lambda::ResourcePolicy",
+      "Properties": {
+        "ResourceArn": {
+          "Fn::GetAtt": [
+            "Function",
+            "Arn"
+          ]
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "DenyKnownLegacy",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "lambda:CreateAlias",
+                "lambda:DeleteAlias",
+                "lambda:DeleteFunction",
+                "lambda:DeleteFunctionConcurrency",
+                "lambda:DeleteFunctionEventInvokeConfig",
+                "lambda:DeleteProvisionedConcurrencyConfig",
+                "lambda:GetAlias",
+                "lambda:GetFunction",
+                "lambda:GetFunctionConcurrency",
+                "lambda:GetFunctionConfiguration",
+                "lambda:GetFunctionEventInvokeConfig",
+                "lambda:GetPolicy",
+                "lambda:GetProvisionedConcurrencyConfig",
+                "lambda:InvokeFunction",
+                "lambda:InvokeFunctionUrl",
+                "lambda:ListAliases",
+                "lambda:ListFunctionEventInvokeConfigs",
+                "lambda:ListProvisionedConcurrencyConfigs",
+                "lambda:ListTags",
+                "lambda:ListVersionsByFunction",
+                "lambda:PublishVersion",
+                "lambda:PutFunctionConcurrency",
+                "lambda:PutFunctionEventInvokeConfig",
+                "lambda:PutProvisionedConcurrencyConfig",
+                "lambda:TagResource",
+                "lambda:UntagResource",
+                "lambda:UpdateAlias",
+                "lambda:UpdateFunctionCode",
+                "lambda:UpdateFunctionEventInvokeConfig"
+              ],
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Function",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Function.Arn}:*"
+                }
+              ],
+              "Condition": {
+                "ArnLike": {
+                  "aws:PrincipalArn": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:user/us-os-gateway"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:user/*/us-os-gateway"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/DFSS-ColdStart-role-io8kh35x"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/us-os-brain-role-c7v6jeb1"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/JakobLambdaExecutionRole"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Sid": "DenyNonGatewayInvoke",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": [
+                "lambda:InvokeFunction",
+                "lambda:InvokeFunctionUrl"
+              ],
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Function",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Function.Arn}:*"
+                }
+              ],
+              "Condition": {
+                "StringNotEqualsIfExists": {
+                  "aws:PrincipalServiceName": "apigateway.amazonaws.com"
+                }
+              }
+            },
+            {
+              "Sid": "DenyOtherGatewayAccount",
+              "Effect": "Deny",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              },
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Function",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Function.Arn}:*"
+                }
+              ],
+              "Condition": {
+                "StringNotEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "DenyOtherGatewaySource",
+              "Effect": "Deny",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              },
+              "Action": "lambda:InvokeFunction",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Function",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Function.Arn}:*"
+                }
+              ],
+              "Condition": {
+                "ArnNotLike": {
+                  "aws:SourceArn": [
+                    {
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/POST/v6/events",
+                        {
+                          "Api": {
+                            "Fn::ImportValue": {
+                              "Fn::Sub": "${BootstrapStackName}-ApiId"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/GET/v6/senders/*/events/*",
+                        {
+                          "Api": {
+                            "Fn::ImportValue": {
+                              "Fn::Sub": "${BootstrapStackName}-ApiId"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Sid": "AllowSandboxRoute0",
+              "Effect": "Allow",
+              "Action": "lambda:InvokeFunction",
+              "Resource": {
+                "Ref": "Alias"
+              },
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                },
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/POST/v6/events",
+                      {
+                        "Api": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ApiId"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "Sid": "AllowSandboxRoute1",
+              "Effect": "Allow",
+              "Action": "lambda:InvokeFunction",
+              "Resource": {
+                "Ref": "Alias"
+              },
+              "Principal": {
+                "Service": "apigateway.amazonaws.com"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "aws:SourceAccount": {
+                    "Ref": "AWS::AccountId"
+                  }
+                },
+                "ArnLike": {
+                  "aws:SourceArn": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/sandbox/GET/v6/senders/*/events/*",
+                      {
+                        "Api": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ApiId"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "CandidateVersion78b4cbf215675931": {
+      "Type": "AWS::Lambda::Version",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "Function"
+        },
+        "CodeSha256": {
+          "Ref": "ArtifactCodeSha256"
+        },
+        "Description": "Offline candidate; reviewed packaged registry required"
+      }
+    }
+  },
+  "Outputs": {
+    "AliasArn": {
+      "Description": "AliasArn",
+      "Value": {
+        "Ref": "Alias"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-AliasArn"
+        }
+      }
+    },
+    "FunctionArn": {
+      "Description": "FunctionArn",
+      "Value": {
+        "Fn::GetAtt": [
+          "Function",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-FunctionArn"
+        }
+      }
+    }
+  }
+}

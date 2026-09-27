@@ -1,0 +1,12 @@
+# Canon delta — 2026-09-26 — PR19 offline candidate
+
+Parent PR18: 2ac860b5038d84134878136ff6ed424663110812. PR12–PR18 remain preserved. This supersedes neither their observations nor their historical validation coordinates.
+
+- **A1 offline candidate exists:** source-function-bound DDB identity/maximum policy; exact association/service-bound PassRole; proposed separate legacy identity fence, now including role assumption, Gateway control plane and stack/service-role access. Real installation and effective evaluation remain open. The source-function key does not attest intended code or make stolen intended-function credentials safe.
+- **A2 offline candidate exists:** pure rendered non-root/time-bounded role/trust/max-policy topology, separate stack operators/service roles/publisher/recovery, explicit trusted first-write requirement. No identity is configured/created. Normal recovery has no IAM-administrator path. Initial installation/removal and usable authority remain external live gates; a role proposal is not a usable operator.
+- **A3 offline candidate exists:** four derived templates, CLOSED packaged host, expiring principal/config-bound active capability, publication/runtime/ingress holds and exact phase-plan contract. No deployment executor or approval verifier. Plans never return deployment_authorized=true. Trusted policy/template authors remain capable of changing their own domains; phase separation is not independent evidence of their consent.
+- Provider-neutral core, bindings, dependency pins and GitHub workflow unchanged. Old combined templates remain historical comparison fixtures; new build provenance identifies infra/phases as the selected composition.
+- All PR18 B proofs remain sandbox-only: provider/JWT/projection, actual IAM/association/source context/direct negatives, artifact delivery, lifecycle/rollback/PR16 DescribeStacks, transitions, operations/cost. Validator modernization is not included. No new DescribeStacks grant to the runtime CF role.
+- Local test total grew from 255 to 326: 25 policy/topology, 11 host, 21 plan, 14 template tests. Public AWS documentation/catalog research and local finite policy models are not live authorization evidence. No AWS API calls.
+
+Live A1 closed = false. Live A2 closed = false. Live phased authorization available = false. Candidate behavior changed = YES (new composition/host/tooling). deployment_authorized=false.
