@@ -293,7 +293,7 @@
         },
         "FunctionVersion": {
           "Fn::GetAtt": [
-            "CandidateVersionc9cfa17f7578b419",
+            "CandidateVersion78b4cbf215675931",
             "Version"
           ]
         }
@@ -670,7 +670,7 @@
         }
       }
     },
-    "CandidateVersionc9cfa17f7578b419": {
+    "CandidateVersion78b4cbf215675931": {
       "Type": "AWS::Lambda::Version",
       "Properties": {
         "FunctionName": {

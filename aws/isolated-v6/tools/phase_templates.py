@@ -74,11 +74,14 @@ def templates(revision):
     children={'Fn::Sub':['arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*',{'Api':imported('ApiId')}]}
     ingress=[allow('apigateway:GET',[api,children]),allow(['apigateway:POST','apigateway:PUT','apigateway:PATCH','apigateway:DELETE'],children)]
     a['Resources']['IngressBoundary']=resource('IAM::ManagedPolicy',PolicyDocument=maximum(ingress))
+    a['Parameters']['ServiceAuthorityExpiresAt']={'Type':'String','AllowedPattern':'[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z'}
     a['Resources']['IngressRole']=resource('IAM::Role',RoleName=sub('${RuntimeStackName}-ingress-deploy'),Path='/jel-v6/',MaxSessionDuration=3600,
         PermissionsBoundary=ref('IngressBoundary'),AssumeRolePolicyDocument=doc({'Effect':'Allow','Principal':{'Service':'cloudformation.amazonaws.com'},'Action':'sts:AssumeRole'}),
         Policies=[{'PolicyName':'ExactApiChildrenOnly','PolicyDocument':doc(*ingress)}])
     for name,suffix in [('DeploymentBoundary','deployment-boundary'),('PublisherBoundary','publisher-boundary'),('IngressBoundary','ingress-boundary')]:
         a['Resources'][name]['Properties']['ManagedPolicyName']=sub('${RuntimeStackName}-'+suffix)
+    for name in ['DeploymentBoundary','IngressBoundary']:
+        a['Resources'][name]['Properties']['PolicyDocument']['Statement'].append({'Effect':'Deny','Action':'*','Resource':'*','Condition':{'DateGreaterThanEquals':{'aws:CurrentTime':ref('ServiceAuthorityExpiresAt')}}})
     a['Outputs']={k:v for k,v in a['Outputs'].items() if k not in ['ApiId','ArtifactBucket']}
     a['Outputs']['IngressRoleArn']=output('IngressRoleArn',arn('IngressRole'))
 
@@ -98,6 +101,8 @@ def templates(revision):
     r['Parameters']['BindingsSha256']['Default']='0'*64
     r['Parameters']['CapabilitySha256']={'Type':'String','AllowedPattern':'[0-9a-f]{64}'}
     r['Resources']['Function']['Properties']['Environment']['Variables']['CAPABILITY_SHA256']=ref('CapabilitySha256')
+    r['Parameters']['ArtifactCodeSha256']={'Type':'String','AllowedPattern':'[A-Za-z0-9+/]{43}='}
+    r['Resources']['CandidateVersion']['Properties']['CodeSha256']=ref('ArtifactCodeSha256')
     r['Outputs']={k:output(k,v) for k,v in [('AliasArn',ref('Alias')),('FunctionArn',arn('Function'))]}
     # Different immutable capability/artifact must accompany each config release.
     version='CandidateVersion'+revision[:16]
@@ -115,8 +120,15 @@ def templates(revision):
     return {'bootstrap':b,'authority':a,'runtime':r,'ingress':i}
 
 
+def source_revision(candidate):
+    # Version identity changes with packaged source/dependencies/capability, not
+    # capability alone. Active configuration is already bound into capability.
+    paths=list((candidate/'aws_v6').glob('*.py'))+list((candidate.parents[1]/'reference/isolated-v6/isolated_v6').glob('*.py'))
+    paths += [candidate/'aws_v6/capability.json',candidate/'aws_v6/bindings.json',candidate/'dependencies.lock.json']
+    return hashlib.sha256(b''.join(p.name.encode()+b'\0'+p.read_bytes()+b'\0' for p in sorted(paths))).hexdigest()
+
 def write(candidate):
-    raw=(candidate/'aws_v6/capability.json').read_bytes();revision=hashlib.sha256(raw).hexdigest()
+    revision=source_revision(candidate)
     folder=candidate/'infra/phases';folder.mkdir(exist_ok=True)
     for name,value in templates(revision).items():
         (folder/(name+'.json')).write_text(json.dumps(value,indent=2)+'\n')

@@ -117,7 +117,7 @@
         "StageName": "sandbox",
         "AutoDeploy": false,
         "DeploymentId": {
-          "Ref": "CandidateDeploymentc9cfa17f7578b419"
+          "Ref": "CandidateDeployment78b4cbf215675931"
         },
         "DefaultRouteSettings": {
           "ThrottlingBurstLimit": 2,
@@ -125,7 +125,7 @@
         }
       }
     },
-    "CandidateDeploymentc9cfa17f7578b419": {
+    "CandidateDeployment78b4cbf215675931": {
       "Type": "AWS::ApiGatewayV2::Deployment",
       "Properties": {
         "ApiId": {
