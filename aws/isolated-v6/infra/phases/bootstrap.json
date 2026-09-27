@@ -1,0 +1,233 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PR19 phase1 inert bootstrap: no roles, data authority, routes or stage. Separate approval required.",
+  "Parameters": {
+    "RuntimeStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-sandbox-[a-z0-9-]{1,24}"
+    },
+    "ApprovedRecoveryRoleArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:iam::[0-9]{12}:role/jel-v6-approved/[A-Za-z0-9+=,.@_-]{1,64}",
+      "Description": "Independently approved existing recovery/operator role, not a legacy identity. No default."
+    },
+    "Namespace": {
+      "Type": "String",
+      "AllowedPattern": "[a-z0-9]{8,12}"
+    },
+    "BootstrapServiceRoleArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:iam::[0-9]{12}:role/jel-v6-approved/[A-Za-z0-9+=,.@_-]{1,64}"
+    }
+  },
+  "Rules": {
+    "SameAccountRecovery": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Equals": [
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Ref": "ApprovedRecoveryRoleArn"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Ref": "AWS::AccountId"
+              }
+            ]
+          },
+          "AssertDescription": "Recovery role must belong to this account"
+        }
+      ]
+    }
+  },
+  "Resources": {
+    "SandboxApi": {
+      "Type": "AWS::ApiGatewayV2::Api",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "${RuntimeStackName}-v6"
+        },
+        "ProtocolType": "HTTP"
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "Artifacts": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "IgnorePublicAcls": true,
+          "BlockPublicPolicy": true,
+          "RestrictPublicBuckets": true
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "BucketOwnerEnforced"
+            }
+          ]
+        },
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "BucketName": {
+          "Fn::Sub": "jel-v6-${AWS::AccountId}-${AWS::Region}-${Namespace}"
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "ArtifactPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "Artifacts"
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "DenyKnownLegacy",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:*",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Artifacts",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Artifacts.Arn}/*"
+                }
+              ],
+              "Condition": {
+                "ArnLike": {
+                  "aws:PrincipalArn": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:user/us-os-gateway"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:user/*/us-os-gateway"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/DFSS-ColdStart-role-io8kh35x"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/service-role/us-os-brain-role-c7v6jeb1"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/JakobLambdaExecutionRole"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Sid": "RequireTLS",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:*",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Artifacts",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Artifacts.Arn}/*"
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                  "aws:PrincipalIsAWSService": "false"
+                }
+              }
+            },
+            {
+              "Sid": "DenyOtherPrincipals",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:*",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "Artifacts",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Sub": "${Artifacts.Arn}/*"
+                }
+              ],
+              "Condition": {
+                "ArnNotEquals": {
+                  "aws:PrincipalArn": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-runtime-deploy"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-publisher"
+                    },
+                    {
+                      "Ref": "ApprovedRecoveryRoleArn"
+                    },
+                    {
+                      "Ref": "BootstrapServiceRoleArn"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain"
+    }
+  },
+  "Outputs": {
+    "ApiId": {
+      "Value": {
+        "Ref": "SandboxApi"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-ApiId"
+        }
+      }
+    },
+    "ArtifactBucket": {
+      "Value": {
+        "Ref": "Artifacts"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-ArtifactBucket"
+        }
+      }
+    }
+  }
+}

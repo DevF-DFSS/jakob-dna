@@ -1,0 +1,1214 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PR19 exact-ID authority installation. Trusted external installer required; no runtime or ingress.",
+  "Parameters": {
+    "RuntimeStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-sandbox-[a-z0-9-]{1,24}"
+    },
+    "ApprovedRecoveryRoleArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:iam::[0-9]{12}:role/jel-v6-approved/[A-Za-z0-9+=,.@_-]{1,64}",
+      "Description": "Independently approved existing recovery/operator role, not a legacy identity. No default."
+    },
+    "BootstrapStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-bootstrap-[a-z0-9-]{1,24}"
+    },
+    "PublisherAuthorityExpiresAt": {
+      "Type": "String",
+      "AllowedPattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z"
+    },
+    "ApprovedPublisherOperatorArn": {
+      "Type": "String",
+      "AllowedPattern": "arn:aws:iam::[0-9]{12}:role/jel-v6-approved/[A-Za-z0-9+=,.@_-]{1,64}"
+    }
+  },
+  "Rules": {
+    "SameAccountRecovery": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Equals": [
+              {
+                "Fn::Select": [
+                  4,
+                  {
+                    "Fn::Split": [
+                      ":",
+                      {
+                        "Ref": "ApprovedRecoveryRoleArn"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "Ref": "AWS::AccountId"
+              }
+            ]
+          },
+          "AssertDescription": "Recovery role must belong to this account"
+        }
+      ]
+    }
+  },
+  "Resources": {
+    "RuntimeBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "ManagedPolicyName": {
+          "Fn::Sub": "${RuntimeStackName}-runtime-boundary"
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:PutItem"
+              ],
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${RuntimeStackName}-events"
+              },
+              "Condition": {
+                "ArnEquals": {
+                  "lambda:SourceFunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                  }
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6:log-stream:*"
+              }
+            },
+            {
+              "Effect": "Deny",
+              "NotAction": [
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Deny",
+              "Action": "*",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${RuntimeStackName}-events"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6:log-stream:*"
+                }
+              ]
+            },
+            {
+              "Sid": "DenyOtherOrMissingSourceFunction",
+              "Effect": "Deny",
+              "Action": [
+                "dynamodb:GetItem",
+                "dynamodb:PutItem"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "ArnNotEquals": {
+                  "lambda:SourceFunctionArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "DeploymentBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:CreateFunction",
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:UpdateFunctionConfiguration",
+                "lambda:UpdateFunctionCode",
+                "lambda:DeleteFunction",
+                "lambda:PublishVersion",
+                "lambda:*Alias",
+                "lambda:PutResourcePolicy",
+                "lambda:DeleteResourcePolicy",
+                "lambda:AddPermission",
+                "lambda:RemovePermission",
+                "lambda:TagResource",
+                "lambda:UntagResource"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6:*"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:CreateTable",
+                "dynamodb:DescribeTable",
+                "dynamodb:UpdateTable",
+                "dynamodb:DeleteTable",
+                "dynamodb:UpdateContinuousBackups",
+                "dynamodb:DescribeContinuousBackups",
+                "dynamodb:PutResourcePolicy",
+                "dynamodb:GetResourcePolicy",
+                "dynamodb:DeleteResourcePolicy",
+                "dynamodb:TagResource",
+                "dynamodb:UntagResource",
+                "dynamodb:ListTagsOfResource"
+              ],
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${RuntimeStackName}-events"
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:DescribeLogStreams",
+                "logs:PutRetentionPolicy",
+                "logs:DeleteLogGroup",
+                "logs:DeleteRetentionPolicy",
+                "logs:PutMetricFilter",
+                "logs:DeleteMetricFilter",
+                "logs:DescribeMetricFilters",
+                "logs:TagResource",
+                "logs:UntagResource"
+              ],
+              "Resource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6:*"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6"
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:DescribeLogGroups"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "iam:CreateRole"
+              ],
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              },
+              "Condition": {
+                "ArnEquals": {
+                  "iam:PermissionsBoundary": {
+                    "Ref": "RuntimeBoundary"
+                  }
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "iam:GetRole*",
+                "iam:DeleteRole",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:TagRole",
+                "iam:UntagRole"
+              ],
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": "iam:PassRole",
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              },
+              "Condition": {
+                "StringEquals": {
+                  "iam:PassedToService": "lambda.amazonaws.com"
+                },
+                "ArnEquals": {
+                  "iam:AssociatedResourceArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                  }
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetObjectVersion"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:${AWS::Partition}:s3:::${Bucket}/*",
+                  {
+                    "Bucket": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:${AWS::Partition}:s3:::${Bucket}",
+                  {
+                    "Bucket": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cloudwatch:PutMetricAlarm",
+                "cloudwatch:DeleteAlarms",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:TagResource",
+                "cloudwatch:UntagResource"
+              ],
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${RuntimeStackName}-v6-*"
+              }
+            },
+            {
+              "Effect": "Deny",
+              "NotAction": "logs:DescribeLogGroups",
+              "NotResource": [
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6:*"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${RuntimeStackName}-events"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6:*"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6"
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:s3:::${Bucket}",
+                    {
+                      "Bucket": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:s3:::${Bucket}/*",
+                    {
+                      "Bucket": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": "arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${RuntimeStackName}-v6-*"
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "NotAction": [
+                "cloudwatch:DeleteAlarms",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:PutMetricAlarm",
+                "cloudwatch:TagResource",
+                "cloudwatch:UntagResource",
+                "dynamodb:CreateTable",
+                "dynamodb:DeleteResourcePolicy",
+                "dynamodb:DeleteTable",
+                "dynamodb:DescribeContinuousBackups",
+                "dynamodb:DescribeTable",
+                "dynamodb:GetResourcePolicy",
+                "dynamodb:ListTagsOfResource",
+                "dynamodb:PutResourcePolicy",
+                "dynamodb:TagResource",
+                "dynamodb:UntagResource",
+                "dynamodb:UpdateContinuousBackups",
+                "dynamodb:UpdateTable",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:DeleteRolePolicy",
+                "iam:GetRole*",
+                "iam:PassRole",
+                "iam:PutRolePolicy",
+                "iam:TagRole",
+                "iam:UntagRole",
+                "lambda:*Alias",
+                "lambda:AddPermission",
+                "lambda:CreateFunction",
+                "lambda:DeleteFunction",
+                "lambda:DeleteResourcePolicy",
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:PublishVersion",
+                "lambda:PutResourcePolicy",
+                "lambda:RemovePermission",
+                "lambda:TagResource",
+                "lambda:UntagResource",
+                "lambda:UpdateFunctionCode",
+                "lambda:UpdateFunctionConfiguration",
+                "logs:CreateLogGroup",
+                "logs:DeleteLogGroup",
+                "logs:DeleteMetricFilter",
+                "logs:DeleteRetentionPolicy",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:DescribeMetricFilters",
+                "logs:PutMetricFilter",
+                "logs:PutRetentionPolicy",
+                "logs:TagResource",
+                "logs:UntagResource",
+                "s3:GetBucketLocation",
+                "s3:GetObjectVersion"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Deny",
+              "Action": "iam:CreateRole",
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              },
+              "Condition": {
+                "ArnNotEquals": {
+                  "iam:PermissionsBoundary": {
+                    "Ref": "RuntimeBoundary"
+                  }
+                }
+              }
+            },
+            {
+              "Effect": "Deny",
+              "Action": "iam:PassRole",
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "iam:PassedToService": "lambda.amazonaws.com"
+                }
+              }
+            },
+            {
+              "Effect": "Deny",
+              "Action": "iam:PassRole",
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              },
+              "Condition": {
+                "StringNotEquals": {
+                  "iam:PassedToService": "lambda.amazonaws.com"
+                }
+              }
+            },
+            {
+              "Effect": "Deny",
+              "Action": "iam:PassRole",
+              "Resource": {
+                "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+              },
+              "Condition": {
+                "ArnNotEquals": {
+                  "iam:AssociatedResourceArn": {
+                    "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "ManagedPolicyName": {
+          "Fn::Sub": "${RuntimeStackName}-deployment-boundary"
+        }
+      }
+    },
+    "DeploymentRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "PermissionsBoundary": {
+          "Ref": "DeploymentBoundary"
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudformation.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "NewRuntimeOnly",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "lambda:CreateFunction",
+                    "lambda:Get*",
+                    "lambda:List*",
+                    "lambda:UpdateFunctionConfiguration",
+                    "lambda:UpdateFunctionCode",
+                    "lambda:DeleteFunction",
+                    "lambda:PublishVersion",
+                    "lambda:*Alias",
+                    "lambda:PutResourcePolicy",
+                    "lambda:DeleteResourcePolicy",
+                    "lambda:AddPermission",
+                    "lambda:RemovePermission",
+                    "lambda:TagResource",
+                    "lambda:UntagResource"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:CreateTable",
+                    "dynamodb:DescribeTable",
+                    "dynamodb:UpdateTable",
+                    "dynamodb:DeleteTable",
+                    "dynamodb:UpdateContinuousBackups",
+                    "dynamodb:DescribeContinuousBackups",
+                    "dynamodb:PutResourcePolicy",
+                    "dynamodb:GetResourcePolicy",
+                    "dynamodb:DeleteResourcePolicy",
+                    "dynamodb:TagResource",
+                    "dynamodb:UntagResource",
+                    "dynamodb:ListTagsOfResource"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/jel-v6-${RuntimeStackName}-events"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:DescribeLogStreams",
+                    "logs:PutRetentionPolicy",
+                    "logs:DeleteLogGroup",
+                    "logs:DeleteRetentionPolicy",
+                    "logs:PutMetricFilter",
+                    "logs:DeleteMetricFilter",
+                    "logs:DescribeMetricFilters",
+                    "logs:TagResource",
+                    "logs:UntagResource"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6:*"
+                    },
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${RuntimeStackName}-v6"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:DescribeLogGroups"
+                  ],
+                  "Resource": "*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "iam:CreateRole"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+                  },
+                  "Condition": {
+                    "ArnEquals": {
+                      "iam:PermissionsBoundary": {
+                        "Ref": "RuntimeBoundary"
+                      }
+                    }
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "iam:GetRole*",
+                    "iam:DeleteRole",
+                    "iam:PutRolePolicy",
+                    "iam:DeleteRolePolicy",
+                    "iam:TagRole",
+                    "iam:UntagRole"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": "iam:PassRole",
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/jel-v6/${RuntimeStackName}-v6-execution"
+                  },
+                  "Condition": {
+                    "StringEquals": {
+                      "iam:PassedToService": "lambda.amazonaws.com"
+                    },
+                    "ArnEquals": {
+                      "iam:AssociatedResourceArn": {
+                        "Fn::Sub": "arn:${AWS::Partition}:lambda:${AWS::Region}:${AWS::AccountId}:function:${RuntimeStackName}-v6"
+                      }
+                    }
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetObjectVersion"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:s3:::${Bucket}/*",
+                      {
+                        "Bucket": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetBucketLocation"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:s3:::${Bucket}",
+                      {
+                        "Bucket": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "cloudwatch:PutMetricAlarm",
+                    "cloudwatch:DeleteAlarms",
+                    "cloudwatch:DescribeAlarms",
+                    "cloudwatch:TagResource",
+                    "cloudwatch:UntagResource"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": "arn:${AWS::Partition}:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:${RuntimeStackName}-v6-*"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "RoleName": {
+          "Fn::Sub": "${RuntimeStackName}-runtime-deploy"
+        },
+        "Path": "/jel-v6/",
+        "MaxSessionDuration": 3600
+      }
+    },
+    "PublisherBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObjectVersion"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:${AWS::Partition}:s3:::${Bucket}/*",
+                  {
+                    "Bucket": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucketVersions"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:${AWS::Partition}:s3:::${Bucket}",
+                  {
+                    "Bucket": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Deny",
+              "Action": "*",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:s3:::${Bucket}",
+                    {
+                      "Bucket": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:s3:::${Bucket}/*",
+                    {
+                      "Bucket": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "NotAction": [
+                "s3:PutObject",
+                "s3:GetObjectVersion",
+                "s3:GetBucketLocation",
+                "s3:ListBucketVersions"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Deny",
+              "Action": "*",
+              "Resource": "*",
+              "Condition": {
+                "DateGreaterThanEquals": {
+                  "aws:CurrentTime": {
+                    "Ref": "PublisherAuthorityExpiresAt"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "ManagedPolicyName": {
+          "Fn::Sub": "${RuntimeStackName}-publisher-boundary"
+        }
+      }
+    },
+    "PublisherRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "PermissionsBoundary": {
+          "Ref": "PublisherBoundary"
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Ref": "ApprovedPublisherOperatorArn"
+                }
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "NewArtifactOnly",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:PutObject",
+                    "s3:GetObjectVersion"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:s3:::${Bucket}/*",
+                      {
+                        "Bucket": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:GetBucketLocation",
+                    "s3:ListBucketVersions"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:s3:::${Bucket}",
+                      {
+                        "Bucket": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ArtifactBucket"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "RoleName": {
+          "Fn::Sub": "${RuntimeStackName}-publisher"
+        },
+        "Path": "/jel-v6/",
+        "MaxSessionDuration": 3600
+      }
+    },
+    "IngressBoundary": {
+      "Type": "AWS::IAM::ManagedPolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "apigateway:GET",
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "apigateway:POST",
+                "apigateway:PUT",
+                "apigateway:PATCH",
+                "apigateway:DELETE"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                  {
+                    "Api": {
+                      "Fn::ImportValue": {
+                        "Fn::Sub": "${BootstrapStackName}-ApiId"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Effect": "Deny",
+              "NotAction": [
+                "apigateway:GET",
+                "apigateway:POST",
+                "apigateway:PUT",
+                "apigateway:PATCH",
+                "apigateway:DELETE"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Deny",
+              "Action": "*",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "apigateway:GET",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "apigateway:POST",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "apigateway:PUT",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "apigateway:PATCH",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Deny",
+              "Action": "apigateway:DELETE",
+              "NotResource": [
+                {
+                  "Fn::Sub": [
+                    "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                    {
+                      "Api": {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${BootstrapStackName}-ApiId"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyName": {
+          "Fn::Sub": "${RuntimeStackName}-ingress-boundary"
+        }
+      }
+    },
+    "IngressRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::Sub": "${RuntimeStackName}-ingress-deploy"
+        },
+        "Path": "/jel-v6/",
+        "MaxSessionDuration": 3600,
+        "PermissionsBoundary": {
+          "Ref": "IngressBoundary"
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudformation.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": "ExactApiChildrenOnly",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "apigateway:GET",
+                  "Resource": [
+                    {
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}",
+                        {
+                          "Api": {
+                            "Fn::ImportValue": {
+                              "Fn::Sub": "${BootstrapStackName}-ApiId"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "Fn::Sub": [
+                        "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                        {
+                          "Api": {
+                            "Fn::ImportValue": {
+                              "Fn::Sub": "${BootstrapStackName}-ApiId"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "apigateway:POST",
+                    "apigateway:PUT",
+                    "apigateway:PATCH",
+                    "apigateway:DELETE"
+                  ],
+                  "Resource": {
+                    "Fn::Sub": [
+                      "arn:${AWS::Partition}:apigateway:${AWS::Region}::/apis/${Api}/*",
+                      {
+                        "Api": {
+                          "Fn::ImportValue": {
+                            "Fn::Sub": "${BootstrapStackName}-ApiId"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "RuntimeBoundaryArn": {
+      "Value": {
+        "Ref": "RuntimeBoundary"
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-RuntimeBoundaryArn"
+        }
+      }
+    },
+    "DeploymentRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "DeploymentRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-DeploymentRoleArn"
+        }
+      }
+    },
+    "PublisherRoleArn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "PublisherRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-PublisherRoleArn"
+        }
+      }
+    },
+    "IngressRoleArn": {
+      "Description": "IngressRoleArn",
+      "Value": {
+        "Fn::GetAtt": [
+          "IngressRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-IngressRoleArn"
+        }
+      }
+    }
+  }
+}

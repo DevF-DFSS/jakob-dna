@@ -55,9 +55,21 @@ def maximum(statements):
         for key,out in [('Action',actions),('Resource',resources)]:
             for v in s[key] if isinstance(s[key],list) else [s[key]]:
                 if v not in out:out.append(v)
+    # Preserve action/resource association under a hypothetical extra Allow.
+    # A union of all actions/resources alone would allow POST on GET-only API
+    # children. These callers use non-overlapping action patterns.
+    scoped=[]
+    for action in actions:
+        allowed=[]
+        for statement in statements:
+            named=statement['Action'] if isinstance(statement['Action'],list) else [statement['Action']]
+            if action in named:
+                for r in statement['Resource'] if isinstance(statement['Resource'],list) else [statement['Resource']]:
+                    if r not in allowed:allowed.append(r)
+        scoped.append({'Effect':'Deny','Action':action,'NotResource':allowed})
     return doc(*deepcopy(statements),
         {'Effect':'Deny','NotAction':actions,'Resource':'*'},
-        {'Effect':'Deny','Action':'*','NotResource':resources})
+        {'Effect':'Deny','Action':'*','NotResource':resources},*scoped)
 
 
 def timed(policy, starts, expires):

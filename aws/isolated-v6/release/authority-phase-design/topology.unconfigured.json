@@ -1,0 +1,15 @@
+{
+  "schema_version": "jel-v6-authority-topology-input/1",
+  "status": "UNCONFIGURED",
+  "context": {
+    "account": null,
+    "region": null,
+    "namespace": null,
+    "stacks": {"bootstrap": null, "authority": null, "runtime": null, "ingress": null},
+    "trusted_operator": null,
+    "starts_at": null,
+    "expires_at": null
+  },
+  "installation_authorized": false,
+  "deployment_authorized": false
+}

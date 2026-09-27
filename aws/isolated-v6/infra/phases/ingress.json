@@ -1,0 +1,144 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "PR19 separately authorized ingress. Test vs reviewed mode lives in immutable runtime capability; never approval strings.",
+  "Parameters": {
+    "BootstrapStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-bootstrap-[a-z0-9-]{1,24}"
+    },
+    "RuntimeStackName": {
+      "Type": "String",
+      "AllowedPattern": "jel-v6-sandbox-[a-z0-9-]{1,24}"
+    },
+    "JwtIssuer": {
+      "Type": "String",
+      "AllowedPattern": "https://.+"
+    },
+    "JwtAudience": {
+      "Type": "String",
+      "MinLength": 1
+    }
+  },
+  "Resources": {
+    "Authorizer": {
+      "Type": "AWS::ApiGatewayV2::Authorizer",
+      "Properties": {
+        "ApiId": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${BootstrapStackName}-ApiId"
+          }
+        },
+        "Name": "V6Jwt",
+        "AuthorizerType": "JWT",
+        "IdentitySource": [
+          "$request.header.Authorization"
+        ],
+        "JwtConfiguration": {
+          "Issuer": {
+            "Ref": "JwtIssuer"
+          },
+          "Audience": [
+            {
+              "Ref": "JwtAudience"
+            }
+          ]
+        }
+      }
+    },
+    "Integration": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${BootstrapStackName}-ApiId"
+          }
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationMethod": "POST",
+        "IntegrationUri": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${RuntimeStackName}-AliasArn"
+          }
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 10000
+      }
+    },
+    "PostRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${BootstrapStackName}-ApiId"
+          }
+        },
+        "RouteKey": "POST /v6/events",
+        "AuthorizationType": "JWT",
+        "AuthorizerId": {
+          "Ref": "Authorizer"
+        },
+        "AuthorizationScopes": [
+          "jel-v6/write"
+        ],
+        "Target": {
+          "Fn::Sub": "integrations/${Integration}"
+        }
+      }
+    },
+    "GetRoute": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${BootstrapStackName}-ApiId"
+          }
+        },
+        "RouteKey": "GET /v6/senders/{sender}/events/{event_id}",
+        "AuthorizationType": "JWT",
+        "AuthorizerId": {
+          "Ref": "Authorizer"
+        },
+        "AuthorizationScopes": [
+          "jel-v6/read"
+        ],
+        "Target": {
+          "Fn::Sub": "integrations/${Integration}"
+        }
+      }
+    },
+    "Stage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
+      "Properties": {
+        "ApiId": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${BootstrapStackName}-ApiId"
+          }
+        },
+        "StageName": "sandbox",
+        "AutoDeploy": false,
+        "DeploymentId": {
+          "Ref": "CandidateDeploymentc9cfa17f7578b419"
+        },
+        "DefaultRouteSettings": {
+          "ThrottlingBurstLimit": 2,
+          "ThrottlingRateLimit": 1
+        }
+      }
+    },
+    "CandidateDeploymentc9cfa17f7578b419": {
+      "Type": "AWS::ApiGatewayV2::Deployment",
+      "Properties": {
+        "ApiId": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${BootstrapStackName}-ApiId"
+          }
+        },
+        "Description": "Explicit reviewed sandbox snapshot"
+      },
+      "DependsOn": [
+        "PostRoute",
+        "GetRoute"
+      ]
+    }
+  }
+}

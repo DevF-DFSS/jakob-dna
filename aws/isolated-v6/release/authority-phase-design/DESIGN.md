@@ -47,3 +47,22 @@ Release transitions must bind source/parent, all templates, packaged capability/
 ## Preserved unknowns
 
 All PR18 B groups remain open: real JWT/projection, effective IAM/service context, negative invocation/data fences, artifact delivery, handler/rollback/delete/PR16 DescribeStacks, transition behavior, quotas/logging/cost. No validator upgrade or speculative DescribeStacks grant. No live installation/authorization implied by a passing local decision table.
+
+## Rendered A2 topology and residual trust
+
+`tools/authority_topology.py` takes exact non-root context and an at-most-one-hour UTC window. It emits complete trust, identity and maximum-boundary documents without executing them. `topology.unconfigured.json` has no approved values. Role ARNs are new `/jel-v6-approved/` names; no existing role is reused. All ordinary proposals deny off-domain actions/resources even under the local model's hypothetical extra Allow. Identity/maximum expiry, rather than trust removal alone, constrains existing sessions. Publisher's actual S3-role boundary also receives an absolute deadline because expiration of its parent operator would not revoke an already-assumed publisher session.
+
+| Principal | Trust / authority | Cannot do / partial failure |
+|---|---|---|
+| External authority establisher | Independently approved existing non-root identity; writes exact reviewed new policies/roles and legacy fence under separate authorization | No standing grant created here. Can affect maximum-policy contents and is necessarily trusted for installation; policy syntax cannot prove this actor honest. Read-back/removal is a pre-runtime gate. |
+| Bootstrap operator | Approved external role, one-hour absolute window; CreateStack on exact bootstrap stack + PassRole to bootstrap service only | No runtime/ingress/authority stack update; stop on partial create. |
+| Bootstrap CF service | CF trust plus absolute window; create inert API at /apis and exact namespace bucket management, metadata reads | No API child writes, IAM, Lambda, DDB or objects. Generated API metadata reads need a region-local wildcard; no broad mutating scope. Retain API/bucket; later exact-resource repair requires separate approval. |
+| Runtime operator | Exact runtime stack Create/Update with exact runtime CF RoleArn; CF-only PassRole | Cannot create ingress or edit bootstrap. Trusted to choose reviewed runtime template; IAM does not attest its contents. |
+| Runtime CF service | CF-only trust; new runtime resources, source-bound role creation, association-bound execution-role PassRole | No API management, bootstrap boundary edits, direct invocation or legacy writes in maximum model. Service-role reuse by another authorized stack actor is an external-authority audit requirement. |
+| Ingress operator / CF service | Operator exact ingress stack + exact service role; CF role exact new API children only | Cannot change runtime/IAM/bootstrap. Trusted ingress author can still alter integration within its domain: template/release verification and independent actor control remain necessary. |
+| Publisher operator / publisher | Operator assumes exact publisher; publisher trusts that operator and has four S3 actions on new bucket/objects plus absolute expiry | No deployment, IAM, policy edits or selected-version deletion. Does not sign/approve artifacts. |
+| Normal recovery | Read runtime stack + ContinueUpdateRollback with exact service role; time-limited | No UpdateStack/IAM/direct invoke. Not a universal failed-create repair mechanism. |
+| Emergency runtime recovery | Separately approved time-limited exact runtime UpdateStack/ContinueUpdateRollback | No IAM/boundary/admin grant. Bootstrap/IAM repair remains a separate installer decision, not a standing emergency escape hatch. |
+| V6 runtime | Lambda-only trust, exact table Get/Put source condition, own logs, bootstrap-owned maximum boundary | No IAM, deployment, other-table access; logs intentionally separate from source-bound DDB statement. |
+
+The authority stack can define the CF service roles before runtime, but phase operators must only be installed/usable for their separately authorized windows. The candidate does not authenticate that installation approval. Root is not a normal operator. Absolute expiry may stop CloudFormation mid-operation; it is not automatically extended. A future authorized run must schedule adequate time, stop on unexpected states, retain evidence and obtain a fresh narrow repair grant if necessary. Real propagation/session/provider behavior remains B-class.
