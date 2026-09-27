@@ -1,0 +1,49 @@
+{
+  "account_human_approved": false,
+  "account_id": "083127296577",
+  "artifact": {
+    "account_owned_name_collision": "NOT_OBSERVED",
+    "bucket": "jel-v6-083127296577-us-east-1-trident27",
+    "global_name_availability": "UNVERIFIED",
+    "key": "releases/2a3179938387f995432a1202f5f85bec2eefe06462bb75d7eaf5651334832de6.zip",
+    "object_version": null
+  },
+  "artifact_sha256": "2a3179938387f995432a1202f5f85bec2eefe06462bb75d7eaf5651334832de6",
+  "binding_sha256": "1e1612ea14057a336f9ef5d66df10b8f569940e1e673c9c92fdf260609d78c6b",
+  "bindings_status": "UNCONFIGURED",
+  "candidate_source_commit": "dd343930a2962c98de552c4fa2fb08a690f6ba46",
+  "closed_capability_sha256": "c9cfa17f7578b4197cf7c677135e1caca596d22931d47263fa40a2e19cd865c6",
+  "deployment_authorized": false,
+  "expected_api_name": "jel-v6-sandbox-trident27-v6",
+  "expected_function_name": "jel-v6-sandbox-trident27-v6",
+  "expected_table_name": "jel-v6-jel-v6-sandbox-trident27-events",
+  "generated_api_id": null,
+  "namespace": "trident27",
+  "phase_template_sha256": {
+    "authority": "7d7a708795e8451d5d638f0339c0618f37c6ff0ac4bbadcee9632ee6adc99644",
+    "bootstrap": "10dbf471abf2ebe4be87d8dcbac588c3cfbf500c2f8821e962b730c6cde99024",
+    "ingress": "62e9e40f340fd3aced6d1cd13ca62082b0331089627deb691f5c06581c0b1892",
+    "runtime": "551cb09f68be134fd175cac1dd0e3357e032443a262efc535a7217e7c6d02d98"
+  },
+  "proposed_role_arns": {
+    "bootstrap_operator": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-operator",
+    "bootstrap_service": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service",
+    "execution": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-trident27-v6-execution",
+    "ingress_service": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-trident27-ingress-deploy",
+    "publisher": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-trident27-publisher",
+    "recovery_operator": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-recovery-operator",
+    "runtime_service": "arn:aws:iam::083127296577:role/jel-v6/jel-v6-sandbox-trident27-runtime-deploy"
+  },
+  "provider_profile": null,
+  "region": "us-east-1",
+  "review_branch_parent_pr18": "2ac860b5038d84134878136ff6ed424663110812",
+  "roles_created": false,
+  "schema_version": "jel-v6-private-first-use-coordinate/1",
+  "stack_names": {
+    "authority": "jel-v6-authority-trident27",
+    "bootstrap": "jel-v6-bootstrap-trident27",
+    "ingress": "jel-v6-ingress-trident27",
+    "runtime": "jel-v6-sandbox-trident27"
+  },
+  "status": "PROPOSED_UNAPPROVED"
+}

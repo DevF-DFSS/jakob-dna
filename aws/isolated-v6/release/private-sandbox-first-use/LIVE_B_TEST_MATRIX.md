@@ -1,0 +1,18 @@
+# Sandbox-only B observations before private TEST use
+
+All rows are **planned, not executed**. Mutating probes, Lambda/API invocations and DDB/S3 object operations need separate future authorization; PR20 performs none. Use synthetic/non-sensitive event IDs, tenants, senders and payloads; never use legacy production traffic. Record caller/role, exact code/version, time, account/region, expected/observed result, and rollback decision for each.
+
+| Test | Earliest phase | Boundary result needed before private use | Acceptable application bug? |
+|---|---|---|---|
+| Issuer/JWKS/audience/client/token_use/scope/exp/iat/optional nbf: approved token and malformed/wrong/expired alternatives | TEST ingress | Gateway actually rejects invalid signature/issuer/audience/scope and projects claims; Lambda rejects locally invalid shape/client/temporal claims; no unauthenticated path. Provider capability, configuration and enforcement recorded separately. | No. |
+| Authenticated POST write + GET receipt | TEST ingress | Approved synthetic principal bound to exact tenant/sender/receiver/instruction, immutable stored event and stable receipt, no payload/claim/identifier log exposure. | Non-boundary response ergonomics may be buggy. |
+| Same-ID same-request retry; same-ID different-request conflict; two independent events | TEST ingress | No accepted-state overwrite or cross-tenant access. If a benign synthetic-only idempotency defect occurs, stop promoting that operation to usable dogfood until scoped. | Limited bug only if it cannot mutate accepted state or leak data. |
+| Unknown/revoked/wrong sender, tenant, receiver, instruction | TEST ingress | Denied and no persistence. | No. |
+| Direct unqualified, published-version, sandbox-alias, Function URL exposure | contained runtime / TEST ingress | Explicitly unauthorized principals cannot invoke; URL absent; source account/API/stage/route/alias limits actually enforced. Never read real data. | No. |
+| Alternate Lambda using V6 execution role, wrong service/function `iam:PassRole` association | contained runtime | Attempted unauthorized association/function creation is denied; no alternate role reuse. If service-path testing requires a temporary test grant, obtain a separate risk review and narrow authorization first; do not weaken containment silently. | No. |
+| Wrong/missing/qualified `lambda:SourceFunctionArn` vs intended unqualified context | contained runtime | Live service context is observed for intended DDB GetItem/PutItem, and wrong/missing context denied under a separately approved synthetic test design. A simulator alone is insufficient. | No. |
+| Artifact SHA-256, exact S3 object version and retrieval | CLOSED runtime | Lambda code identity matches reviewed ZIP/version; no object substitution or unreviewed code path. | No. |
+| Rate limit, rejection/503 sanitized logs, alarms and tiny-volume cost | TEST ingress | Throttling and useful payload-free telemetry observed; no runaway billing. Dashboard polish can wait. | Yes for dashboard polish only. |
+| Stage quarantine, active capability expiry, rollback and partial-create recovery | TEST ingress before dogfood | Ingress can be isolated promptly; retained table/bucket and earlier runtime version do not re-open an unauthorized path. PR16 ResourcePolicy DescribeStacks delete-handler question is tested as a lifecycle observation, not guessed away. | No for inability to quarantine. |
+
+If any boundary result cannot be safely tested without creating an alternate privilege path, stop and design a separately approved bounded test. Never promote IAM simulation, local unit tests or historical PR evidence to observed live authorization.

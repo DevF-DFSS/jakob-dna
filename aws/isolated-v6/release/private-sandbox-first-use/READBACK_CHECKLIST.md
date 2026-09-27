@@ -1,0 +1,12 @@
+# Immediate readback after an independently authorized inert bootstrap
+
+Record observation time, exact caller ARN, account, region, stack ID/status, submitted template SHA, parameter-set hash, CloudFormation service-role ARN, resource IDs, and change/event chronology. Check only metadata and resource configuration; never read secrets or application data. If no stack was authorized, this checklist has **not** been executed.
+
+1. `GetCallerIdentity`: current non-root operator and approved account; compare to the approved phase record. Verify bootstrap CF role ARN was the exact qualified role intended by the manifest, and no other role/actor mutated the stack.
+2. `DescribeStacks` / `DescribeStackResources` for `jel-v6-bootstrap-trident27`: exact template and only `AWS::ApiGatewayV2::Api`, `AWS::S3::Bucket`, `AWS::S3::BucketPolicy`; no IAM/Lambda/DDB/route/stage/integration/authorizer. Avoid returning parameter values to evidence logs. Unexpected child resource or status: stop/quarantine.
+3. `GetApi`, `GetRoutes`, `GetStages`, `GetIntegrations`, `GetAuthorizers` for generated API ID: HTTP API with expected name, zero routes/stages/integrations/authorizers. Record actual generated API ID for the next exact-ID fence. API endpoint existence alone is not usable ingress.
+4. `GetBucketVersioning`, `GetPublicAccessBlock`, `GetBucketEncryption`, `GetBucketOwnershipControls`, `GetBucketPolicyStatus` and reviewed `GetBucketPolicy`: exact new `jel-v6-083127296577-us-east-1-trident27` bucket, private/public block true, bucket-owner enforced, encryption, versioning Enabled, expected explicit boundary. No object upload/list/read in this phase. Account-owned bucket listing cannot prove global-name availability before creation.
+5. `GetRole` plus policy/boundary/trust metadata for bootstrap operator/service role: verify actor, expiry, approved trust, exact CreateStack/PassRole and API/S3 service scope; confirm no extra grants or legacy reuse. Recheck ordinary legacy identities and role-use paths before the next phase. No new runtime role should yet exist.
+6. Compare outputs and retained-resource policies with the approved manifest. Collect timestamped read-only evidence. If any check is missing, failed, stale, or contradictory, mark UNKNOWN/BLOCKED and do not progress to authority/runtime/artifact publication.
+
+These are future reads after a separately approved write. No checks on this page were performed in PR20.

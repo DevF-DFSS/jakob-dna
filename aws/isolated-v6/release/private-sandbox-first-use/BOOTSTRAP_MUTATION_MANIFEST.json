@@ -1,0 +1,63 @@
+{
+  "account_id": "083127296577",
+  "allowed_operator_actions": [
+    "cloudformation:CreateStack on exact bootstrap stack",
+    "iam:PassRole of exact bootstrap CF service role to cloudformation.amazonaws.com"
+  ],
+  "artifact_bucket": "jel-v6-083127296577-us-east-1-trident27",
+  "artifact_key_strategy": "releases/2a3179938387f995432a1202f5f85bec2eefe06462bb75d7eaf5651334832de6.zip",
+  "artifact_version": null,
+  "aws_mutation_performed": false,
+  "bootstrap_template_sha256": "10dbf471abf2ebe4be87d8dcbac588c3cfbf500c2f8821e962b730c6cde99024",
+  "candidate_source_commit": "dd343930a2962c98de552c4fa2fb08a690f6ba46",
+  "cloudformation_service_role": {
+    "exists_and_approved": false,
+    "observed_arn": null,
+    "proposed_arn": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+  },
+  "cost_assumptions": [
+    "one empty API with no stage/requests",
+    "one initially empty S3 bucket; request/storage pricing may apply",
+    "AWS::* CloudFormation resources; no third-party extension"
+  ],
+  "cost_class": "NEGLIGIBLE_AT_TINY_VOLUME_BUT_POTENTIALLY_BILLABLE",
+  "deployment_authorized": false,
+  "expected_resource_types": [
+    "AWS::ApiGatewayV2::Api",
+    "AWS::S3::Bucket",
+    "AWS::S3::BucketPolicy"
+  ],
+  "first_account_mutation": "UNSPECIFIED_NONROOT_AUTHORITY_ESTABLISHMENT_REQUIRED",
+  "first_v6_stack_mutation": "CREATE_INERT_BOOTSTRAP",
+  "human_authorization": null,
+  "maximum_mutation_scope": "one new bootstrap stack containing only empty HTTP API and new private/versioned retained artifact bucket/policy; no stage, route, integration, authorizer, Lambda, table or runtime role",
+  "namespace": "trident27",
+  "only_this_phase_could_be_authorized_after_separate_approval": true,
+  "operator": {
+    "exists_and_approved": false,
+    "observed_arn": null,
+    "proposed_arn": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-operator"
+  },
+  "parameters": {
+    "ApprovedRecoveryRoleArn": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-recovery-operator",
+    "BootstrapServiceRoleArn": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service",
+    "Namespace": "trident27",
+    "RuntimeStackName": "jel-v6-sandbox-trident27"
+  },
+  "parameters_status": "PROPOSED_ONLY_RECOVERY_ROLE_NOT_CREATED",
+  "readback_evidence": "READBACK_CHECKLIST.md; caller/stack/resources/API emptiness/bucket protections/role policies/observed time",
+  "region": "us-east-1",
+  "rollback_quarantine": "retain API and bucket; no runtime/ingress created; read metadata then seek separate bounded non-root recovery approval; no automatic root fallback",
+  "schema_version": "jel-v6-first-bootstrap-mutation/1",
+  "stack_name": "jel-v6-bootstrap-trident27",
+  "status": "BLOCKED_FIRST_WRITER",
+  "stop_conditions": [
+    "missing real approved non-root operator or service role",
+    "missing authenticated phase approval",
+    "account/region/source/template/parameter mismatch",
+    "candidate name collision or unproven S3 global name at execution",
+    "unexpected resources or authority",
+    "partial create/failed readback",
+    "cost exceeds separately approved cap"
+  ]
+}
