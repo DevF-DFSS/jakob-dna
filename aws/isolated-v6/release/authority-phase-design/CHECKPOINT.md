@@ -13,3 +13,9 @@
 - AWS API calls: 0 attempted / 0 successful / 0 failed. Public documentation and GitHub reads are separate.
 - Next safe action: push this checkpoint, research official SourceFunctionArn/AssociatedResourceArn/HTTP API/CF authority semantics, inspect existing generator/policy model and select the smallest supported architecture before implementation.
 - Candidate behavior changed: NO at this checkpoint. `deployment_authorized=false`.
+
+## Recovery confirmed — 2026-09-26
+
+Local and remote HEAD both `24274bc98d6c505a11c837c0936053c92008c1cd`; one ahead/zero behind PR18. No PR19 PR exists. Staged/unstaged tracked files: none. Six untracked research artifacts survived: sources.json plus apigateway/cloudformation/dynamodb/iam/lambda catalog extracts. Twelve public-response caches and research helper survived in /private/tmp; every cached response matches its recorded SHA-256. No implementation, tests or validation outputs were created. Prior automatic approval review failed due usage exhaustion before the attempted catalog inspection executed; not a safety rejection. No files lost/discarded/recreated. The six artifacts are preserved in this checkpoint. IAM catalog operations extract is empty because PassRole is a permission, not a standalone API; do not read empty extraction as unsupported permission.
+
+AWS calls remain 0/0/0. Next: complete the narrow evidence decision/attack model, checkpoint A1/topology selection before implementation. Candidate behavior changed: NO. `deployment_authorized=false`.

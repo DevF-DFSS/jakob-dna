@@ -1,0 +1,76 @@
+{
+  "source": "https://servicereference.us-east-1.amazonaws.com/v1/lambda/lambda.json",
+  "retrieved_at": "2026-09-26T21:13:31.365366+00:00",
+  "operations": [
+    {
+      "Name": "CreateFunction",
+      "AuthorizedActions": [
+        {
+          "Name": "CreateFunction",
+          "Service": "lambda"
+        },
+        {
+          "Name": "GetLayerVersion",
+          "Service": "lambda"
+        },
+        {
+          "Name": "PassCapacityProvider",
+          "Service": "lambda"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "lambda.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        },
+        {
+          "Name": "TagResource",
+          "Service": "lambda"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "lambda",
+          "Method": "create_function",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "UpdateFunctionConfiguration",
+      "AuthorizedActions": [
+        {
+          "Name": "GetLayerVersion",
+          "Service": "lambda"
+        },
+        {
+          "Name": "PassCapacityProvider",
+          "Service": "lambda"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "lambda.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        },
+        {
+          "Name": "UpdateFunctionConfiguration",
+          "Service": "lambda"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "lambda",
+          "Method": "update_function_configuration",
+          "Package": "Boto3"
+        }
+      ]
+    }
+  ]
+}

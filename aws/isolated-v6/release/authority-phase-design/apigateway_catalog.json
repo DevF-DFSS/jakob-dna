@@ -1,0 +1,164 @@
+{
+  "source": "https://servicereference.us-east-1.amazonaws.com/v1/apigateway/apigateway.json",
+  "retrieved_at": "2026-09-26T21:13:31.873978+00:00",
+  "operations": [
+    {
+      "Name": "CreateApi",
+      "AuthorizedActions": [
+        {
+          "Name": "POST",
+          "Service": "apigateway"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "apigateway.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigatewayv2",
+          "Method": "create_api",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "CreateAuthorizer",
+      "AuthorizedActions": [
+        {
+          "Name": "POST",
+          "Service": "apigateway"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "apigateway.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigateway",
+          "Method": "create_authorizer",
+          "Package": "Boto3"
+        },
+        {
+          "Name": "apigatewayv2",
+          "Method": "create_authorizer",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "CreateIntegration",
+      "AuthorizedActions": [
+        {
+          "Name": "POST",
+          "Service": "apigateway"
+        },
+        {
+          "Name": "PassRole",
+          "Context": {
+            "iam:PassedToService": [
+              "apigateway.amazonaws.com"
+            ]
+          },
+          "Service": "iam"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigatewayv2",
+          "Method": "create_integration",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "CreateRoute",
+      "AuthorizedActions": [
+        {
+          "Name": "POST",
+          "Service": "apigateway"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigatewayv2",
+          "Method": "create_route",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "CreateStage",
+      "AuthorizedActions": [
+        {
+          "Name": "POST",
+          "Service": "apigateway"
+        },
+        {
+          "Name": "PUT",
+          "Service": "apigateway"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigateway",
+          "Method": "create_stage",
+          "Package": "Boto3"
+        },
+        {
+          "Name": "apigatewayv2",
+          "Method": "create_stage",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "UpdateRoute",
+      "AuthorizedActions": [
+        {
+          "Name": "PATCH",
+          "Service": "apigateway"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigatewayv2",
+          "Method": "update_route",
+          "Package": "Boto3"
+        }
+      ]
+    },
+    {
+      "Name": "UpdateStage",
+      "AuthorizedActions": [
+        {
+          "Name": "PATCH",
+          "Service": "apigateway"
+        }
+      ],
+      "SDK": [
+        {
+          "Name": "apigateway",
+          "Method": "update_stage",
+          "Package": "Boto3"
+        },
+        {
+          "Name": "apigatewayv2",
+          "Method": "update_stage",
+          "Package": "Boto3"
+        }
+      ]
+    }
+  ]
+}

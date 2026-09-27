@@ -1,0 +1,119 @@
+{
+  "schema_version": "jel-v6-pr19-sources/1",
+  "sources": [
+    {
+      "id": "source_function",
+      "url": "https://docs.aws.amazon.com/lambda/latest/dg/permissions-source-function-arn.html",
+      "retrieved_at": "2026-09-26T21:13:27.366049+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "54ced76ce37f52f7865e0a2d2b6567433fdef085c0cb18da81c2aeaeee38ea54",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "iam_context",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html",
+      "retrieved_at": "2026-09-26T21:13:27.988485+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "c65b05feaf7e5140360f09ad3e3f13f87d4a12fc3b5ab6ac5d56901874914462",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "condition_operators",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html",
+      "retrieved_at": "2026-09-26T21:13:29.463462+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "da23823b2c426b6722139342e3784cb5dcddff51321a79e7c0f85b8b42495671",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "http_api_limits",
+      "url": "https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html",
+      "retrieved_at": "2026-09-26T21:13:29.988632+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "655e34ef263aa9a71162b65561ea8b51cdf02a8745f6b0950f1e831626dc9443",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "cf_service_role",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-servicerole.html",
+      "retrieved_at": "2026-09-26T21:13:30.513355+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "5b3c608b927cf57949b926e77125628a42fd06c446315ce689d0016af1b7d510",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "dynamodb_catalog",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/dynamodb/dynamodb.json",
+      "retrieved_at": "2026-09-26T21:13:30.861986+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "d71a8b607418436853265cb4931470e1c31bd23867eba0f3cb2f9cfeee9b7e2e",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "lambda_catalog",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/lambda/lambda.json",
+      "retrieved_at": "2026-09-26T21:13:31.365366+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "6b753c08ed6917084a9cacfa67b624fd93b062a37dd3639477fc10b8254fde80",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "apigateway_catalog",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/apigateway/apigateway.json",
+      "retrieved_at": "2026-09-26T21:13:31.873978+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "2f3c7a96541fa247df671600e0fa331084966d795259ca8745f5de9ebf86a2a9",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "iam_catalog",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/iam/iam.json",
+      "retrieved_at": "2026-09-26T21:13:32.378862+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "166a844f91e01114718faf852876c0d35629b4ead3a33d38aa063f83be7c472b",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "cloudformation_catalog",
+      "url": "https://servicereference.us-east-1.amazonaws.com/v1/cloudformation/cloudformation.json",
+      "retrieved_at": "2026-09-26T21:13:32.980230+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "5f5214d42df63c5d04964ae9086788bc060bd09d52c92a75ba51f6914385e83c",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "session_expiry",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_revoke-sessions.html",
+      "retrieved_at": "2026-09-26T21:13:33.476158+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "a21fc107ecdb5bee2b62ed347e92d4d3670ba66a46a8a1fe5d84b2fc11d79a53",
+      "aws_authenticated_call": false
+    },
+    {
+      "id": "cfn_stage",
+      "url": "https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-apigatewayv2-stage.html",
+      "retrieved_at": "2026-09-26T21:13:34.181870+00:00",
+      "evidence_class": "AWS_DOCUMENTATION",
+      "status": "success",
+      "sha256": "45267036f98735f5c7a8f098b145cd777908080cd1cbb21361b31d12f079ef69",
+      "aws_authenticated_call": false
+    }
+  ],
+  "aws_api_ledger": {
+    "attempted": 0,
+    "successful": 0,
+    "failed": 0
+  },
+  "limits": "Public sources only; no observed live enforcement or approval"
+}
