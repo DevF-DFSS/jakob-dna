@@ -18,6 +18,14 @@ def condition(conditions, context):
             elif operator in ('ArnNotLike','ArnNotEquals','StringNotEquals','StringNotEqualsIfExists'):
                 ok=not matches(actual,expected) if operator=='ArnNotLike' else actual not in values(expected)
             elif operator=='Bool':ok=actual in values(expected)
+            elif operator=='Null':ok=(actual is None)==(expected=='true')
+            elif operator in ('DateLessThan','DateGreaterThanEquals'):
+                from datetime import datetime
+                if actual is None:ok=False
+                else:
+                    a,b=(datetime.fromisoformat(v.replace('Z','+00:00')) for v in (actual,expected))
+                    if a.tzinfo is None or b.tzinfo is None:raise ValueError('timezone_required')
+                    ok=a<b if operator=='DateLessThan' else a>=b
             else:raise ValueError('unsupported_condition_operator')
             if not ok:return False
     return True
