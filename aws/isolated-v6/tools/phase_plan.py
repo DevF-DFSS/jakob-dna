@@ -12,13 +12,16 @@ from release_manifest import read_json
 PHASES = {
     'BOOTSTRAP': ('NONE','CREATE_INERT_BOOTSTRAP','CLOSED','bootstrap'),
     'AUTHORITY': ('BOOTSTRAP','INSTALL_EXACT_AUTHORITY','CLOSED','authority'),
-    'RUNTIME': ('AUTHORITY','CREATE_CONTAINED_RUNTIME','CLOSED','runtime'),
-    'TEST_INGRESS': ('RUNTIME','PUBLISH_TEST_CAPABILITY_AND_CREATE_INGRESS','TEST','ingress'),
-    'SANDBOX': ('TESTED','PUBLISH_REVIEWED_SANDBOX_CAPABILITY','SANDBOX','runtime'),
+    'PUBLISH_CLOSED': ('AUTHORITY','PUT_EXACT_ARTIFACT_VERSION','CLOSED','artifact'),
+    'PUBLISH_TEST': ('RUNTIME','PUT_EXACT_ARTIFACT_VERSION','TEST','artifact'),
+    'PUBLISH_SANDBOX': ('TESTED','PUT_EXACT_ARTIFACT_VERSION','SANDBOX','artifact'),
+    'RUNTIME': ('PUBLISH_CLOSED','CREATE_CONTAINED_RUNTIME','CLOSED','runtime'),
+    'TEST_INGRESS': ('PUBLISH_TEST','PUBLISH_TEST_CAPABILITY_AND_CREATE_INGRESS','TEST','ingress'),
+    'SANDBOX': ('PUBLISH_SANDBOX','PUBLISH_REVIEWED_SANDBOX_CAPABILITY','SANDBOX','runtime'),
 }
 CONTEXT = {'account','region','source_commit','parent_commit','templates','bindings_sha256',
            'artifact_sha256','capability_sha256','capability_mode','s3','stacks','roles',
-           'api_id','provider_profile_sha256'}
+           'api_id','provider_profile_sha256','parameters_sha256'}
 EVIDENCE = {'authority':'AWS_LIVE_READ_ONLY','containment':'AWS_LIVE_READ_ONLY',
             'recovery':'AWS_LIVE_READ_ONLY','validation':'OFFLINE_EXECUTION',
             'human':'HUMAN_AUTHORIZATION'}
@@ -36,6 +39,7 @@ def valid_context(c,phase):
     if c['source_commit']==c['parent_commit']:return False
     if not all(sha(c[k]) for k in ['bindings_sha256','artifact_sha256','capability_sha256']):return False
     if type(c['templates']) is not dict or set(c['templates'])!={'bootstrap','authority','runtime','ingress'} or not all(sha(v) for v in c['templates'].values()):return False
+    if type(c['parameters_sha256']) is not dict or set(c['parameters_sha256'])!=set(c['templates']) or not all(sha(v) for v in c['parameters_sha256'].values()):return False
     if type(c['stacks']) is not dict or set(c['stacks'])!=set(c['templates']):return False
     prefixes={'bootstrap':'bootstrap','authority':'authority','runtime':'sandbox','ingress':'ingress'}
     if not all(type(v) is str and re.fullmatch('jel-v6-'+prefixes[k]+'-[a-z0-9-]{1,24}',v) for k,v in c['stacks'].items()):return False
@@ -49,13 +53,13 @@ def valid_context(c,phase):
     if not re.fullmatch('jel-v6-'+c['account']+'-'+c['region']+'-[a-z0-9]{8,12}',s['bucket']):return False
     if s['key']!='releases/'+c['artifact_sha256']+'.zip':return False
     # Before publication version is an explicit future prerequisite, never a fake version.
-    if phase in ('BOOTSTRAP','AUTHORITY'):
+    if phase in ('BOOTSTRAP','AUTHORITY') or phase.startswith('PUBLISH_'):
         if s['version']!='NOT_PUBLISHED':return False
     elif s['version']=='NOT_PUBLISHED':return False
     if phase=='BOOTSTRAP':
         if c['api_id'] is not None:return False
     elif type(c['api_id']) is not str or not re.fullmatch('[a-z0-9]{1,16}',c['api_id']):return False
-    if phase in ('TEST_INGRESS','SANDBOX'):
+    if phase in ('TEST_INGRESS','SANDBOX','PUBLISH_TEST','PUBLISH_SANDBOX'):
         if not sha(c['provider_profile_sha256']):return False
     elif c['provider_profile_sha256'] is not None:return False
     return c['capability_mode']==PHASES[phase][2]
@@ -82,8 +86,8 @@ def evaluate(plan,expected,*,now,verified_digests=frozenset()):
             if prior['receipt_sha256'] is not None:fail('unexpected_prior_receipt')
         elif not sha(prior['receipt_sha256']) or prior['receipt_sha256'] not in verified_digests:fail('unverified_prior_state')
         if plan['mutation_class']!=mutation:fail('wrong_mutation_class')
-        exact='arn:aws:cloudformation:'+expected['region']+':'+expected['account']+':stack/'+expected['stacks'][stack]+'/*'
-        required=[exact]
+        exact='arn:aws:cloudformation:'+expected['region']+':'+expected['account']+':stack/'+expected['stacks'].get(stack,'UNUSED')+'/*'
+        required=['arn:aws:s3:::'+expected['s3']['bucket']+'/'+expected['s3']['key']] if stack=='artifact' else [exact]
         if phase=='TEST_INGRESS':
             required.append('arn:aws:cloudformation:'+expected['region']+':'+expected['account']+':stack/'+expected['stacks']['runtime']+'/*')
         if plan['resources']!=required:fail('wrong_mutation_resources')
@@ -93,7 +97,7 @@ def evaluate(plan,expected,*,now,verified_digests=frozenset()):
         if rb['strategy']!='QUARANTINE_THEN_SEPARATE_RECOVERY_AUTHORIZATION' or rb['operator_arn']!=expected['roles']['recovery'] or not sha(rb['procedure_sha256']):fail('recovery_plan_required')
         if plan['blockers']!=[]:fail('unresolved_blockers')
         rows=plan['evidence'];kinds=dict(EVIDENCE)
-        if phase=='SANDBOX':kinds['sandbox_observations']='OBSERVED_LIVE_BEHAVIOR'
+        if phase in ('SANDBOX','PUBLISH_SANDBOX'):kinds['sandbox_observations']='OBSERVED_LIVE_BEHAVIOR'
         if type(rows) is not list or len(rows)!=len(kinds):raise ValueError()
         found=set()
         # Every observation binds the full operation, not merely a reusable commit.

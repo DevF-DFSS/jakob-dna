@@ -41,6 +41,7 @@ def legacy_fence(*, function, table, roles, boundaries, api, bucket, stacks):
         dict(Effect='Deny', Action='lambda:*', Resource=[function, function+':*']),
         dict(Effect='Deny', Action='dynamodb:*', Resource=[table, table+'/index/*']),
         dict(Effect='Deny', Action='iam:*', Resource=roles+boundaries),
+        dict(Effect='Deny', Action=['sts:AssumeRole','sts:TagSession'], Resource=roles),
         dict(Effect='Deny', Action=['apigateway:POST','apigateway:PUT','apigateway:PATCH','apigateway:DELETE'], Resource=[api,api+'/*']),
         dict(Effect='Deny', Action='s3:*', Resource=[bucket,bucket+'/*']),
         dict(Effect='Deny', Action='cloudformation:*', Resource=stacks))

@@ -86,7 +86,7 @@ def templates(revision):
     a['Outputs']['IngressRoleArn']=output('IngressRoleArn',arn('IngressRole'))
 
     r=template();r['Description']='PR19 contained runtime: no API management resources; closed packaged capability by default.'
-    api_names={'Authorizer','Integration','PostRoute','GetRoute','CandidateDeployment','Stage','Gateway4xxAlarm'}
+    api_names={'Authorizer','Integration','PostRoute','GetRoute','CandidateDeployment','Stage'}
     ingress_resources={k:deepcopy(v) for k,v in r['Resources'].items() if k in api_names and k!='Gateway4xxAlarm'}
     r['Resources']={k:v for k,v in r['Resources'].items() if k not in api_names}
     r['Parameters']['AuthorityStackName']=stack_parameter('jel-v6-authority-')

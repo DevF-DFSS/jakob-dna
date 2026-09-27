@@ -48,7 +48,7 @@ class AuthorityPolicyTests(unittest.TestCase):
         self.assertEqual('allowed',decision(self.data,'dynamodb:GetItem',TABLE,self.good))
     def test_legacy_fence_gateway_and_role_reuse(self):
         p=legacy_fence(function=FUNCTION,table=TABLE,roles=[ROLE],boundaries=['synthetic-boundary'],api=API,bucket='arn:aws:s3:::synthetic',stacks=['synthetic-stack'])['Statement']
-        for action,res in [('apigateway:PATCH',API+'/routes/r'),('apigateway:DELETE',API),('apigateway:POST',API+'/integrations'),('iam:PassRole',ROLE),('iam:PutRolePolicy',ROLE),('lambda:UpdateFunctionConfiguration',FUNCTION),('lambda:PutResourcePolicy',FUNCTION)]:
+        for action,res in [('apigateway:PATCH',API+'/routes/r'),('apigateway:DELETE',API),('apigateway:POST',API+'/integrations'),('iam:PassRole',ROLE),('sts:AssumeRole',ROLE),('iam:PutRolePolicy',ROLE),('lambda:UpdateFunctionConfiguration',FUNCTION),('lambda:PutResourcePolicy',FUNCTION)]:
             self.assertEqual('explicitDeny',decision(p,action,res,{},identity_allow=True))
         self.assertEqual('allowed',decision(p,'apigateway:PATCH',API.replace('syntheticapi','legacyapi')+'/routes/r',{},identity_allow=True))
     def test_unknown_api_cannot_render_fence(self):

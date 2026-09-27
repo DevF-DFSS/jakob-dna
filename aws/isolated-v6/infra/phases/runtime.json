@@ -422,6 +422,36 @@
         }
       }
     },
+    "Gateway4xxAlarm": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "4xx",
+        "Dimensions": [
+          {
+            "Name": "ApiId",
+            "Value": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${BootstrapStackName}-ApiId"
+              }
+            }
+          },
+          {
+            "Name": "Stage",
+            "Value": "sandbox"
+          }
+        ],
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "Threshold": 5,
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "TreatMissingData": "notBreaching",
+        "AlarmName": {
+          "Fn::Sub": "${AWS::StackName}-v6-Gateway4xxAlarm"
+        }
+      }
+    },
     "FunctionResourcePolicy": {
       "Type": "AWS::Lambda::ResourcePolicy",
       "Properties": {
