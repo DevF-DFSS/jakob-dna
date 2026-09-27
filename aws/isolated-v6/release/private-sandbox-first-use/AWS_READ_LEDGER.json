@@ -1,0 +1,741 @@
+{
+  "account": "083127296577",
+  "api_calls": [
+    {
+      "operation": "GetCallerIdentity",
+      "params": {},
+      "service": "sts",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "DescribeRegions",
+      "params": {
+        "AllRegions": false
+      },
+      "service": "ec2",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListUsers",
+      "params": {},
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListRoles",
+      "params": {},
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "DescribeOrganization",
+      "params": {},
+      "service": "organizations",
+      "status": "ERROR:An error occurred (AWSOrganizationsNotInUseException) when c"
+    },
+    {
+      "operation": "GetApis",
+      "params": {},
+      "service": "apigatewayv2",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListFunctions",
+      "params": {},
+      "service": "lambda",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListTables",
+      "params": {},
+      "service": "dynamodb",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListBuckets",
+      "params": {},
+      "service": "s3",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListStacks",
+      "params": {},
+      "service": "cloudformation",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListAttachedUserPolicies",
+      "params": {
+        "UserName": "us-os-gateway"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListUserPolicies",
+      "params": {
+        "UserName": "us-os-gateway"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListAttachedRolePolicies",
+      "params": {
+        "RoleName": "DFSS-ColdStart-role-io8kh35x"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListRolePolicies",
+      "params": {
+        "RoleName": "DFSS-ColdStart-role-io8kh35x"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListAttachedRolePolicies",
+      "params": {
+        "RoleName": "JakobLambdaExecutionRole"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListRolePolicies",
+      "params": {
+        "RoleName": "JakobLambdaExecutionRole"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListAttachedRolePolicies",
+      "params": {
+        "RoleName": "us-os-brain-role-c7v6jeb1"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListRolePolicies",
+      "params": {
+        "RoleName": "us-os-brain-role-c7v6jeb1"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "SimulatePrincipalPolicy",
+      "params": {
+        "ActionNames": [
+          "iam:CreateRole",
+          "iam:AttachRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:PassRole"
+        ],
+        "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+        "ResourceArns": [
+          "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+        ]
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "SimulatePrincipalPolicy",
+      "params": {
+        "ActionNames": [
+          "cloudformation:CreateStack"
+        ],
+        "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+        "ResourceArns": [
+          "arn:aws:cloudformation:us-east-1:083127296577:stack/jel-v6-bootstrap-trident27/*"
+        ]
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListAttachedUserPolicies",
+      "params": {
+        "UserName": "us-os-gateway"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "GetPolicy",
+      "params": {
+        "PolicyArn": "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "GetPolicyVersion",
+      "params": {
+        "PolicyArn": "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator",
+        "VersionId": "v1"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "GetPolicy",
+      "params": {
+        "PolicyArn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "GetPolicyVersion",
+      "params": {
+        "PolicyArn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+        "VersionId": "v15"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "GetPolicy",
+      "params": {
+        "PolicyArn": "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "GetPolicyVersion",
+      "params": {
+        "PolicyArn": "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+        "VersionId": "v7"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "ListGroupsForUser",
+      "params": {
+        "UserName": "us-os-gateway"
+      },
+      "service": "iam",
+      "status": "SUCCESS"
+    }
+  ],
+  "connector_caller_arn": "arn:aws:iam::083127296577:root",
+  "date": "2026-09-27",
+  "deployment_authorized": false,
+  "inventory": {
+    "apis_us_east_1": [
+      {
+        "id": "kirmld16gb",
+        "name": "DFSS-API"
+      },
+      {
+        "id": "qjiuor3yak",
+        "name": "us-os-brain"
+      }
+    ],
+    "buckets_account_owned": [
+      "dfss-jakob-anchors",
+      "jakob-asset-store",
+      "jakob-backup-vault"
+    ],
+    "enabled_regions": [
+      "ap-south-1",
+      "eu-north-1",
+      "eu-west-3",
+      "eu-west-2",
+      "eu-west-1",
+      "ap-northeast-3",
+      "ap-northeast-2",
+      "ap-northeast-1",
+      "ca-central-1",
+      "sa-east-1",
+      "ap-southeast-1",
+      "ap-southeast-2",
+      "eu-central-1",
+      "us-east-1",
+      "us-east-2",
+      "us-west-1",
+      "us-west-2"
+    ],
+    "functions_us_east_1": [
+      {
+        "name": "DFSS-ColdStart",
+        "role": "arn:aws:iam::083127296577:role/service-role/DFSS-ColdStart-role-io8kh35x"
+      }
+    ],
+    "organizations": {
+      "error": "An error occurred (AWSOrganizationsNotInUseException) when c",
+      "present": false
+    },
+    "policy_names": {
+      "DFSS-ColdStart-role-io8kh35x:ListAttachedRolePolicies": [
+        "AWSLambdaBasicExecutionRole-e1b91bbf-5aa0-496d-88db-2204b9aa4f55",
+        "AmazonDynamoDBFullAccess"
+      ],
+      "DFSS-ColdStart-role-io8kh35x:ListRolePolicies": [],
+      "JakobLambdaExecutionRole:ListAttachedRolePolicies": [],
+      "JakobLambdaExecutionRole:ListRolePolicies": [
+        "JakobCloudWatchLogsAccess",
+        "JakobDynamoDBAccess",
+        "JakobS3Access"
+      ],
+      "us-os-brain-role-c7v6jeb1:ListAttachedRolePolicies": [
+        "AWSLambdaBasicExecutionRole-9d8de7e2-2812-4e6d-aaa2-87795fea5d30",
+        "AWSLambdaBasicExecutionRole",
+        "AmazonDynamoDBFullAccess",
+        "AmazonDynamoDBFullAccess_v2"
+      ],
+      "us-os-brain-role-c7v6jeb1:ListRolePolicies": [],
+      "us-os-gateway:ListAttachedUserPolicies": [
+        "AmazonAPIGatewayAdministrator",
+        "AmazonDynamoDBFullAccess",
+        "AWSLambda_FullAccess"
+      ],
+      "us-os-gateway:ListUserPolicies": []
+    },
+    "roles": [
+      {
+        "arn": "arn:aws:iam::083127296577:role/aws-service-role/ops.apigateway.amazonaws.com/AWSServiceRoleForAPIGateway",
+        "name": "AWSServiceRoleForAPIGateway",
+        "path": "/aws-service-role/ops.apigateway.amazonaws.com/",
+        "trust": [
+          {
+            "Service": "ops.apigateway.amazonaws.com"
+          }
+        ]
+      },
+      {
+        "arn": "arn:aws:iam::083127296577:role/aws-service-role/resource-explorer-2.amazonaws.com/AWSServiceRoleForResourceExplorer",
+        "name": "AWSServiceRoleForResourceExplorer",
+        "path": "/aws-service-role/resource-explorer-2.amazonaws.com/",
+        "trust": [
+          {
+            "Service": "resource-explorer-2.amazonaws.com"
+          }
+        ]
+      },
+      {
+        "arn": "arn:aws:iam::083127296577:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
+        "name": "AWSServiceRoleForSupport",
+        "path": "/aws-service-role/support.amazonaws.com/",
+        "trust": [
+          {
+            "Service": "support.amazonaws.com"
+          }
+        ]
+      },
+      {
+        "arn": "arn:aws:iam::083127296577:role/aws-service-role/trustedadvisor.amazonaws.com/AWSServiceRoleForTrustedAdvisor",
+        "name": "AWSServiceRoleForTrustedAdvisor",
+        "path": "/aws-service-role/trustedadvisor.amazonaws.com/",
+        "trust": [
+          {
+            "Service": "trustedadvisor.amazonaws.com"
+          }
+        ]
+      },
+      {
+        "arn": "arn:aws:iam::083127296577:role/service-role/DFSS-ColdStart-role-io8kh35x",
+        "name": "DFSS-ColdStart-role-io8kh35x",
+        "path": "/service-role/",
+        "trust": [
+          {
+            "Service": "lambda.amazonaws.com"
+          }
+        ]
+      },
+      {
+        "arn": "arn:aws:iam::083127296577:role/JakobLambdaExecutionRole",
+        "name": "JakobLambdaExecutionRole",
+        "path": "/",
+        "trust": [
+          {
+            "Service": "lambda.amazonaws.com"
+          }
+        ]
+      },
+      {
+        "arn": "arn:aws:iam::083127296577:role/service-role/us-os-brain-role-c7v6jeb1",
+        "name": "us-os-brain-role-c7v6jeb1",
+        "path": "/service-role/",
+        "trust": [
+          {
+            "Service": "lambda.amazonaws.com"
+          }
+        ]
+      }
+    ],
+    "stack_roles_us_east_1": [],
+    "stacks_us_east_1": [],
+    "tables_us_east_1": [
+      "DFSS_SessionState",
+      "jakob-identity-profiles",
+      "jakob-memory-store"
+    ],
+    "user_groups": {
+      "us-os-gateway": []
+    },
+    "users": [
+      {
+        "name": "us-os-gateway",
+        "path": "/"
+      }
+    ]
+  },
+  "limits": [
+    "ListBuckets covers account-owned names; S3 global name availability cannot be proven before an authorized create.",
+    "Only us-east-1 resource inventories were refreshed; enabled regions are listed, not inventoried.",
+    "IAM simulations use hypothetical role/stack ARNs, missing context, and do not prove effective policy.",
+    "The connector caller is account root and was used for reads only.",
+    "No app data, bucket objects, secret values, or credential material were read."
+  ],
+  "managed_user_policies": [
+    {
+      "arn": "arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator",
+      "name": "AmazonAPIGatewayAdministrator",
+      "statements": [
+        {
+          "action": [
+            "apigateway:*"
+          ],
+          "condition_keys": [],
+          "effect": "Allow",
+          "resource": "arn:aws:apigateway:*::/*"
+        }
+      ],
+      "version": "v1"
+    },
+    {
+      "arn": "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+      "name": "AmazonDynamoDBFullAccess",
+      "statements": [
+        {
+          "action": [
+            "dynamodb:*",
+            "dax:*",
+            "application-autoscaling:DeleteScalingPolicy",
+            "application-autoscaling:DeregisterScalableTarget",
+            "application-autoscaling:DescribeScalableTargets",
+            "application-autoscaling:DescribeScalingActivities",
+            "application-autoscaling:DescribeScalingPolicies",
+            "application-autoscaling:PutScalingPolicy",
+            "application-autoscaling:RegisterScalableTarget",
+            "cloudwatch:DeleteAlarms",
+            "cloudwatch:DescribeAlarmHistory",
+            "cloudwatch:DescribeAlarms",
+            "cloudwatch:DescribeAlarmsForMetric",
+            "cloudwatch:GetMetricStatistics",
+            "cloudwatch:ListMetrics",
+            "cloudwatch:PutMetricAlarm",
+            "cloudwatch:GetMetricData",
+            "datapipeline:ActivatePipeline",
+            "datapipeline:CreatePipeline",
+            "datapipeline:DeletePipeline",
+            "datapipeline:DescribeObjects",
+            "datapipeline:DescribePipelines",
+            "datapipeline:GetPipelineDefinition",
+            "datapipeline:ListPipelines",
+            "datapipeline:PutPipelineDefinition",
+            "datapipeline:QueryObjects",
+            "ec2:DescribeVpcs",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeSecurityGroups",
+            "iam:GetRole",
+            "iam:ListRoles",
+            "kms:DescribeKey",
+            "kms:ListAliases",
+            "sns:CreateTopic",
+            "sns:DeleteTopic",
+            "sns:ListSubscriptions",
+            "sns:ListSubscriptionsByTopic",
+            "sns:ListTopics",
+            "sns:Subscribe",
+            "sns:Unsubscribe",
+            "sns:SetTopicAttributes",
+            "lambda:CreateFunction",
+            "lambda:ListFunctions",
+            "lambda:ListEventSourceMappings",
+            "lambda:CreateEventSourceMapping",
+            "lambda:DeleteEventSourceMapping",
+            "lambda:GetFunctionConfiguration",
+            "lambda:DeleteFunction",
+            "resource-groups:ListGroups",
+            "resource-groups:ListGroupResources",
+            "resource-groups:GetGroup",
+            "resource-groups:GetGroupQuery",
+            "resource-groups:DeleteGroup",
+            "resource-groups:CreateGroup",
+            "tag:GetResources",
+            "kinesis:ListStreams",
+            "kinesis:DescribeStream",
+            "kinesis:DescribeStreamSummary"
+          ],
+          "condition_keys": [],
+          "effect": "Allow",
+          "resource": "*"
+        },
+        {
+          "action": "cloudwatch:GetInsightRuleReport",
+          "condition_keys": [],
+          "effect": "Allow",
+          "resource": "arn:aws:cloudwatch:*:*:insight-rule/DynamoDBContributorInsights*"
+        },
+        {
+          "action": [
+            "iam:PassRole"
+          ],
+          "condition_keys": [
+            "StringLike"
+          ],
+          "effect": "Allow",
+          "resource": "*"
+        },
+        {
+          "action": [
+            "iam:CreateServiceLinkedRole"
+          ],
+          "condition_keys": [
+            "StringEquals"
+          ],
+          "effect": "Allow",
+          "resource": "*"
+        }
+      ],
+      "version": "v15"
+    },
+    {
+      "arn": "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+      "name": "AWSLambda_FullAccess",
+      "statements": [
+        {
+          "action": [
+            "cloudformation:DescribeStacks",
+            "cloudformation:ListStackResources",
+            "cloudwatch:ListMetrics",
+            "cloudwatch:GetMetricData",
+            "ec2:DescribeSecurityGroups",
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcs",
+            "kms:DescribeKey",
+            "kms:ListAliases",
+            "iam:GetPolicy",
+            "iam:GetPolicyVersion",
+            "iam:GetRole",
+            "iam:GetRolePolicy",
+            "iam:ListAttachedRolePolicies",
+            "iam:ListRolePolicies",
+            "iam:ListRoles",
+            "lambda:*",
+            "logs:DescribeLogGroups",
+            "states:DescribeStateMachine",
+            "states:ListStateMachines",
+            "tag:GetResources",
+            "xray:GetTraceSummaries",
+            "xray:BatchGetTraces"
+          ],
+          "condition_keys": [],
+          "effect": "Allow",
+          "resource": "*"
+        },
+        {
+          "action": "iam:PassRole",
+          "condition_keys": [
+            "StringEquals"
+          ],
+          "effect": "Allow",
+          "resource": "*"
+        },
+        {
+          "action": [
+            "logs:DescribeLogStreams",
+            "logs:GetLogEvents",
+            "logs:FilterLogEvents",
+            "logs:StartLiveTail",
+            "logs:StopLiveTail"
+          ],
+          "condition_keys": [],
+          "effect": "Allow",
+          "resource": "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+        },
+        {
+          "action": "iam:CreateServiceLinkedRole",
+          "condition_keys": [
+            "StringEquals"
+          ],
+          "effect": "Allow",
+          "resource": "arn:aws:iam::*:role/aws-service-role/lambda.amazonaws.com/AWSServiceRoleForLambda"
+        }
+      ],
+      "version": "v7"
+    }
+  ],
+  "non_api_tool_events": [
+    "AWS Core authentication requested and accepted; no service call ran in that invocation.",
+    "One local run_script code-validation rejection for blocked Python __name__ access; no service call ran.",
+    "Ten snake_case operation names reached connector dispatch and failed OperationNotFoundError before a service API ran."
+  ],
+  "observed_no_later_than_utc": "2026-09-27T13:11:46Z",
+  "pre_api_validation_failures": [
+    {
+      "operation": "get_caller_identity",
+      "params": {},
+      "service": "sts",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "describe_regions",
+      "params": {
+        "AllRegions": false
+      },
+      "service": "ec2",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "list_users",
+      "params": {},
+      "service": "iam",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "list_roles",
+      "params": {},
+      "service": "iam",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "describe_organization",
+      "params": {},
+      "service": "organizations",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "get_apis",
+      "params": {},
+      "service": "apigatewayv2",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "list_functions",
+      "params": {},
+      "service": "lambda",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "list_tables",
+      "params": {},
+      "service": "dynamodb",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "list_buckets",
+      "params": {},
+      "service": "s3",
+      "status": "ERROR:OperationNotFoundError"
+    },
+    {
+      "operation": "list_stacks",
+      "params": {},
+      "service": "cloudformation",
+      "status": "ERROR:OperationNotFoundError"
+    }
+  ],
+  "reconstructed_at_utc": "2026-09-27T13:11:46Z",
+  "region": "us-east-1",
+  "schema_version": "jel-v6-first-use-read-ledger/1",
+  "simulations": [
+    {
+      "operation": "SimulatePrincipalPolicy",
+      "params": {
+        "ActionNames": [
+          "iam:CreateRole",
+          "iam:AttachRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:PassRole"
+        ],
+        "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+        "ResourceArns": [
+          "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+        ]
+      },
+      "results": [
+        {
+          "action": "iam:CreateRole",
+          "decision": "implicitDeny",
+          "missing_context": [
+            "iam:AWSServiceName",
+            "iam:PassedToService"
+          ],
+          "resource": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+        },
+        {
+          "action": "iam:AttachRolePolicy",
+          "decision": "implicitDeny",
+          "missing_context": [
+            "iam:AWSServiceName",
+            "iam:PassedToService"
+          ],
+          "resource": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+        },
+        {
+          "action": "iam:PutRolePolicy",
+          "decision": "implicitDeny",
+          "missing_context": [
+            "iam:AWSServiceName",
+            "iam:PassedToService"
+          ],
+          "resource": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+        },
+        {
+          "action": "iam:PassRole",
+          "decision": "implicitDeny",
+          "missing_context": [
+            "iam:AWSServiceName",
+            "iam:PassedToService"
+          ],
+          "resource": "arn:aws:iam::083127296577:role/jel-v6-approved/trident27-bootstrap-service"
+        }
+      ],
+      "service": "iam",
+      "status": "SUCCESS"
+    },
+    {
+      "operation": "SimulatePrincipalPolicy",
+      "params": {
+        "ActionNames": [
+          "cloudformation:CreateStack"
+        ],
+        "PolicySourceArn": "arn:aws:iam::083127296577:user/us-os-gateway",
+        "ResourceArns": [
+          "arn:aws:cloudformation:us-east-1:083127296577:stack/jel-v6-bootstrap-trident27/*"
+        ]
+      },
+      "results": [
+        {
+          "action": "cloudformation:CreateStack",
+          "decision": "implicitDeny",
+          "missing_context": [
+            "iam:AWSServiceName",
+            "iam:PassedToService"
+          ],
+          "resource": "arn:aws:cloudformation:us-east-1:083127296577:stack/jel-v6-bootstrap-trident27/*"
+        }
+      ],
+      "service": "iam",
+      "status": "SUCCESS"
+    }
+  ],
+  "totals": {
+    "aws_mutations": 0,
+    "aws_service_attempted": 28,
+    "aws_service_failed": 1,
+    "aws_service_successful": 27,
+    "pre_api_validation_failures": 10
+  }
+}
