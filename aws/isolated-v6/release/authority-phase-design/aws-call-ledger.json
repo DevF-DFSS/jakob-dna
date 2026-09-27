@@ -1,0 +1,10 @@
+{
+  "schema_version": "jel-v6-pr19-call-ledger/1",
+  "as_of": "2026-09-26",
+  "authenticated_aws_api_attempts": 0,
+  "successful": 0,
+  "failed": 0,
+  "calls": [],
+  "public_documentation": "Twelve public responses recorded separately in sources.json; not authenticated AWS API execution.",
+  "deployment_authorized": false
+}
